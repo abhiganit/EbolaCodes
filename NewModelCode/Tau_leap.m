@@ -1,4 +1,4 @@
-function [new_value]=Tau_leap(old, Parameters);
+function [new_value]=Tau_leap(old, Parameters)
 
 % Parameters
 betaI = Parameters(1); betaH1 = Parameters(2); betaH2 = Parameters(3); betaF = Parameters(4);

@@ -46,28 +46,53 @@ Rate(7) = alpha*Eh;                                      Change(7,7) = -1; Chang
 % Worker: exposed -> inf
 Rate(8) = alpha*Ew;                                      Change(8,8) = -1; Change(8,12) = +1;
 
-
+% General: inf -> funeral
 Rate(9) = delta1*(1-theta)*gammaD*Ig;                    Change(9,9) = -1; Change(9,13) = +1;
+% Funeral: inf -> funeral
 Rate(10) = delta1*(1-theta)*gammaD*If;                   Change(10,10) = -1; Change(10,14) = +1;
+% Hosp: inf -> funeral
 Rate(11) = delta2*gammaDH*Ih;                            Change(11,11) = -1; Change(11,15) = +1;
+% Worker: inf -> funeral
 Rate(12) = delta2*gammaDH*Iw;                            Change(12,12) = -1; Change(12,16) = +1;
+
+% General: inf -> recovered
 Rate(13) = gammaI*(1-theta)*(1-delta1)*Ig;               Change(13,9) = -1; Change(13,17) = +1;
+% Funeral: inf -> recovered
 Rate(14) = gammaI*(1-theta)*(1-delta1)*If;               Change(14,10) = -1; Change(14,18) = +1;
+% Hosp: inf -> recovered
 Rate(15) = gammaIH*(1-delta2)*Ih;                        Change(15,11) = -1; Change(15,19) = +1;
+% Worker: inf -> recovered
 Rate(16) = gammaIH*(1-delta2)*Iw;                        Change(16,12) = -1; Change(16,20) = +1;
+
+% General: funeral -> dead
 Rate(17) = gammaF*Fg;                                    Change(17,13) = -1; Change(17,21) = +1;
+% Funeral: funeral -> dead
 Rate(18) = gammaF*Ff;                                    Change(18,14) = -1; Change(18,22) = +1;
+% Hosp: funeral -> dead
 Rate(19) = gammaF*Fh;                                    Change(19,15) = -1; Change(19,23) = +1;
+% Worker: funeral -> dead
 Rate(20) = gammaF*Fw;                                    Change(20,16) = -1; Change(20,24) = +1;
+
+% General:susc -> Funeral:susc
 Rate(21) = fGF*F/N;                                      Change(21,1) = -1; Change(21,2) = +1;
+% Funeral:susc -> General:susc
 Rate(22) = fFG*Sf;                                       Change(22,2) = -1; Change(22,1) = +1;
+% General:susc -> Hosp:susc
 Rate(23) = fGH*Sg;                                       Change(23,1) = -1; Change(23,3) = +1;      
+% Hosp:susc -> General:susc
 Rate(24) = fHG*Sh;                                       Change(24,3) = -1; Change(24,1) = +1;
+
+% General:inf -> Hosp:inf
 Rate(25) = gammaH*theta*Ig;                              Change(25,9) = -1; Change(25,11) = +1;
+% Funeral:inf -> Hosp:inf
 Rate(26) = gammaH*theta*If;                              Change(26,10) = -1; Change(26,11) = +1;
+% General:susc -> General:recovered
 Rate(27) =(1-epsilon)*betaI*Sg*Ig/Ng;                     Change(27,1) = -1; Change(27,17) = +1;
+% Funeral:susc -> Funeral:recovered
 Rate(28) = (1-epsilon)*epsilon*betaF*Sf;                   Change(28,2) = -1; Change(28,18) = +1;
+% Hosp:susc -> Hosp:recovered
 Rate(29) = (1-epsilon)*betaH1*Sh*(Ih/Nh+Iw/Nw);           Change(29,3) = -1; Change(29,19) = +1;
+% Worker:susc -> Worker:recovered
 Rate(30) = (1-epsilon)*betaW*Sw*(Ih/Nh+Iw/Nw);            Change(30,4) = -1; Change(30,20) = +1;
 
 

@@ -11,10 +11,10 @@ epsilon = Parameters(19); tau = Parameters(20);
 
 
 % Compartments
-Sg=old(1); Sf=old(2); Sh=old(3); Sw = old(4);
-Eg = old(5); Ef= old(6); Eh = old(7); Ew = old(8);
-Ig = old(9); If = old(10); Ih = old(11); Iw = old(12);
-Fg = old(12); Ff = old(13); Fh = old(14); Fw = old(16);
+Sg = old(1);  Sf = old(2);   Sh = old(3);  Sw = old(4);
+Eg = old(5);  Ef = old(6);   Eh = old(7);  Ew = old(8);
+Ig = old(9);  If = old(10); Ih = old(11); Iw = old(12);
+Fg = old(13); Ff = old(14); Fh = old(15); Fw = old(16);
 Rg = old(17); Rf = old(18); Rh = old(19); Rw = old(20);
 Dg = old(21); Df = old(22); Dh = old(23); Dw = old(24);
 
@@ -24,15 +24,19 @@ Nf = Sf+Ef+If+Ff+Rf+Df;
 Nh = Sh+Eh+Ih+Fh+Rh+Dh;
 Nw = Sw+Ew+Iw+Fw+Rw+Dw;
 N = Ng+Nf+Nh+Nw;
+
+% initialize arrays
 Change = zeros(30,24); % 30 is no of events and 24 is no of compartments
 Rate = zeros(30,1);
+
+
 %% Transitions
 % General: susc -> exposed
 Rate(1) =epsilon*betaI*Sg*Ig/Ng;                          Change(1,1) = -1; Change(1,5) = +1;
 % Funeral: susc -> exposed
 Rate(2) = epsilon*betaF*Sf;                               Change(2,2) = -1; Change(2,6) = +1;
 % Hosp: susc -> exposed
-Rate(3) = epsilon*(betaH*Sh*Ih/Nh + betaW*Sh*Iw/Nw);     Change(3,3) = -1; Change(3,7) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
+Rate(3) = epsilon*(betaH*Sh*Ih/Nh + betaW*Sh*Iw/Nw);      Change(3,3) = -1; Change(3,7) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
 % Worker: susc -> exposed
 Rate(4) = epsilon*(betaW*Sw*Ih/Nh + betaI*Sw*Ih/Nh);      Change(4,4) = -1; Change(4,8) = +1;
 
@@ -86,6 +90,7 @@ Rate(24) = fHG*Sh;                                       Change(24,3) = -1; Chan
 Rate(25) = gammaH*theta*Ig;                              Change(25,9) = -1; Change(25,11) = +1;
 % Funeral:inf -> Hosp:inf
 Rate(26) = gammaH*theta*If;                              Change(26,10) = -1; Change(26,11) = +1;
+
 % General:susc -> General:recovered
 Rate(27) =(1-epsilon)*betaI*Sg*Ig/Ng;                     Change(27,1) = -1; Change(27,17) = +1;
 % Funeral:susc -> Funeral:recovered
@@ -98,7 +103,7 @@ Rate(30) = (1-epsilon)*betaW*Sw*(Ih/Nh+Iw/Nw);            Change(30,4) = -1; Cha
 
 new_value=old;
 
-for i=1:size(Rate,1)
+for i=1:30
     Num=poissrnd(Rate(i)*tau);
 %     if i==4
 %         

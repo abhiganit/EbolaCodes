@@ -56,13 +56,14 @@ function [] = EbolaModel()
     end
 
     % Output Incidence
-    Incidence.Cg = diff(output.Cg);
-    Incidence.Cf = diff(output.Cf);
-    Incidence.Ch = diff(output.Ch);
-    Incidence.Cw = diff(output.Cw);
+    incidence.Cg = diff(output.Cg);
+    incidence.Cf = diff(output.Cf);
+    incidence.Ch = diff(output.Ch);
+    incidence.Cw = diff(output.Cw);
+    
     
     % Plotting
-    plotFigures(t, output)
+    plotFigures(t, output, incidence)
     
 
 end

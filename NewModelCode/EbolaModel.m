@@ -3,7 +3,7 @@ function [] = EbolaModel()
     % Model Parameters
     betaI = 0.588/7;   % Transmission coefficient in community
     betaH1 = 0.794/7;   % Transmission coefficient for hospital goers/patients
-    betaH2 = 0.794/7;   % Transmission coefficient for hospital/ebola treatment workers
+    betaW = 0.794/7;   % Transmission coefficient for hospital/ebola treatment workers
     betaF = 0.8; %/7;% 7.653/7;   % Transmission coefficient during funerals
     alpha = 1/7;       % 1/alpha: mean duration of the incubation period  
     theta = 0.67;      % Percentage/proportion of infectious cases are hospitaized
@@ -36,7 +36,7 @@ function [] = EbolaModel()
 
     initial = [Sg0,Sf0,Sh0,Sw0,Eg0,Ef0,Eh0,Ew0,Ig0,If0,Ih0,Iw0,Fg0,Ff0,Fh0, Fw0,Rg0,Rf0,Rh0,Rw0,Dg0,Df0,Dh0,Dw0];
 
-    params = [betaI,betaH1,betaH2, betaF,alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, delta1,delta2,fGF,fFG,fGH,fHG,epslon,tau];
+    params = [betaI,betaH1,betaW, betaF,alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, delta1,delta2,fGF,fFG,fGH,fHG,epslon,tau];
 
     for i= 1:MaxIt
         % The main iteration 

@@ -1,7 +1,7 @@
 function [new_value]=Tau_leap(old, Parameters)
 
 % Parameters
-betaI = Parameters(1); betaH1 = Parameters(2); betaH2 = Parameters(3); betaF = Parameters(4);
+betaI = Parameters(1); betaH1 = Parameters(2); betaW = Parameters(3); betaF = Parameters(4);
 alpha = Parameters(5);
 theta= Parameters(6);
 gammaH = Parameters(7); gammaI = Parameters(8); gammaD = Parameters(9); gammaDH = Parameters(10); gammaIH = Parameters(11); gammaF = Parameters(12);
@@ -29,7 +29,7 @@ Change = zeros(30,24); % 30 is no of events and 24 is no of compartments
 Rate(1) =epslon*betaI*Sg*Ig/Ng;                          Change(1,1) = -1; Change(1,5) = +1;
 Rate(2) = epslon*betaF*Sf;                               Change(2,2) = -1; Change(2,6) = +1;
 Rate(3) = epslon*betaH1*Sh*Ih/Nh;                        Change(3,3) = -1; Change(3,7) = +1;
-Rate(4) = epslon*betaH2*Sw*Ih/Nh;                        Change(4,4) = -1; Change(4,8) = +1;
+Rate(4) = epslon*betaW*Sw*Ih/Nh;                        Change(4,4) = -1; Change(4,8) = +1;
 Rate(5) = alpha*Eg;                                      Change(5,5) = -1; Change(5,9) = +1;
 Rate(6) = alpha*Ef;                                      Change(6,6) = -1; Change(6,10) = +1;
 Rate(7) = alpha*Eh;                                      Change(7,7) = -1; Change(7,11) = +1;
@@ -55,7 +55,7 @@ Rate(26) = gammaH*theta*If;                              Change(26,10) = -1; Cha
 Rate(27) =(1-epslon)*betaI*Sg*Ig/Ng;                     Change(27,1) = -1; Change(27,17) = +1;
 Rate(28) = (1-epslon)*epslon*betaF*Sf;                   Change(28,2) = -1; Change(28,18) = +1;
 Rate(29) = (1-epslon)*betaH1*Sh*(Ih/Nh+Iw/Nw);           Change(29,3) = -1; Change(29,19) = +1;
-Rate(30) = (1-epslon)*betaH2*Sw*(Ih/Nh+Iw/Nw);           Change(30,4) = -1; Change(30,20) = +1;
+Rate(30) = (1-epslon)*betaW*Sw*(Ih/Nh+Iw/Nw);           Change(30,4) = -1; Change(30,20) = +1;
 
 
 new_value=old;

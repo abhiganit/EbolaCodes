@@ -17,6 +17,7 @@ Ig = old(9);  If = old(10); Ih = old(11); Iw = old(12);
 Fg = old(13); Ff = old(14); Fh = old(15); Fw = old(16);
 Rg = old(17); Rf = old(18); Rh = old(19); Rw = old(20);
 Dg = old(21); Df = old(22); Dh = old(23); Dw = old(24);
+Cg = old(25); Cf = old(26); Ch = old(27); Cw = old(28);
 
 F = Fg+Ff+Fh+Fw;
 Ng = Sg+Eg+Ig+Fg+Rg+Dg;
@@ -26,13 +27,12 @@ Nw = Sw+Ew+Iw+Fw+Rw+Dw;
 N = Ng+Nf+Nh+Nw;
 
 % initialize arrays
-Change = zeros(30,24); % 30 is no of events and 24 is no of compartments
-Rate = zeros(30,1);
-
+Change = zeros(34,size(old,1)); % 30 is no of events and 24 is no of compartments
+Rate = zeros(34,1);
 
 %% Transitions
 % General: susc -> exposed
-Rate(1) =epsilon*betaI*Sg*Ig/Ng;                          Change(1,1) = -1; Change(1,5) = +1;
+Rate(1) = epsilon*betaI*Sg*Ig/Ng;                         Change(1,1) = -1; Change(1,5) = +1;
 % Funeral: susc -> exposed
 Rate(2) = epsilon*betaF*Sf;                               Change(2,2) = -1; Change(2,6) = +1;
 % Hosp: susc -> exposed
@@ -92,25 +92,33 @@ Rate(25) = gammaH*theta*Ig;                              Change(25,9) = -1; Chan
 Rate(26) = gammaH*theta*If;                              Change(26,10) = -1; Change(26,11) = +1;
 
 % General:susc -> General:recovered
-Rate(27) =(1-epsilon)*betaI*Sg*Ig/Ng;                     Change(27,1) = -1; Change(27,17) = +1;
+Rate(27) =(1-epsilon)*betaI*Sg*Ig/Ng;                               Change(27,1) = -1; Change(27,17) = +1;
 % Funeral:susc -> Funeral:recovered
-Rate(28) = (1-epsilon)*epsilon*betaF*Sf;                   Change(28,2) = -1; Change(28,18) = +1;
+Rate(28) = (1-epsilon)*betaF*Sf;                                    Change(28,2) = -1; Change(28,18) = +1;
 % Hosp:susc -> Hosp:recovered
-Rate(29) = (1-epsilon)*betaH*Sh*(Ih/Nh+Iw/Nw);           Change(29,3) = -1; Change(29,19) = +1;
+Rate(29) = (1-epsilon)*(betaH*Sh*Ih/Nh + betaW*Sh*Iw/Nw);           Change(29,3) = -1; Change(29,19) = +1;
 % Worker:susc -> Worker:recovered
-Rate(30) = (1-epsilon)*betaW*Sw*(Ih/Nh+Iw/Nw);            Change(30,4) = -1; Change(30,20) = +1;
+Rate(30) = (1-epsilon)*(betaW*Sw*Ih/Nh + betaI*Sw*Ih/Nh);           Change(30,4) = -1; Change(30,20) = +1;
 
+%% Cumulative Incidences (no reductions, only additions)
+% General: susc -> exposed
+Rate(31) = epsilon*betaI*Sg*Ig/Ng;                         Change(31,25) = +1;
+% Funeral: susc -> exposed
+Rate(32) = epsilon*betaF*Sf;                               Change(32,26) = +1;
+% Hosp: susc -> exposed
+Rate(33) = epsilon*(betaH*Sh*Ih/Nh + betaW*Sh*Iw/Nw);      Change(33,27) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
+% Worker: susc -> exposed
+Rate(34) = epsilon*(betaW*Sw*Ih/Nh + betaI*Sw*Ih/Nh);      Change(34,28) = +1;
 
 new_value=old;
 
-for i=1:30
-    Num=poissrnd(Rate(i)*tau);
-%     if i==4
-%         
-%     end
+for i=1:size(Rate,1)
+    Num=poissrnd(Rate(i)*tau); 
     %% Make sure things don't go negative
     Use=min([Num new_value(find(Change(i,:)<0))]);
     new_value=new_value+Change(i,:)*Use;
 end
+
+
 
 

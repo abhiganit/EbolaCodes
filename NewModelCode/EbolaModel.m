@@ -1,10 +1,10 @@
 function [] = EbolaModel()
 
     % Model Parameters (Liberia where possible)
-    betaI = 0.588/7;    % Transmission coefficient in community
-    betaH1 = 0.794/7;   % Transmission coefficient for hospital goers/patients
-    betaW = 0.794/7;    % Transmission coefficient for hospital/ebola treatment workers
-    betaF = 0.794/7;    %/7;% 7.653/7;   % Transmission coefficient during funerals with ebola patient
+    betaI = 0.794;    % Transmission coefficient in community
+    betaH = 0.794;   % Transmission coefficient for hospital goers/patients
+    betaW = 0.794;    % Transmission coefficient for hospital/ebola treatment workers
+    betaF = 0.794;    %/7;% 7.653/7;   % Transmission coefficient during funerals with ebola patient
     alpha = 1/7;        % 1/alpha: mean duration of the incubation period  
     theta = 67/100;       % Percentage of infectious cases are hospitaized
     gammaH = 1/5;       % 1/gammaH: mean duration from symptom onset to hospitalization
@@ -13,8 +13,8 @@ function [] = EbolaModel()
     gammaDH = 1/10;     % 1/gammaDH: mean duration from hospitalization to death
     gammaIH = 1/10;     % 1/gammaIH: mean duration from hospotalization to end of infectiousness
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
-    delta1 = 0.80;      % delta1 and delta2 calculated such that case fatality rate is delta
-    delta2 = 0.80;
+    delta1 = 80/100;      % delta1 and delta2 calculated such that case fatality rate is delta
+    delta2 = 80/100;
     fGF =  5;            % average family size (number of chances per person to be at each funeral)
     fFG = 1/2;          % 1/average time spent at close quarters with body at funeral
     fGH = 90272 / (67.8e6 * 365);  % rate of hospitalization per person per day (DRC 2012 estimates)
@@ -39,7 +39,7 @@ function [] = EbolaModel()
 
     initial = [Sg0,Sf0,Sh0,Sw0,Eg0,Ef0,Eh0,Ew0,Ig0,If0,Ih0,Iw0,Fg0,Ff0,Fh0, Fw0,Rg0,Rf0,Rh0,Rw0,Dg0,Df0,Dh0,Dw0];
 
-    params = [betaI,betaH1,betaW, betaF,alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, delta1,delta2,fGF,fFG,fGH,fHG,epsilon,tau];
+    params = [betaI,betaH,betaW, betaF,alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, delta1,delta2,fGF,fFG,fGH,fHG,epsilon,tau];
 
     for i= 1:MaxIt
         % The main iteration 

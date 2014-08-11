@@ -1,7 +1,7 @@
 function [new_value]=Tau_leap(old, Parameters)
 
 % Parameters
-betaI = Parameters(1); betaH1 = Parameters(2); betaW = Parameters(3); betaF = Parameters(4);
+betaI = Parameters(1); betaH = Parameters(2); betaW = Parameters(3); betaF = Parameters(4);
 alpha = Parameters(5);
 theta= Parameters(6);
 gammaH = Parameters(7); gammaI = Parameters(8); gammaD = Parameters(9); gammaDH = Parameters(10); gammaIH = Parameters(11); gammaF = Parameters(12);
@@ -32,7 +32,7 @@ Rate(1) =epsilon*betaI*Sg*Ig/Ng;                          Change(1,1) = -1; Chan
 % Funeral: susc -> exposed
 Rate(2) = epsilon*betaF*Sf;                               Change(2,2) = -1; Change(2,6) = +1;
 % Hosp: susc -> exposed
-Rate(3) = epsilon*(betaH1*Sh*Ih/Nh + betaW*Sh*Iw/Nw);     Change(3,3) = -1; Change(3,7) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
+Rate(3) = epsilon*(betaH*Sh*Ih/Nh + betaW*Sh*Iw/Nw);     Change(3,3) = -1; Change(3,7) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
 % Worker: susc -> exposed
 Rate(4) = epsilon*(betaW*Sw*Ih/Nh + betaI*Sw*Ih/Nh);      Change(4,4) = -1; Change(4,8) = +1;
 
@@ -91,7 +91,7 @@ Rate(27) =(1-epsilon)*betaI*Sg*Ig/Ng;                     Change(27,1) = -1; Cha
 % Funeral:susc -> Funeral:recovered
 Rate(28) = (1-epsilon)*epsilon*betaF*Sf;                   Change(28,2) = -1; Change(28,18) = +1;
 % Hosp:susc -> Hosp:recovered
-Rate(29) = (1-epsilon)*betaH1*Sh*(Ih/Nh+Iw/Nw);           Change(29,3) = -1; Change(29,19) = +1;
+Rate(29) = (1-epsilon)*betaH*Sh*(Ih/Nh+Iw/Nw);           Change(29,3) = -1; Change(29,19) = +1;
 % Worker:susc -> Worker:recovered
 Rate(30) = (1-epsilon)*betaW*Sw*(Ih/Nh+Iw/Nw);            Change(30,4) = -1; Change(30,20) = +1;
 

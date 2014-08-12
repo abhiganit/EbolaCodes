@@ -56,6 +56,11 @@ function [] = EbolaModel(model)
             output.Rg(:,i) = pop(:,17); output.Rf(:,i)= pop(:,18); output.Rh(:,i) = pop(:,19); output.Rw(:,i)=pop(:,20);
             output.Dg(:,i) = pop(:,21); output.Df(:,i) = pop(:,22); output.Dh(:,i) = pop(:,23); output.Dw(:,i)=pop(:,24);
             output.Cg(:,i) = pop(:,25); output.Cf(:,i) = pop(:,26); output.Ch(:,i) = pop(:,27); output.Cw(:,i)=pop(:,28);
+            
+            incidence.inc_g = diff(output.Cg);
+            incidence.inc_f = diff(output.Cf);
+            incidence.inc_h = diff(output.Ch);
+            incidence.inc_w = diff(output.Cw);
         end
     else
             % The main iteration (note as it is difference equation, we
@@ -69,8 +74,13 @@ function [] = EbolaModel(model)
             output.Rg = pop(:,17); output.Rf= pop(:,18); output.Rh = pop(:,19); output.Rw=pop(:,20);
             output.Dg = pop(:,21); output.Df = pop(:,22); output.Dh = pop(:,23); output.Dw=pop(:,24);
             output.Cg = pop(:,25); output.Cf = pop(:,26); output.Ch = pop(:,27); output.Cw=pop(:,28);
+            
+            incidence.inc_g = diff(output.Cg);
+            incidence.inc_f = diff(output.Cf);
+            incidence.inc_h = diff(output.Ch);
+            incidence.inc_w = diff(output.Cw);
     end
         
-    plotFigures(t, output)
+    plotFigures(t, output, incidence)
 
 end

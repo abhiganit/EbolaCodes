@@ -114,7 +114,9 @@ new_value=old;
 
 for i=1:size(Rate,1)
     Num=Rate(i)*tau; 
-    new_value=new_value+Change(i,:)*Num;
+    %% Make sure things don't go negative
+    Use=min([Num new_value(find(Change(i,:)<0))]);
+    new_value=new_value+Change(i,:)*Use;
 end
 
 

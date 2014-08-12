@@ -1,7 +1,12 @@
-function modelout = EbolaModel(model, beta)
+function modelout = EbolaModel(model, beta, timepointstoevaluate)
 % model = 0 runs stochastic model where as model = 1 runs the difference
 % equation.
 
+
+    %% extract required data for model fit
+    timepoints = struct2cell(timepointstoevaluate);
+    
+    
     %tic;
     % Model Parameters (Liberia where possible)
     betaI = beta; %.200;    % Transmission coefficient in community
@@ -38,7 +43,7 @@ function modelout = EbolaModel(model, beta)
     
     % Tau and maximum time taken
     tau=1;
-    MaxTime=1*18;
+    MaxTime=1*142;
     MaxIt = 10;
 
     initial = [Sg0,Sf0,Sh0,Sw0,Eg0,Ef0,Eh0,Ew0,Ig0,If0,Ih0,Iw0,Fg0,Ff0,Fh0, Fw0,Rg0,Rf0,Rh0,Rw0,Dg0,Df0,Dh0,Dw0, Cg0,Cf0,Ch0,Cw0];
@@ -84,8 +89,10 @@ function modelout = EbolaModel(model, beta)
     end
         
     %plotFigures(t, output, incidence)
-    modelout.CIncidence = output.Cg(1:11) + output.Cf(1:11) + output.Ch(1:11) + output.Cw(1:11);
-    modelout.CDeaths    = output.Dg(1:11) + output.Df(1:11) + output.Dh(1:11) + output.Dw(1:11);
+    
+    modelout.CIncidence = output.Cg(timepoints{1}+1) + output.Cf(timepoints{1}+1) + output.Ch(timepoints{1}+1) + output.Cw(timepoints{1}+1);
+    modelout.CDeaths    = output.Dg(timepoints{2}+1) + output.Df(timepoints{2}+1) + output.Dh(timepoints{2}+1) + output.Dw(timepoints{2}+1);
+     
     
     
 %     h = toc;

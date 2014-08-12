@@ -2,11 +2,12 @@ function [] = EbolaModel(model)
 % model = 0 runs stochastic model where as model = 1 runs the difference
 % equation.
 
+    tic;
     % Model Parameters (Liberia where possible)
     betaI = 1.000;    % Transmission coefficient in community
     betaH = 1.000;   % Transmission coefficient for hospital goers/patients
     betaW = 1.000;    % Transmission coefficient for hospital/ebola treatment workers
-    betaF = 1.000;    %/7;% 7.653/7;   % Transmission coefficient during funerals with ebola patient
+    betaF = 2.000;    %/7;% 7.653/7;   % Transmission coefficient during funerals with ebola patient
     alpha = 1/7;        % 1/alpha: mean duration of the incubation period  
     theta = 67/100;       % Percentage of infectious cases are hospitaized
     gammaH = 1/5;       % 1/gammaH: mean duration from symptom onset to hospitalization
@@ -38,7 +39,7 @@ function [] = EbolaModel(model)
     % Tau and maximum time taken
     tau=1;
     MaxTime=1*365;
-    MaxIt = 10;
+    MaxIt = 100;
 
     initial = [Sg0,Sf0,Sh0,Sw0,Eg0,Ef0,Eh0,Ew0,Ig0,If0,Ih0,Iw0,Fg0,Ff0,Fh0, Fw0,Rg0,Rf0,Rh0,Rw0,Dg0,Df0,Dh0,Dw0, Cg0,Cf0,Ch0,Cw0];
 
@@ -82,5 +83,7 @@ function [] = EbolaModel(model)
     end
         
     plotFigures(t, output, incidence)
-
+    
+    h = toc;
+    sprintf('Run time: %f minutes', h/60)
 end

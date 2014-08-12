@@ -46,13 +46,13 @@ function [] = EbolaModel()
         % The main iteration 
         [t, pop]=Stoch_Iteration([0 MaxTime],initial,params);
         
-        output.Sg(:,i)=pop(:,1); output.Sf(:,i) = pop(:,2); output.Sh(:,i) = pop(:,3); output.Sw(:,i) = pop(:,4); 
-        output.Eg(:,i)=pop(:,5); output.Ef(:,i) = pop(:,6); output.Eh(:,i) = pop(:,7); output.Ew(:,i) = pop(:,8);
-        output.Ig(:,i)=pop(:,9); output.If(:,i) = pop(:,10); output.Ih(:,i) = pop(:,11); output.Iw(:,i) = pop(:,12);
-        output.Fg(:,i)=pop(:,13); output.Ff(:,i) = pop(:,14); output.Fh(:,i) = pop(:,15); output.Fw(:,i)=pop(:,16); 
-        output.Rg(:,i) = pop(:,17); output.Rf(:,i)= pop(:,18); output.Rh(:,i) = pop(:,19); output.Rw(:,i)=pop(:,20);
-        output.Dg(:,i) = pop(:,21); output.Df(:,i) = pop(:,22); output.Dh(:,i) = pop(:,23); output.Dw(:,i)=pop(:,24);
-        output.Cg(:,i) = pop(:,25); output.Cf(:,i) = pop(:,26); output.Ch(:,i) = pop(:,27); output.Cw(:,i)=pop(:,28);
+        output.Sg(:,i) = pop(:,1);  output.Sf(:,i) = pop(:,2);  output.Sh(:,i) = pop(:,3);  output.Sw(:,i) = pop(:,4); 
+        output.Eg(:,i) = pop(:,5);  output.Ef(:,i) = pop(:,6);  output.Eh(:,i) = pop(:,7);  output.Ew(:,i) = pop(:,8);
+        output.Ig(:,i) = pop(:,9);  output.If(:,i) = pop(:,10); output.Ih(:,i) = pop(:,11); output.Iw(:,i) = pop(:,12);
+        output.Fg(:,i) = pop(:,13); output.Ff(:,i) = pop(:,14); output.Fh(:,i) = pop(:,15); output.Fw(:,i) = pop(:,16); 
+        output.Rg(:,i) = pop(:,17); output.Rf(:,i) = pop(:,18); output.Rh(:,i) = pop(:,19); output.Rw(:,i) = pop(:,20);
+        output.Dg(:,i) = pop(:,21); output.Df(:,i) = pop(:,22); output.Dh(:,i) = pop(:,23); output.Dw(:,i) = pop(:,24);
+        output.Cg(:,i) = pop(:,25); output.Cf(:,i) = pop(:,26); output.Ch(:,i) = pop(:,27); output.Cw(:,i) = pop(:,28);
     end
 
     % Output Incidence

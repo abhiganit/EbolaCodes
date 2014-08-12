@@ -1,9 +1,11 @@
 function [] = plotFigures(time, Output, Incidence)
-    close all; fig1 = figure; hold on;
+    %close all; 
+    fig1 = figure; hold on;
     set(fig1, 'Position', [150 150 1600 900]);
     index = 0;
     colorlist = repmat({'g', 'r' , 'k', 'b'}, 1, 7);
-    
+   % figure(fig1)
+    hold on;
     for fieldcell = fieldnames(Output)'
         index = index+1;
         subplot(7,4,index);
@@ -12,7 +14,8 @@ function [] = plotFigures(time, Output, Incidence)
         title(field)
         xlabel 'Time (days)';
     end
-    
+   
+   
     fig2 = figure; hold on;
     set(fig2, 'Position', [150 150 1600 300]);
     index = 0;

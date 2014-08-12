@@ -1,5 +1,5 @@
 function [] = plotFigures(time, Output, Incidence)
-    %close all; 
+    close all; 
     fig1 = figure; hold on;
     set(fig1, 'Position', [150 150 1600 900]);
     index = 0;

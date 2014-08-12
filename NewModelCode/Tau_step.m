@@ -80,7 +80,7 @@ Rate(20) = gammaF*Fw;                                    Change(20,16) = -1; Cha
 % General:susc -> Funeral:susc
 Rate(21) = fGF*F/N;                                      Change(21,1) = -1; Change(21,2) = +1;
 % Funeral:susc -> General:susc
-Rate(22) = fFG*Sf;                                       Change(22,2) = -1; Change(22,1) = +1;
+Rate(22) = fFG*Sg*Sf;                                       Change(22,2) = -1; Change(22,1) = +1;
 % General:susc -> Hosp:susc
 Rate(23) = fGH*Sg;                                       Change(23,1) = -1; Change(23,3) = +1;      
 % Hosp:susc -> General:susc

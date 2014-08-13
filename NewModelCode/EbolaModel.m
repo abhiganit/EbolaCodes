@@ -1,11 +1,9 @@
-function modelout = EbolaModel(model, beta, timepointstoevaluate)
+function modelout = EbolaModel(model, beta, timepoints)
 % model = 0 runs stochastic model where as model = 1 runs the difference
 % equation.
 
 
     %% extract required data for model fit
-    timepoints = struct2cell(timepointstoevaluate);
-    
     
     %tic;
     % Model Parameters (Liberia where possible)

@@ -12,8 +12,10 @@ function f = ErrorFunction(beta)
         strfield = timefields{i};
         timepoints.(strfield) = data.(strfield);
     end
+    
+    times = struct2cell(timepoints);
     % get model
-    model = EbolaModel(1, beta, timepoints);
+    model = EbolaModel(1, beta, times);
     
     
     index = 0;

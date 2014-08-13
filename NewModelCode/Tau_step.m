@@ -1,7 +1,7 @@
 function [new_value]=Tau_step(old, Parameters)
 
 % Parameters
-betaI = Parameters(1); betaH = Parameters(2); betaW = Parameters(3); betaF = Parameters(4);
+betaI = Parameters(1); betaH = Parameters(2); betaW = Parameters(3); omega = Parameters(4);
 alpha = Parameters(5);
 theta= Parameters(6);
 gammaH = Parameters(7); gammaI = Parameters(8); gammaD = Parameters(9); gammaDH = Parameters(10); gammaIH = Parameters(11); gammaF = Parameters(12);
@@ -34,7 +34,7 @@ Rate = zeros(34,1);
 % General: susc -> exposed
 Rate(1) = epsilon*betaI*Sg*Ig/Ng;                         Change(1,1) = -1; Change(1,5) = +1;
 % Funeral: susc -> exposed
-Rate(2) = epsilon*betaF*Sf;                               Change(2,2) = -1; Change(2,6) = +1;
+Rate(2) = epsilon*Sf*(omega-1)*betaI*Ig/Ng;               Change(2,2) = -1; Change(2,6) = +1; %betaF*Sf;
 % Hosp: susc -> exposed
 Rate(3) = epsilon*(betaH*Sh*Ih/Nh + betaW*Sh*Iw/Nw);      Change(3,3) = -1; Change(3,7) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
 % Worker: susc -> exposed
@@ -94,7 +94,7 @@ Rate(26) = gammaH*theta*If;                              Change(26,10) = -1; Cha
 % General:susc -> General:recovered
 Rate(27) =(1-epsilon)*betaI*Sg*Ig/Ng;                               Change(27,1) = -1; Change(27,17) = +1;
 % Funeral:susc -> Funeral:recovered
-Rate(28) = (1-epsilon)*betaF*Sf;                                    Change(28,2) = -1; Change(28,18) = +1;
+Rate(28) = (1-epsilon)*Sf*(omega-1)*betaI*Ig/Ng;                    Change(28,2) = -1; Change(28,18) = +1; %betaF*Sf;
 % Hosp:susc -> Hosp:recovered
 Rate(29) = (1-epsilon)*(betaH*Sh*Ih/Nh + betaW*Sh*Iw/Nw);           Change(29,3) = -1; Change(29,19) = +1;
 % Worker:susc -> Worker:recovered
@@ -104,7 +104,7 @@ Rate(30) = (1-epsilon)*(betaW*Sw*Ih/Nh + betaI*Sw*Ih/Nh);           Change(30,4)
 % General: susc -> exposed
 Rate(31) = epsilon*betaI*Sg*Ig/Ng;                         Change(31,25) = +1;
 % Funeral: susc -> exposed
-Rate(32) = epsilon*betaF*Sf;                               Change(32,26) = +1;
+Rate(32) = epsilon*Sf*(omega-1)*betaI*Ig/Ng;               Change(32,26) = +1; %betaF*Sf; 
 % Hosp: susc -> exposed
 Rate(33) = epsilon*(betaH*Sh*Ih/Nh + betaW*Sh*Iw/Nw);      Change(33,27) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
 % Worker: susc -> exposed

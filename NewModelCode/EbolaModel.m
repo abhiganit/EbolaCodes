@@ -30,7 +30,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     epsilon = 90/100;       % percentage Symptomatic illness 
     
     delta1 = delta*gammaI / (delta*gammaI + (1-delta)*gammaD);
-    delta2 = delta*gammaIH / (delta*gammaIh + (1-delta)*gammaDH);
+    delta2 = delta*gammaIH / (delta*gammaIH + (1-delta)*gammaDH);
 
     N0 = 4.4e6;         % Initial population size
     

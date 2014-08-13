@@ -15,7 +15,7 @@ Tuesday 12th August: should start with hospitalized people at equilibrium at tim
 
 Tuesday 12th August: Currently have "case counts" being total people that have ever been infected with EBV regardless whether they are living or dead.  Make sure this is consistent with the data.
 
-Wednesday 13th August: Need to check out Katie's calculation of betaF (betaF = (\omega-1)*betaI*Ig/Ng, where \omega from Roels 1999 study JID)
+Wednesday 13th August: Need to check out Katie's calculation of betaF (betaF = (\omega-1)*betaI*Ig/Ng, where \omega from Roels 1999 study JID).  We need betaF to be constant, therefore required to calculate the prevalence in Kikwit during sampling times of OR calculations.
 
 
 Resolved issues

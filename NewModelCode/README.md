@@ -17,6 +17,8 @@ Tuesday 12th August: Currently have "case counts" being total people that have e
 
 Wednesday 13th August: Need to check out Katie's calculation of betaF (betaF = (\omega-1)*betaI*Ig/Ng, where \omega from Roels 1999 study JID).  We need betaF to be constant, therefore required to calculate the prevalence in Kikwit during sampling times of OR calculations.
 
+Wednesday 13th August: Need a vector to include infected immigrant events for every time point
+
 
 Resolved issues
 =========

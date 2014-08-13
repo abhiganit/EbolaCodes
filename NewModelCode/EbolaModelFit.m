@@ -2,13 +2,13 @@ function beta = EbolaModelFit
  
     tic;
     % get data and clean it
-    [timesets, datasets] = CleanData();
+    [timesets, datasets, maxtime] = CleanData();
     
     % minimize error function
-    beta = fminsearch( @(beta)ErrorFunction(beta, timesets, datasets) , 0.1);
+    beta = fminsearch( @(beta)ErrorFunction(beta, timesets, datasets, maxtime) , 0.1);
 
     % plot model fit
-    plotModelFit(beta, timesets, datasets);
+    plotModelFit(beta, timesets, datasets, maxtime);
     
     h = toc;
     sprintf('Run time: %f minutes', h/60)

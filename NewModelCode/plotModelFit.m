@@ -1,14 +1,10 @@
-function plotModelFit(estimatedvalues, timepoints, datapoints)
+function plotModelFit(estimatedvalues, timepoints, datapoints, maxtime)
 
-for i = 1:size(timepoints,1)
-   maxi(i) = max(timepoints{i}); 
-end
 
-maximum = max(maxi(i));
-onetimeset = {0:(maximum-1)};
+onetimeset = {0:(maxtime-1)};
 alltimepoints = repmat(onetimeset, size(timepoints,1), 1);
 
-modeloutput = EbolaModel(1, estimatedvalues, alltimepoints, datapoints)';
+modeloutput = EbolaModel(1, estimatedvalues, alltimepoints, maxtime)';
 
 strings = {'Cumulative Cases', 'Cumulative Deaths'};
 

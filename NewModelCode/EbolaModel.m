@@ -1,4 +1,4 @@
-function modelout = EbolaModel(model, beta, timepoints)
+function modelout = EbolaModel(model, beta, timepoints, datapoints)
 % model = 0 runs stochastic model where as model = 1 runs the difference
 % equation.
 
@@ -69,7 +69,7 @@ function modelout = EbolaModel(model, beta, timepoints)
     else
             % The main iteration (note as it is difference equation, we
             % only run it once)
-            [t, pop]=Diffeqn_Iteration([0 MaxTime],initial,params);
+            [t pop]=Diffeqn_Iteration([0 MaxTime],initial,params);
         
             output.Sg=pop(:,1); output.Sf = pop(:,2); output.Sh = pop(:,3); output.Sw = pop(:,4); 
             output.Eg=pop(:,5); output.Ef = pop(:,6); output.Eh = pop(:,7); output.Ew = pop(:,8);
@@ -79,20 +79,17 @@ function modelout = EbolaModel(model, beta, timepoints)
             output.Dg = pop(:,21); output.Df = pop(:,22); output.Dh = pop(:,23); output.Dw=pop(:,24);
             output.Cg = pop(:,25); output.Cf = pop(:,26); output.Ch = pop(:,27); output.Cw=pop(:,28);
             
-            incidence.inc_g = diff(output.Cg);
-            incidence.inc_f = diff(output.Cf);
-            incidence.inc_h = diff(output.Ch);
-            incidence.inc_w = diff(output.Cw);
+%             incidence.inc_g = diff(output.Cg);
+%             incidence.inc_f = diff(output.Cf);
+%             incidence.inc_h = diff(output.Ch);
+%             incidence.inc_w = diff(output.Cw);
             
     end
         
     %plotFigures(t, output, incidence)
     
-    modelout.CIncidence = output.Cg(timepoints{1}+1) + output.Cf(timepoints{1}+1) + output.Ch(timepoints{1}+1) + output.Cw(timepoints{1}+1);
-    modelout.CDeaths    = output.Dg(timepoints{2}+1) + output.Df(timepoints{2}+1) + output.Dh(timepoints{2}+1) + output.Dw(timepoints{2}+1);
+    modelout{1} = output.Cg(timepoints{1}+1) + output.Cf(timepoints{1}+1) + output.Ch(timepoints{1}+1) + output.Cw(timepoints{1}+1);
+    modelout{2} = output.Dg(timepoints{2}+1) + output.Df(timepoints{2}+1) + output.Dh(timepoints{2}+1) + output.Dw(timepoints{2}+1);
      
-    
-    
-%     h = toc;
-%     sprintf('Run time: %f minutes', h/60)
+   
 end

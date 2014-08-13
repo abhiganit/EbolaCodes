@@ -1,5 +1,13 @@
-function EbolaModelFit
+function optout = EbolaModelFit
+ 
+    tic;
+    % get data and clean it
+    [timesets, datasets] = CleanData();
+    
+    % minimize error function
+    optout = fminsearch( @(beta)ErrorFunction(beta, timesets, datasets) , 0.1);
 
-    optout = fminsearch( @ErrorFunction , 0.1)
-
+    
+    h = toc;
+    sprintf('Run time: %f minutes', h/60)
 end

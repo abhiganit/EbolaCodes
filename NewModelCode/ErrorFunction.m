@@ -1,30 +1,17 @@
 
 
-function f = ErrorFunction(beta)
+function f = ErrorFunction(beta, timepoints, datapoints)
     
-    % clean the data and scroll through actual incidences at given times
-    data = ReadData();
-    allfields = fieldnames(data);
-    fields = allfields(2:2:end,1);
-    timefields = allfields(1:2:(end-1),1);
+    % calculate model points
+    model = EbolaModel(1, beta, timepoints, datapoints);
     
-    for i = 1:size(timefields,1)    
-        strfield = timefields{i};
-        timepoints.(strfield) = data.(strfield);
-    end
-    
-    times = struct2cell(timepoints);
-    % get model
-    model = EbolaModel(1, beta, times);
-    
-    
+    % sum up square diffs for each dataset
     index = 0;
-    for field = fields
-       field = field{1};
+    for dataset = 1:size(timepoints,1)
        index = index + 1;
-       partsumf(index) = sum((data.(field) - model.(field)).^2);
+       partsumf(index) = sum((datapoints{dataset} - model{dataset}).^2);
     end
     
-    % return sum of square differences
+    % return sum of square differences over all datasets
     f = sum(partsumf);
 end

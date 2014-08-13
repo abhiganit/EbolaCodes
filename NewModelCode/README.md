@@ -12,6 +12,13 @@ Tuesday 12th August: Reassess the rate at which individuals move to the funeral 
 
 Tuesday 12th August: should start with hospitalized people at equilibrium at time=0
 
-Tuesday 12th August: still need to output model based on "DaysSince21stMarch" times
 
 Tuesday 12th August: Currently have "case counts" being total people that have ever been infected with EBV regardless whether they are living or dead.  Make sure this is consistent with the data.
+
+Wednesday 13th August: Need to check out Katie's calculation of betaF (betaF = (\omega-1)*betaI*Ig/Ng, where \omega from Roels 1999 study JID)
+
+
+Resolved issues
+=========
+
+Tuesday 12th August: still need to output model based on "DaysSince21stMarch" times (resolved 13th Aug)

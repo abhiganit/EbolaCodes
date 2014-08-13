@@ -10,7 +10,8 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     betaI = beta; %.200;    % Transmission coefficient in community
     betaH = .200;   % Transmission coefficient for hospital goers/patients
     betaW = .200;    % Transmission coefficient for hospital/ebola treatment workers
-    betaF = .02;    %/7;% 7.653/7;   % Transmission coefficient during funerals with ebola patient
+    %betaF = .02;    %/7;% 7.653/7;   % Transmission coefficient during funerals with ebola patient
+    omega = 3.0;
     alpha = 1/7;        % 1/alpha: mean duration of the incubation period  
     theta = 67/100;       % Percentage of infectious cases are hospitaized
     gammaH = 1/5;       % 1/gammaH: mean duration from symptom onset to hospitalization
@@ -19,13 +20,17 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     gammaDH = 1/4.6;     % 1/gammaDH: mean duration from hospitalization to death
     gammaIH = 1/5;     % 1/gammaIH: mean duration from hospitalization to end of infectiousness
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
-    delta1 = 80/100;      % delta1 and delta2 calculated such that case fatality rate is delta
-    delta2 = 80/100;
+    delta = 51/100;
+    %delta1 = 80/100;      % delta1 and delta2 calculated such that case fatality rate is delta
+    %delta2 = 80/100;
     M =  5;            % average family size (number of chances per person to be at each funeral)
     fFG = 1/2;          % 1/average time spent at close quarters with body at funeral
     fGH = 90272 / (67.8e6 * 365);  % rate of hospitalization per person per day (DRC 2012 estimates)
     fHG = 1/7;          % 1/average time spent at in hospital with non-ebola disease
     epsilon = 90/100;       % percentage Symptomatic illness 
+    
+    delta1 = delta*gammaI / (delta*gammaI + (1-delta)*gammaD);
+    delta2 = delta*gammaIH / (delta*gammaIh + (1-delta)*gammaDH);
 
     N0 = 4.4e6;         % Initial population size
     
@@ -37,7 +42,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     Dg0 = 0; Df0 = 0; Dh0 = 0; Dw0 = 0;         % died:buried
     Cg0 = Ig0; Cf0 = 0; Ch0 = 0; Cw0 = 0;       % cumulative incidence
     
-    Sh0 = 3*(0.1/10000)*N0; Sf0 = 0; Sw0 = (0.1/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0; 
+    Sh0 = 5*(2.8/10000)*N0; Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0; 
     
     % Tau and maximum time taken
     tau=1;
@@ -45,7 +50,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
 
     initial = [Sg0,Sf0,Sh0,Sw0,Eg0,Ef0,Eh0,Ew0,Ig0,If0,Ih0,Iw0,Fg0,Ff0,Fh0, Fw0,Rg0,Rf0,Rh0,Rw0,Dg0,Df0,Dh0,Dw0, Cg0,Cf0,Ch0,Cw0];
 
-    params = [betaI,betaH,betaW, betaF,alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, delta1,delta2,M,fFG,fGH,fHG,epsilon,tau];
+    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, delta1,delta2,M,fFG,fGH,fHG,epsilon,tau];
     
     if model== 0
         for i= 1:MaxIt
@@ -60,10 +65,10 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
             output.Dg(:,i) = pop(:,21); output.Df(:,i) = pop(:,22); output.Dh(:,i) = pop(:,23); output.Dw(:,i)=pop(:,24);
             output.Cg(:,i) = pop(:,25); output.Cf(:,i) = pop(:,26); output.Ch(:,i) = pop(:,27); output.Cw(:,i)=pop(:,28);
             
-            incidence.inc_g = diff(output.Cg);
-            incidence.inc_f = diff(output.Cf);
-            incidence.inc_h = diff(output.Ch);
-            incidence.inc_w = diff(output.Cw);
+%             incidence.inc_g = diff(output.Cg);
+%             incidence.inc_f = diff(output.Cf);
+%             incidence.inc_h = diff(output.Ch);
+%             incidence.inc_w = diff(output.Cw);
         end
     else
             % The main iteration (note as it is difference equation, we

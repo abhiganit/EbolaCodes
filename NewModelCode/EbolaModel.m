@@ -23,7 +23,7 @@ function modelout = EbolaModel(model, beta, timepointstoevaluate)
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
     delta1 = 80/100;      % delta1 and delta2 calculated such that case fatality rate is delta
     delta2 = 80/100;
-    fGF =  5;            % average family size (number of chances per person to be at each funeral)
+    M =  5;            % average family size (number of chances per person to be at each funeral)
     fFG = 1/2;          % 1/average time spent at close quarters with body at funeral
     fGH = 90272 / (67.8e6 * 365);  % rate of hospitalization per person per day (DRC 2012 estimates)
     fHG = 1/7;          % 1/average time spent at in hospital with non-ebola disease
@@ -48,7 +48,7 @@ function modelout = EbolaModel(model, beta, timepointstoevaluate)
 
     initial = [Sg0,Sf0,Sh0,Sw0,Eg0,Ef0,Eh0,Ew0,Ig0,If0,Ih0,Iw0,Fg0,Ff0,Fh0, Fw0,Rg0,Rf0,Rh0,Rw0,Dg0,Df0,Dh0,Dw0, Cg0,Cf0,Ch0,Cw0];
 
-    params = [betaI,betaH,betaW, betaF,alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, delta1,delta2,fGF,fFG,fGH,fHG,epsilon,tau];
+    params = [betaI,betaH,betaW, betaF,alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, delta1,delta2,M,fFG,fGH,fHG,epsilon,tau];
     
     if model== 0
         for i= 1:MaxIt

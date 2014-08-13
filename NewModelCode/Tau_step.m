@@ -6,7 +6,7 @@ alpha = Parameters(5);
 theta= Parameters(6);
 gammaH = Parameters(7); gammaI = Parameters(8); gammaD = Parameters(9); gammaDH = Parameters(10); gammaIH = Parameters(11); gammaF = Parameters(12);
 delta1 = Parameters(13); delta2 = Parameters(14);
-fGF = Parameters(15); fFG = Parameters(16); fGH = Parameters(17); fHG = Parameters(18);
+M = Parameters(15); fFG = Parameters(16); fGH = Parameters(17); fHG = Parameters(18);
 epsilon = Parameters(19); tau = Parameters(20);
 
 
@@ -78,7 +78,7 @@ Rate(19) = gammaF*Fh;                                    Change(19,15) = -1; Cha
 Rate(20) = gammaF*Fw;                                    Change(20,16) = -1; Change(20,24) = +1;
 
 % General:susc -> Funeral:susc
-Rate(21) = fGF*F*Sg/N;                                      Change(21,1) = -1; Change(21,2) = +1;
+Rate(21) = M*F*fFG;                                      Change(21,1) = -1; Change(21,2) = +1;
 % Funeral:susc -> General:susc
 Rate(22) = fFG*Sg*Sf;                                       Change(22,2) = -1; Change(22,1) = +1;
 % General:susc -> Hosp:susc

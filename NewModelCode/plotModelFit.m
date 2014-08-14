@@ -6,15 +6,15 @@ alltimepoints = repmat(onetimeset, size(timepoints,1), 1);
 
 modeloutput = EbolaModel(1, estimatedvalues, alltimepoints, maxtime)';
 
-strings = {'Cumulative Cases + Deaths', 'Cumulative Deaths', 'Cumulative HCW Cases + Deaths', 'Cumulative Hospital Admissions'};
-color = {'r', 'b'};
+strings = {'Cumulative Cases', 'Cumulative Deaths', 'Cumulative HCW Cases + Deaths', 'Cumulative Hospital Admissions'};
+
 for i = 1:size(modeloutput,1)
-    %subplot(size(modeloutput,1), 1, i)
+    subplot(size(modeloutput,1), 1, i)
     hold on;
     
-    plot(timepoints{i}, datapoints{i}, '.', 'Color', color{i}, 'MarkerSize', 14)
+    plot(timepoints{i}, datapoints{i}, '.r', 'MarkerSize', 14)
     plot(alltimepoints{i}, modeloutput{i}, 'Color', [0.8 0.8 0.8], 'LineWidth', 1.6)
-    xlabel('Time since 21st March (days)', 'interpreter', 'latex', 'FontSize', 14)
+    xlabel('Time Since Index Case (days)', 'interpreter', 'latex', 'FontSize', 14)
     title(strings{i}, 'interpreter', 'latex', 'FontSize', 16)
     set(gca, 'FontSize', 14)
 end

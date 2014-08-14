@@ -7,13 +7,16 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     
     %tic;
     % Model Parameters (Liberia where possible)
+    
+    %% Estimated Parameters
     betaI = beta(1); %.200;    % Transmission coefficient in community
     betaH = beta(2);
     delta = beta(3); %51/100;     % case fatality
-    betaW = 0.05;
+    
     %betaH = .200;   % Transmission coefficient for hospital goers/patients
     %betaW = .200;    % Transmission coefficient for hospital/ebola treatment workers
     %betaF = .02;    %/7;% 7.653/7;   % Transmission coefficient during funerals with ebola patient
+    betaW = 0.05;
     omega = 3.0;
     alpha = 1/7;        % 1/alpha: mean duration of the incubation period  
     
@@ -32,6 +35,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     fHG = 1/7;          % 1/average time spent at in hospital with non-ebola disease
     epsilon = 90/100;       % percentage Symptomatic illness 
     theta = 67/100;       % Percentage of infectious cases are hospitaized
+    KikwitPrev = 7.81e-6;
     delta1 = delta*gammaI / (delta*gammaI + (1-delta)*gammaD);
     delta2 = delta*gammaIH / (delta*gammaIH + (1-delta)*gammaDH);
 
@@ -55,7 +59,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
 
     initial = [Sg0,Sf0,Sh0,Sw0,Eg0,Ef0,Eh0,Ew0,Ig0,If0,Ih0,Iw0,Fg0,Ff0,Fh0, Fw0,Rg0,Rf0,Rh0,Rw0,Dg0,Df0,Dh0,Dw0, Cincg0,Cincf0,Cinch0,Cincw0, Cdiedg0,Cdiedf0,Cdiedh0,Cdiedw0, CHosp0];
 
-    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, delta1,delta2,M,fFG,fGH,fHG,epsilon,tau];
+    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, delta1,delta2,M,fFG,fGH,fHG,epsilon,KikwitPrev,tau];
     
     if model== 0
         for i= 1:MaxIt
@@ -95,11 +99,12 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     CumulativeCases = output.Cincg(timepoints{1}+1) + output.Cincf(timepoints{1}+1) + output.Cinch(timepoints{1}+1) + output.Cincw(timepoints{1}+1);
     CumulativeDeaths = output.Cdiedg(timepoints{2}+1) + output.Cdiedf(timepoints{2}+1) + output.Cdiedh(timepoints{2}+1) + output.Cdiedw(timepoints{2}+1);
                         
-%     CumulativeHealthworkerIncidence = output.Cw(timepoints{3}+1);
+    CumulativeHealthworkerIncidence = output.Cincw(timepoints{3}+1);
 %     CumulativeHospitalAdmissions = output.CHosp(timepoints{4}+1);
     
     modelout{1} = CumulativeCases;
     modelout{2} = CumulativeDeaths;
+    modelout{3} = CumulativeHealthworkerIncidence;
 %     modelout{3} = CumulativeHealthworkerIncidence;
 %     modelout{4} = CumulativeHospitalAdmissions;
 %    figure;

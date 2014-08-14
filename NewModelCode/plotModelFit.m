@@ -8,10 +8,10 @@ alltimepoints = repmat(onetimeset, size(timepoints,1), 1);
 
 modeloutput = EbolaModel(1, estimatedvalues, alltimepoints, maxtime)';
 
-strings = {'Cumulative Cases', 'Cumulative Deaths', 'Cumulative HCW Cases', 'Cumulative Hospital Admissions'};
+strings = {'Cumulative Cases', 'Cumulative Deaths', 'Cumulative HCW Cases', 'Cumulative Hospital Admissions',  'Cumulative Hospital Discharges'};
 
 for i = 1:size(modeloutput,1)
-    subplot(size(modeloutput,1)/2, 2, i)
+    subplot(ceil(size(modeloutput,1)/2), 2, i)
     hold on;
     
     plot(timepoints{i}, datapoints{i}, '.r', 'MarkerSize', 14)

@@ -51,6 +51,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     Cincg0 = Ig0; Cincf0 = 0; Cinch0 = 0; Cincw0 = 0;       % cumulative incidence
     Cdiedg0 = 0; Cdiedf0 = 0; Cdiedh0 = 0; Cdiedw0 = 0;       % cumulative died
     CHosp0 = 0;
+    CHospDis0 = 0;
     
     Sh0 = 5*(2.8/10000)*N0; Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0; 
     
@@ -58,14 +59,14 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     tau=1;
     MaxIt = 10;
 
-    initial = [Sg0,Sf0,Sh0,Sw0,Eg0,Ef0,Eh0,Ew0,Ig0,If0,Ih0,Iw0,Fg0,Ff0,Fh0, Fw0,Rg0,Rf0,Rh0,Rw0,Dg0,Df0,Dh0,Dw0, Cincg0,Cincf0,Cinch0,Cincw0, Cdiedg0,Cdiedf0,Cdiedh0,Cdiedw0, CHosp0];
+    initial = [Sg0,Sf0,Sh0,Sw0,Eg0,Ef0,Eh0,Ew0,Ig0,If0,Ih0,Iw0,Fg0,Ff0,Fh0, Fw0,Rg0,Rf0,Rh0,Rw0,Dg0,Df0,Dh0,Dw0, Cincg0,Cincf0,Cinch0,Cincw0, Cdiedg0,Cdiedf0,Cdiedh0,Cdiedw0,CHosp0,CHospDis0];
 
     params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, delta1,delta2,M,fFG,fGH,fHG,epsilon,KikwitPrev,tau];
     
     if model== 0
         for i= 1:MaxIt
             % The main iteration 
-            [t, pop]=Stoch_Iteration([0 MaxTime],initial,params);
+            [~, pop]=Stoch_Iteration([0 MaxTime],initial,params);
         
             output.Sg(:,i)=pop(:,1); output.Sf(:,i) = pop(:,2); output.Sh(:,i) = pop(:,3); output.Sw(:,i) = pop(:,4); 
             output.Eg(:,i)=pop(:,5); output.Ef(:,i) = pop(:,6); output.Eh(:,i) = pop(:,7); output.Ew(:,i) = pop(:,8);
@@ -76,12 +77,13 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
             output.Cincg(:,i) = pop(:,25); output.Cf(:,i) = pop(:,26); output.Ch(:,i) = pop(:,27); output.Cw(:,i)=pop(:,28);
             output.Cdiedg(:,i) = pop(:,29); output.Cdiedf(:,i) = pop(:,30); output.Cdiedh(:,i) = pop(:,31); output.Cdiedw(:,i) = pop(:,32);
             output.CHosp(:,i) = pop(:,33);
+            output.CHospDis(:,i) = pop(:,34);
 
         end
     else
             % The main iteration (note as it is difference equation, we
             % only run it once)
-            [t pop]=Diffeqn_Iteration([0 MaxTime],initial,params);
+            [~, pop]=Diffeqn_Iteration([0 MaxTime],initial,params);
         
             output.Sg=pop(:,1); output.Sf = pop(:,2); output.Sh = pop(:,3); output.Sw = pop(:,4); 
             output.Eg=pop(:,5); output.Ef = pop(:,6); output.Eh = pop(:,7); output.Ew = pop(:,8);
@@ -92,6 +94,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
             output.Cincg = pop(:,25); output.Cincf = pop(:,26); output.Cinch = pop(:,27); output.Cincw=pop(:,28);
             output.Cdiedg = pop(:,29); output.Cdiedf = pop(:,30); output.Cdiedh = pop(:,31); output.Cdiedw = pop(:,32);
             output.CHosp = pop(:,33);
+            output.CHospDis = pop(:,34);
             
     end
         
@@ -102,11 +105,13 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
                         
     CumulativeHealthworkerIncidence = output.Cincw(timepoints{3}+1);
     CumulativeHospitalAdmissions = output.CHosp(timepoints{4}+1);
+    CumulativeHospitalDischarges = output.CHospDis(timepoints{5}+1);
     
     modelout{1} = CumulativeCases;
     modelout{2} = CumulativeDeaths;
     modelout{3} = CumulativeHealthworkerIncidence;
     modelout{4} = CumulativeHospitalAdmissions;
+    modelout{5} = CumulativeHospitalDischarges;
 %    figure;
 %    subplot(2,1,1)
 %     plot(timepoints{1}, modelout{1})

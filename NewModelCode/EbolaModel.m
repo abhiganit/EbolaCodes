@@ -43,7 +43,8 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     Fg0 = 0; Ff0 = 0; Fh0 = 0; Fw0 = 0;         % died:funeral
     Rg0 = 0; Rf0 = 0; Rh0 = 0; Rw0 = 0;         % recovered
     Dg0 = 0; Df0 = 0; Dh0 = 0; Dw0 = 0;         % died:buried
-    Cg0 = Ig0; Cf0 = 0; Ch0 = 0; Cw0 = 0;       % cumulative incidence
+    Cincg0 = Ig0; Cincf0 = 0; Cinch0 = 0; Cincw0 = 0;       % cumulative incidence
+    Cdiedg0 = 0; Cdiedf0 = 0; Cdiedh0 = 0; Cdiedw0 = 0;       % cumulative died
     CHosp0 = 0;
     
     Sh0 = 5*(2.8/10000)*N0; Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0; 
@@ -52,7 +53,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     tau=1;
     MaxIt = 10;
 
-    initial = [Sg0,Sf0,Sh0,Sw0,Eg0,Ef0,Eh0,Ew0,Ig0,If0,Ih0,Iw0,Fg0,Ff0,Fh0, Fw0,Rg0,Rf0,Rh0,Rw0,Dg0,Df0,Dh0,Dw0, Cg0,Cf0,Ch0,Cw0, CHosp0];
+    initial = [Sg0,Sf0,Sh0,Sw0,Eg0,Ef0,Eh0,Ew0,Ig0,If0,Ih0,Iw0,Fg0,Ff0,Fh0, Fw0,Rg0,Rf0,Rh0,Rw0,Dg0,Df0,Dh0,Dw0, Cincg0,Cincf0,Cinch0,Cincw0, Cdiedg0,Cdiedf0,Cdiedh0,Cdiedw0,Cdied0, CHosp0];
 
     params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, delta1,delta2,M,fFG,fGH,fHG,epsilon,tau];
     
@@ -67,8 +68,9 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
             output.Fg(:,i)=pop(:,13); output.Ff(:,i) = pop(:,14); output.Fh(:,i) = pop(:,15); output.Fw(:,i)=pop(:,16); 
             output.Rg(:,i) = pop(:,17); output.Rf(:,i)= pop(:,18); output.Rh(:,i) = pop(:,19); output.Rw(:,i)=pop(:,20);
             output.Dg(:,i) = pop(:,21); output.Df(:,i) = pop(:,22); output.Dh(:,i) = pop(:,23); output.Dw(:,i)=pop(:,24);
-            output.Cg(:,i) = pop(:,25); output.Cf(:,i) = pop(:,26); output.Ch(:,i) = pop(:,27); output.Cw(:,i)=pop(:,28);
-            output.CHosp(:,i) = pop(:,29);
+            output.Cincg(:,i) = pop(:,25); output.Cf(:,i) = pop(:,26); output.Ch(:,i) = pop(:,27); output.Cw(:,i)=pop(:,28);
+            output.Cdiedg(:,i) = pop(:,29); output.Cdiedf(:,i) = pop(:,30); output.Cdiedh(:,i) = pop(:,31); output.Cdiedw(:,i) = pop(:,32);
+            output.CHosp(:,i) = pop(:,33);
 
         end
     else
@@ -82,8 +84,9 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
             output.Fg=pop(:,13); output.Ff = pop(:,14); output.Fh = pop(:,15); output.Fw=pop(:,16); 
             output.Rg = pop(:,17); output.Rf= pop(:,18); output.Rh = pop(:,19); output.Rw=pop(:,20);
             output.Dg = pop(:,21); output.Df = pop(:,22); output.Dh = pop(:,23); output.Dw=pop(:,24);
-            output.Cg = pop(:,25); output.Cf = pop(:,26); output.Ch = pop(:,27); output.Cw=pop(:,28);
-            output.CHosp = pop(:,29);
+            output.Cincg = pop(:,25); output.Cf = pop(:,26); output.Ch = pop(:,27); output.Cw=pop(:,28);
+            output.Cdiedg = pop(:,29); output.Cdiedf = pop(:,30); output.Cdiedh = pop(:,31); output.Cdiedw = pop(:,32);
+            output.CHosp = pop(:,33);
             
     end
         

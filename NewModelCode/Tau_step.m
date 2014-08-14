@@ -29,8 +29,8 @@ Nw = Sw+Ew+Iw+Fw+Rw+Dw;
 N = Ng+Nf+Nh+Nw;
 
 % initialize arrays
-Change = zeros(35,size(old,1)); % 34 is no of events
-Rate = zeros(35,1);
+Change = zeros(39,size(old,1)); % 34 is no of events
+Rate = zeros(39,1);
 
 %% Transitions
 % General: susc -> exposed
@@ -124,7 +124,7 @@ Rate(38) = delta2*gammaDH*Iw;                            Change(38,32) = +1;
 
 
 %% Cumulative Hospitalizations (including HCW)
-Rate(39) = gammaH*theta*Ig + gammaH*theta*If +  gammaH*theta*Iw;             Change(39,33) = +1;
+Rate(39) = gammaH*theta*Ig + gammaH*theta*If +  gammaH*Iw;             Change(39,33) = +1;
                                                                            
 new_value=old;
 

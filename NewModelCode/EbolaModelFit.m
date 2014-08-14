@@ -11,5 +11,5 @@ function beta = EbolaModelFit
     plotModelFit(beta, timesets, datasets, maxtime);
     
     h = toc;
-    sprintf('Run time: %f minutes', h/60)
+    sprintf('Run time: %f secs', h)
 end

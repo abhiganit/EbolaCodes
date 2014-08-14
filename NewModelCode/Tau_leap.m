@@ -38,7 +38,7 @@ Rate(2) = epsilon*Sf*(omega-1)*betaI*Ig/Ng;               Change(2,2) = -1; Chan
 % Hosp: susc -> exposed
 Rate(3) = epsilon*(betaH*Sh*Ih/Nh + betaW*Sh*Iw/Nw);      Change(3,3) = -1; Change(3,7) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
 % Worker: susc -> exposed
-Rate(4) = epsilon*(betaW*Sw*Ih/Nh + betaI*Sw*Ih/Nh);      Change(4,4) = -1; Change(4,8) = +1;
+Rate(4) = epsilon*(betaW*Sw*Ih/Nh + betaH*Sw*Iw/Nw);      Change(4,4) = -1; Change(4,8) = +1;
 
 
 % General: exposed -> inf

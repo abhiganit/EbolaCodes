@@ -7,9 +7,11 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     
     %tic;
     % Model Parameters (Liberia where possible)
-    betaI = beta; %.200;    % Transmission coefficient in community
-    betaH = .200;   % Transmission coefficient for hospital goers/patients
-    betaW = .200;    % Transmission coefficient for hospital/ebola treatment workers
+    betaI = beta(1); %.200;    % Transmission coefficient in community
+    betaH = beta(2);
+    betaW = 0.2;
+    %betaH = .200;   % Transmission coefficient for hospital goers/patients
+    %betaW = .200;    % Transmission coefficient for hospital/ebola treatment workers
     %betaF = .02;    %/7;% 7.653/7;   % Transmission coefficient during funerals with ebola patient
     omega = 3.0;
     alpha = 1/7;        % 1/alpha: mean duration of the incubation period  
@@ -36,7 +38,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     
     % Initial conditions
     Eg0 = 0; Ef0 = 0; Eh0 = 0; Ew0 = 0;         % exposed
-    Ig0 = 1; If0 = 0; Ih0 = 0; Iw0 = 0;         % infected
+    Ig0 = 5; If0 = 0; Ih0 = 0; Iw0 = 0;         % infected
     Fg0 = 0; Ff0 = 0; Fh0 = 0; Fw0 = 0;         % died:funeral
     Rg0 = 0; Rf0 = 0; Rh0 = 0; Rw0 = 0;         % recovered
     Dg0 = 0; Df0 = 0; Dh0 = 0; Dw0 = 0;         % died:buried

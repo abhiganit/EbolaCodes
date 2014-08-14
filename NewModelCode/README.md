@@ -19,6 +19,10 @@ Wednesday 13th August: Need to check out Katie's calculation of betaF (betaF = (
 
 Wednesday 13th August: Need a vector to include infected immigrant events for every time point
 
+Thursday 14th August: Isolation wards should be included in the model as a fraction of those presentating to hospital. Rate should be fitted to data
+
+Thursday 14th August: Rate of hospitalization should be fitted to data instead of assumed.
+
 
 Resolved issues
 =========

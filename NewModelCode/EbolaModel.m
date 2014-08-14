@@ -11,12 +11,13 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     %% Estimated Parameters
     betaI = beta(1); %.200;    % Transmission coefficient in community
     betaH = beta(2);
-    delta = beta(3); %51/100;     % case fatality
+    betaW = beta(3);
+    delta = beta(4); %51/100;     % case fatality
     
     %betaH = .200;   % Transmission coefficient for hospital goers/patients
     %betaW = .200;    % Transmission coefficient for hospital/ebola treatment workers
     %betaF = .02;    %/7;% 7.653/7;   % Transmission coefficient during funerals with ebola patient
-    betaW = 0.05;
+    
     omega = 3.0;
     alpha = 1/7;        % 1/alpha: mean duration of the incubation period  
     

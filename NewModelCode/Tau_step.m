@@ -106,7 +106,7 @@ Rate(30) = (1-epsilon)*(betaW*Sw*Ih/Nh + betaI*Sw*Ih/Nh);           Change(30,4)
 % General: susc -> exposed
 Rate(31) = epsilon*betaI*Sg*Ig/Ng;                         Change(31,25) = +1;
 % Funeral: susc -> exposed
-Rate(32) = epsilon*Sf*(omega-1)*betaI*KikwitPrev;               Change(32,26) = +1; %betaF*Sf; 
+Rate(32) = epsilon*Sf*(omega-1)*betaI*KikwitPrev;          Change(32,26) = +1; %betaF*Sf; 
 % Hosp: susc -> exposed
 Rate(33) = epsilon*(betaH*Sh*Ih/Nh + betaW*Sh*Iw/Nw);      Change(33,27) = +1;  
 % Worker: susc -> exposed
@@ -124,7 +124,7 @@ Rate(38) = delta2*gammaDH*Iw;                            Change(38,32) = +1;
 
 
 %% Cumulative Hospitalizations (including HCW)
-Rate(39) = gammaH*theta*Ig + gammaH*theta*If +  gammaH*Iw;             Change(39,33) = +1;
+Rate(39) = alpha*Eh + gammaH*theta*Ig + gammaH*theta*If + gammaH*Iw;             Change(39,33) = +1;
                                                                            
 new_value=old;
 

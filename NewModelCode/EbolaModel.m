@@ -13,7 +13,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     betaH = beta(2);
     betaW = beta(3);
     delta = beta(4); %51/100;     % case fatality
-    
+    theta = beta(5); %67/100;       % Percentage of infectious cases are hospitaized
     %betaH = .200;   % Transmission coefficient for hospital goers/patients
     %betaW = .200;    % Transmission coefficient for hospital/ebola treatment workers
     %betaF = .02;    %/7;% 7.653/7;   % Transmission coefficient during funerals with ebola patient
@@ -35,7 +35,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     fGH = 90272 / (67.8e6 * 365);  % rate of hospitalization per person per day (DRC 2012 estimates)
     fHG = 1/7;          % 1/average time spent at in hospital with non-ebola disease
     epsilon = 90/100;       % percentage Symptomatic illness 
-    theta = 67/100;       % Percentage of infectious cases are hospitaized
+    
     KikwitPrev = 7.81e-6;
     delta1 = delta*gammaI / (delta*gammaI + (1-delta)*gammaD);
     delta2 = delta*gammaIH / (delta*gammaIH + (1-delta)*gammaDH);

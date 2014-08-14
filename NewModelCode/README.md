@@ -23,6 +23,8 @@ Thursday 14th August: Isolation wards should be included in the model as a fract
 
 Thursday 14th August: Rate of hospitalization should be fitted to data instead of assumed.
 
+Thursday 14th August: We assume that the hospital staff do not move to Hosp class, but remain with same transmission until funeral. In the "Cumulative Hospitalization Admissions" we need to assume the fraction of them who are hospitalized.  I've assumed the same rate (theta) as rest of the population.  But we need to reconsider the movement of these workers to the hospitalized class I think.
+
 
 Resolved issues
 =========

@@ -101,13 +101,12 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     CumulativeDeaths = output.Cdiedg(timepoints{2}+1) + output.Cdiedf(timepoints{2}+1) + output.Cdiedh(timepoints{2}+1) + output.Cdiedw(timepoints{2}+1);
                         
     CumulativeHealthworkerIncidence = output.Cincw(timepoints{3}+1);
-%     CumulativeHospitalAdmissions = output.CHosp(timepoints{4}+1);
+    CumulativeHospitalAdmissions = output.CHosp(timepoints{4}+1);
     
     modelout{1} = CumulativeCases;
     modelout{2} = CumulativeDeaths;
     modelout{3} = CumulativeHealthworkerIncidence;
-%     modelout{3} = CumulativeHealthworkerIncidence;
-%     modelout{4} = CumulativeHospitalAdmissions;
+    modelout{4} = CumulativeHospitalAdmissions;
 %    figure;
 %    subplot(2,1,1)
 %     plot(timepoints{1}, modelout{1})

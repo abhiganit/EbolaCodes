@@ -9,20 +9,21 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     % Model Parameters (Liberia where possible)
     betaI = beta(1); %.200;    % Transmission coefficient in community
     betaH = beta(2);
-    betaW = 0.2;
+    delta = beta(3); %51/100;     % case fatality
+    betaW = 0.05;
     %betaH = .200;   % Transmission coefficient for hospital goers/patients
     %betaW = .200;    % Transmission coefficient for hospital/ebola treatment workers
     %betaF = .02;    %/7;% 7.653/7;   % Transmission coefficient during funerals with ebola patient
     omega = 3.0;
     alpha = 1/7;        % 1/alpha: mean duration of the incubation period  
-    theta = 67/100;       % Percentage of infectious cases are hospitaized
+    
     gammaH = 1/5;       % 1/gammaH: mean duration from symptom onset to hospitalization
     gammaI = 1/10;      % 1/gammaI: mean duration of the infectious period for survivors
     gammaD = 1/9.6;     % 1/gammaD: mean duration from onset to death
     gammaDH = 1/4.6;     % 1/gammaDH: mean duration from hospitalization to death
     gammaIH = 1/5;     % 1/gammaIH: mean duration from hospitalization to end of infectiousness
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
-    delta = 51/100;
+    
     %delta1 = 80/100;      % delta1 and delta2 calculated such that case fatality rate is delta
     %delta2 = 80/100;
     M =  5;            % average family size (number of chances per person to be at each funeral)
@@ -30,7 +31,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     fGH = 90272 / (67.8e6 * 365);  % rate of hospitalization per person per day (DRC 2012 estimates)
     fHG = 1/7;          % 1/average time spent at in hospital with non-ebola disease
     epsilon = 90/100;       % percentage Symptomatic illness 
-    
+    theta = 67/100;       % Percentage of infectious cases are hospitaized
     delta1 = delta*gammaI / (delta*gammaI + (1-delta)*gammaD);
     delta2 = delta*gammaIH / (delta*gammaIH + (1-delta)*gammaDH);
 
@@ -43,6 +44,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     Rg0 = 0; Rf0 = 0; Rh0 = 0; Rw0 = 0;         % recovered
     Dg0 = 0; Df0 = 0; Dh0 = 0; Dw0 = 0;         % died:buried
     Cg0 = Ig0; Cf0 = 0; Ch0 = 0; Cw0 = 0;       % cumulative incidence
+    CHosp0 = 0;
     
     Sh0 = 5*(2.8/10000)*N0; Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0; 
     
@@ -50,7 +52,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     tau=1;
     MaxIt = 10;
 
-    initial = [Sg0,Sf0,Sh0,Sw0,Eg0,Ef0,Eh0,Ew0,Ig0,If0,Ih0,Iw0,Fg0,Ff0,Fh0, Fw0,Rg0,Rf0,Rh0,Rw0,Dg0,Df0,Dh0,Dw0, Cg0,Cf0,Ch0,Cw0];
+    initial = [Sg0,Sf0,Sh0,Sw0,Eg0,Ef0,Eh0,Ew0,Ig0,If0,Ih0,Iw0,Fg0,Ff0,Fh0, Fw0,Rg0,Rf0,Rh0,Rw0,Dg0,Df0,Dh0,Dw0, Cg0,Cf0,Ch0,Cw0, CHosp0];
 
     params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, delta1,delta2,M,fFG,fGH,fHG,epsilon,tau];
     
@@ -66,11 +68,8 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
             output.Rg(:,i) = pop(:,17); output.Rf(:,i)= pop(:,18); output.Rh(:,i) = pop(:,19); output.Rw(:,i)=pop(:,20);
             output.Dg(:,i) = pop(:,21); output.Df(:,i) = pop(:,22); output.Dh(:,i) = pop(:,23); output.Dw(:,i)=pop(:,24);
             output.Cg(:,i) = pop(:,25); output.Cf(:,i) = pop(:,26); output.Ch(:,i) = pop(:,27); output.Cw(:,i)=pop(:,28);
-            
-%             incidence.inc_g = diff(output.Cg);
-%             incidence.inc_f = diff(output.Cf);
-%             incidence.inc_h = diff(output.Ch);
-%             incidence.inc_w = diff(output.Cw);
+            output.CHosp(:,i) = pop(:,29);
+
         end
     else
             % The main iteration (note as it is difference equation, we
@@ -84,18 +83,25 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
             output.Rg = pop(:,17); output.Rf= pop(:,18); output.Rh = pop(:,19); output.Rw=pop(:,20);
             output.Dg = pop(:,21); output.Df = pop(:,22); output.Dh = pop(:,23); output.Dw=pop(:,24);
             output.Cg = pop(:,25); output.Cf = pop(:,26); output.Ch = pop(:,27); output.Cw=pop(:,28);
-            
-%             incidence.inc_g = diff(output.Cg);
-%             incidence.inc_f = diff(output.Cf);
-%             incidence.inc_h = diff(output.Ch);
-%             incidence.inc_w = diff(output.Cw);
+            output.CHosp = pop(:,29);
             
     end
         
     %plotFigures(t, output, incidence)
+    %% OUTPUT
+    CumulativeCases = output.Cg(timepoints{1}+1) + output.Cf(timepoints{1}+1) + output.Ch(timepoints{1}+1) + output.Cw(timepoints{1}+1);
+    CumulativeDeaths = output.Dg(timepoints{2}+1) + output.Df(timepoints{2}+1) + output.Dh(timepoints{2}+1) + output.Dw(timepoints{2}+1)...
+                        + output.Fg(timepoints{2}+1) + output.Ff(timepoints{2}+1) + output.Fh(timepoints{2}+1) + output.Fw(timepoints{2}+1);
+%     CumulativeHealthworkerIncidence = output.Cw(timepoints{3}+1);
+%     CumulativeHospitalAdmissions = output.CHosp(timepoints{4}+1);
     
-    modelout{1} = output.Cg(timepoints{1}+1) + output.Cf(timepoints{1}+1) + output.Ch(timepoints{1}+1) + output.Cw(timepoints{1}+1);
-    modelout{2} = output.Dg(timepoints{2}+1) + output.Df(timepoints{2}+1) + output.Dh(timepoints{2}+1) + output.Dw(timepoints{2}+1);
-     
-   
+    modelout{1} = CumulativeCases + CumulativeDeaths;
+    modelout{2} = CumulativeDeaths;
+%     modelout{3} = CumulativeHealthworkerIncidence;
+%     modelout{4} = CumulativeHospitalAdmissions;
+%    figure;
+%    subplot(2,1,1)
+%     plot(timepoints{1}, modelout{1})
+%        subplot(2,1,2)
+%     plot(timepoints{2}, modelout{2})
 end

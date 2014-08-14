@@ -18,6 +18,9 @@ Fg = old(13); Ff = old(14); Fh = old(15); Fw = old(16);
 Rg = old(17); Rf = old(18); Rh = old(19); Rw = old(20);
 Dg = old(21); Df = old(22); Dh = old(23); Dw = old(24);
 Cg = old(25); Cf = old(26); Ch = old(27); Cw = old(28);
+CHosp = old(29);
+
+
 
 F = Fg+Ff+Fh+Fw;
 Ng = Sg+Eg+Ig+Fg+Rg+Dg;
@@ -27,8 +30,8 @@ Nw = Sw+Ew+Iw+Fw+Rw+Dw;
 N = Ng+Nf+Nh+Nw;
 
 % initialize arrays
-Change = zeros(34,size(old,1)); % 30 is no of events and 24 is no of compartments
-Rate = zeros(34,1);
+Change = zeros(35,size(old,1)); % 30 is no of events and 24 is no of compartments
+Rate = zeros(35,1);
 
 %% Transitions
 % General: susc -> exposed
@@ -100,15 +103,18 @@ Rate(29) = (1-epsilon)*(betaH*Sh*Ih/Nh + betaW*Sh*Iw/Nw);           Change(29,3)
 % Worker:susc -> Worker:recovered
 Rate(30) = (1-epsilon)*(betaW*Sw*Ih/Nh + betaI*Sw*Ih/Nh);           Change(30,4) = -1; Change(30,20) = +1;
 
-%% Cumulative Incidences (no reductions, only additions)
+%% Cumulative Incidences Deaths (no reductions, only additions)
 % General: susc -> exposed
 Rate(31) = epsilon*betaI*Sg*Ig/Ng;                         Change(31,25) = +1;
 % Funeral: susc -> exposed
-Rate(32) = epsilon*Sf*(omega-1)*betaI*Ig/Ng;               Change(32,26) = +1;  %epsilon*betaF*Sf;
+Rate(32) = epsilon*Sf*(omega-1)*betaI*Ig/Ng;               Change(32,26) = +1; %betaF*Sf; 
 % Hosp: susc -> exposed
-Rate(33) = epsilon*(betaH*Sh*Ih/Nh + betaW*Sh*Iw/Nw);      Change(33,27) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
+Rate(33) = epsilon*(betaH*Sh*Ih/Nh + betaW*Sh*Iw/Nw);      Change(33,27) = +1;  
 % Worker: susc -> exposed
-Rate(34) = epsilon*(betaW*Sw*Ih/Nh + betaI*Sw*Ih/Nh);      Change(34,28) = +1;
+Rate(34) = epsilon*(betaW*Sw*Ih/Nh + betaH*Sw*Iw/Nw);      Change(34,28) = +1;
+
+%% Cumulative Hospitalizations (including HCW)
+Rate(35) = gammaH*theta*Ig + gammaH*theta*If +  gammaH*theta*Iw;             Change(35,29) = +1;
 
 new_value=old;
 

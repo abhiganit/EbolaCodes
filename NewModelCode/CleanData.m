@@ -11,6 +11,6 @@ function [t, d, m] = CleanData
         maxi(i) = max(t{i});
     end
     
-    m = max(maxi(i));
+    m = max(maxi);
     
 end

@@ -19,7 +19,7 @@ Rg = old(17); Rf = old(18); Rh = old(19); Rw = old(20);
 Dg = old(21); Df = old(22); Dh = old(23); Dw = old(24);
 Cincg = old(25); Cincf = old(26); Cinch = old(27); Cincw = old(28);
 Cdiedg = old(29); Cdiedf = old(30); Cdiedh = old(31); Cdiedw = old(32);
-CHosp = old(33); CHospDis = old(34);
+CHosp = old(33); %CHospDis = old(34);
 
 F = Fg+Ff+Fh+Fw;
 Ng = Sg+Eg+Ig+Fg+Rg+Dg;
@@ -29,8 +29,8 @@ Nw = Sw+Ew+Iw+Fw+Rw+Dw;
 N = Ng+Nf+Nh+Nw;
 
 % initialize arrays
-Change = zeros(40,size(old,1)); % 34 is no of events
-Rate = zeros(40,1);
+Change = zeros(39,size(old,1)); %33 states, 40 events
+Rate = zeros(39,1);
 
 %% Transitions
 % General: susc -> exposed
@@ -128,7 +128,7 @@ Rate(39) = alpha*Eh + gammaH*theta*Ig + gammaH*theta*If + gammaH*Iw;            
    
 
 %% Cumulative Hospital Discharges (including HCW)
-Rate(40) = gammaIH*(1-delta2)*Ih + gammaIH*(1-delta2)*Iw;       Change(40,34) = +1;
+%Rate(40) = gammaIH*(1-delta2)*Ih + gammaIH*(1-delta2)*Iw;       Change(40,34) = +1;
 
 
 %% run algorithm

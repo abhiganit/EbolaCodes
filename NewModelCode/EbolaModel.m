@@ -1,51 +1,41 @@
 function modelout = EbolaModel(model, beta, timepoints, MaxTime)
 % model = 0 runs stochastic model where as model = 1 runs the difference
 % equation.
-
-
-    %% extract required data for model fit
     
-    %tic;
     % Model Parameters (Liberia where possible)
     
-    %% Estimated Parameters
-    betaI = beta(1); %.200;    % Transmission coefficient in community
-    betaH = beta(2);
-    betaW = beta(3);
-    delta = beta(4); %51/100;     % case fatality
-    theta = beta(5); %67/100;       % Percentage of infectious cases are hospitaized
-    
-    %betaH = .200;   % Transmission coefficient for hospital goers/patients
-    %betaW = .200;    % Transmission coefficient for hospital/ebola treatment workers
-    %betaF = .02;    %/7;% 7.653/7;   % Transmission coefficient during funerals with ebola patient
-    
-    omega = 3.0;
-    alpha = 1/7;        % 1/alpha: mean duration of the incubation period  
-    
+    % Estimated Parameters
+    betaI = beta(1);      % Transmission coefficient in community
+    betaH = beta(2);      % Transmission coefficient between patients or between HCWs
+    betaW = beta(3);      % Transmission coefficient between patients-HCWs
+    delta = beta(4);      % Case fatality
+    theta = beta(5);      % Percentage of infectious cases are hospitaized
+  
+    %disease progression parameters
+    alpha = 1/7;        % 1/alpha: mean duration of the incubation period 
     gammaI = 1/10;      % 1/gammaI: mean duration of the infectious period for survivors
     gammaD = 1/7;       % 1/gammaD: mean duration from onset to death
     gammaH = 1/5;       % 1/gammaH: mean duration from symptom onset to hospitalization
-    
-    gammaIH = 1/(1/gammaI - 1/gammaH);     % 1/gammaIH: mean duration from hospitalization to end of infectiousness
-    gammaDH = 1/(1/gammaD - 1/gammaH);     % 1/gammaDH: mean duration from hospitalization to death
-    
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
+    epsilon = 90/100;       % percentage Symptomatic illness 
+    omega = 3.0;        % odds ratio of funeral risk relative to general population
     
-    %delta1 = 80/100;      % delta1 and delta2 calculated such that case fatality rate is delta
-    %delta2 = 80/100;
+    % population parameters
+    KikwitPrev = 7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     N0 = 4.4e6;         % Initial population size
     M =  5;            % average family size (number of chances per person to be at each funeral)
+    
+    %funeral/hospitalization parameters
     fFG = 1/2;          % 1/average time spent at close quarters with body at funeral
     fGH = 62131 / (N0 * 365);  % rate of hospitalization per person per day (DRC 2012 estimates)
     fHG = 1/7;          % 1/average time spent at in hospital with non-ebola disease
-    epsilon = 90/100;       % percentage Symptomatic illness 
     
-    KikwitPrev = 7.81e-6;
+    % dervied parameters
+    gammaIH = 1/(1/gammaI - 1/gammaH);     % 1/gammaIH: mean duration from hospitalization to end of infectiousness
+    gammaDH = 1/(1/gammaD - 1/gammaH);     % 1/gammaDH: mean duration from hospitalization to death
     delta1 = delta*gammaI / (delta*gammaI + (1-delta)*gammaD);
     delta2 = delta*gammaIH / (delta*gammaIH + (1-delta)*gammaDH);
 
-    
-    
     % Initial conditions
     Eg0 = 0; Ef0 = 0; Eh0 = 0; Ew0 = 0;         % exposed
     Ig0 = 5; If0 = 0; Ih0 = 0; Iw0 = 0;         % infected
@@ -59,12 +49,11 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     
     Sh0 = 5*(2.8/10000)*N0; Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0; 
     
-    % Tau and maximum time taken
+    % Algorithm parameters
     tau=1;
     MaxIt = 10;
-
+    
     initial = [Sg0,Sf0,Sh0,Sw0,Eg0,Ef0,Eh0,Ew0,Ig0,If0,Ih0,Iw0,Fg0,Ff0,Fh0, Fw0,Rg0,Rf0,Rh0,Rw0,Dg0,Df0,Dh0,Dw0, Cincg0,Cincf0,Cinch0,Cincw0, Cdiedg0,Cdiedf0,Cdiedh0,Cdiedw0,CHosp0];
-
     params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, delta1,delta2,M,fFG,fGH,fHG,epsilon,KikwitPrev,tau];
     
     if model== 0
@@ -116,9 +105,5 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     modelout{3} = CumulativeHealthworkerIncidence;
     modelout{4} = CumulativeHospitalAdmissions;
     %modelout{5} = CumulativeHospitalDischarges;
-%    figure;
-%    subplot(2,1,1)
-%     plot(timepoints{1}, modelout{1})
-%        subplot(2,1,2)
-%     plot(timepoints{2}, modelout{2})
+
 end

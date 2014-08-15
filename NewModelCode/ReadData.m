@@ -2,8 +2,8 @@ function data = ReadData
     
     % read in data and headers   
     filename = 'EbolaData';
-    dataformat = '%f %f %f %f %f %f %f %f %f %f';
-    headerformat = '%s %s %s %s %s %s %s %s %s %s';
+    dataformat = '%f %f %f %f %f %f %f %f';
+    headerformat = '%s %s %s %s %s %s %s %s';
 %     dataformat = '%f %f %f %f %f %f %f %f';
 %     headerformat = '%s %s %s %s %s %s %s %s';
     fid = fopen(filename); 

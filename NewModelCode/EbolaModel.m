@@ -14,6 +14,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     betaW = beta(3);
     delta = beta(4); %51/100;     % case fatality
     theta = beta(5); %67/100;       % Percentage of infectious cases are hospitaized
+    
     %betaH = .200;   % Transmission coefficient for hospital goers/patients
     %betaW = .200;    % Transmission coefficient for hospital/ebola treatment workers
     %betaF = .02;    %/7;% 7.653/7;   % Transmission coefficient during funerals with ebola patient
@@ -21,11 +22,13 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     omega = 3.0;
     alpha = 1/7;        % 1/alpha: mean duration of the incubation period  
     
-    gammaH = 1/5;       % 1/gammaH: mean duration from symptom onset to hospitalization
     gammaI = 1/10;      % 1/gammaI: mean duration of the infectious period for survivors
     gammaD = 1/9.6;     % 1/gammaD: mean duration from onset to death
-    gammaDH = 1/4.6;     % 1/gammaDH: mean duration from hospitalization to death
-    gammaIH = 1/5;     % 1/gammaIH: mean duration from hospitalization to end of infectiousness
+    gammaH = 1/5;       % 1/gammaH: mean duration from symptom onset to hospitalization
+    
+    gammaIH = 1/(1/gammaI - 1/gammaH);     % 1/gammaIH: mean duration from hospitalization to end of infectiousness
+    gammaDH = 1/(1/gammaD - 1/gammaH);     % 1/gammaDH: mean duration from hospitalization to death
+    
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
     
     %delta1 = 80/100;      % delta1 and delta2 calculated such that case fatality rate is delta
@@ -105,13 +108,13 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
                         
     CumulativeHealthworkerIncidence = output.Cincw(timepoints{3}+1);
     CumulativeHospitalAdmissions = output.CHosp(timepoints{4}+1);
-    CumulativeHospitalDischarges = output.CHospDis(timepoints{5}+1);
+    %CumulativeHospitalDischarges = output.CHospDis(timepoints{5}+1);
     
     modelout{1} = CumulativeCases;
     modelout{2} = CumulativeDeaths;
     modelout{3} = CumulativeHealthworkerIncidence;
     modelout{4} = CumulativeHospitalAdmissions;
-    modelout{5} = CumulativeHospitalDischarges;
+    %modelout{5} = CumulativeHospitalDischarges;
 %    figure;
 %    subplot(2,1,1)
 %     plot(timepoints{1}, modelout{1})

@@ -1,4 +1,4 @@
-function data = ReadData
+function [data, weights] = ReadData
     
     % read in data and headers   
     filename = 'EbolaData';
@@ -32,4 +32,11 @@ function data = ReadData
         data.(nanfield) = data.(nanfield)(~isnan(data.(nanfield)));
         data.(timefield) = data.(timefield)(~isnan(data.(nanfield)));
     end
+    
+    % read in data and headers   
+    filename = 'weights';
+    dataformat = '%f %f %f %f';
+    fid = fopen(filename);
+    weights = textscan(fid, dataformat, 'Delimiter', '\t');
+    %weights = cell2mat(weightscell);
 end

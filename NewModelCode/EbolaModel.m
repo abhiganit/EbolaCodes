@@ -59,7 +59,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     if model== 0
         for i= 1:MaxIt
             % The main iteration 
-            [~, pop]=Stoch_Iteration([0 MaxTime],initial,params);
+            [T, pop]=Stoch_Iteration([0 MaxTime],initial,params);
         
             output.Sg(:,i)=pop(:,1); output.Sf(:,i) = pop(:,2); output.Sh(:,i) = pop(:,3); output.Sw(:,i) = pop(:,4); 
             output.Eg(:,i)=pop(:,5); output.Ef(:,i) = pop(:,6); output.Eh(:,i) = pop(:,7); output.Ew(:,i) = pop(:,8);
@@ -76,7 +76,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     else
             % The main iteration (note as it is difference equation, we
             % only run it once)
-            [~, pop]=Diffeqn_Iteration([0 MaxTime],initial,params);
+            [T, pop]=Diffeqn_Iteration([0 MaxTime],initial,params);
         
             output.Sg=pop(:,1); output.Sf = pop(:,2); output.Sh = pop(:,3); output.Sw = pop(:,4); 
             output.Eg=pop(:,5); output.Ef = pop(:,6); output.Eh = pop(:,7); output.Ew = pop(:,8);

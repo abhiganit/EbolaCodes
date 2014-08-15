@@ -36,7 +36,8 @@ Rate = zeros(33,1);
 % General: susc -> exposed
 Rate(1) = epsilon*betaI*Sg*Ig/Ng;                         Change(1,1) = -1; Change(1,5) = +1;
 % Funeral: susc -> exposed
-Rate(2) = epsilon*Sf*(omega-1)*betaI*KikwitPrev;               Change(2,2) = -1; Change(2,6) = +1; %betaF*Sf; Ig/Ng
+% Rate(2) = epsilon*Sf*(omega-1)*betaI*KikwitPrev;               Change(2,2) = -1; Change(2,6) = +1; %betaF*Sf; Ig/Ng
+Rate(2) = epsilon*(omega-1)*betaI*Sf*F/N;               Change(2,2) = -1; Change(2,6) = +1; %betaF*Sf; Ig/Ng
 % Hosp: susc -> exposed
 Rate(3) = epsilon*(betaH*Sh*Ih/Nh + betaW*Sh*Iw/Nw);      Change(3,3) = -1; Change(3,7) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
 % Worker: susc -> exposed
@@ -80,7 +81,9 @@ Rate(19) = gammaF*Fh;                                    Change(19,15) = -1; Cha
 Rate(20) = gammaF*Fw;                                    Change(20,16) = -1; Change(20,24) = +1;
 
 % General:susc -> Funeral:susc
-Rate(21) = M*F*fFG;                                      Change(21,1) = -1; Change(21,2) = +1;
+% Rate(21) = M*F*fFG;                                      Change(21,1) = -1; Change(21,2) = +1;
+Rate(21) = ((1/(50*360))*M*Sg +  delta1*(1-theta)*gammaD*(Ig+If)+delta2*gammaDH*(Ih+Iw));           Change(21,1) = -1; Change(21,2) = +1;
+           
 % Funeral:susc -> General:susc
 Rate(22) = fFG*Sg*Sf;                                       Change(22,2) = -1; Change(22,1) = +1;
 % General:susc -> Hosp:susc
@@ -96,7 +99,8 @@ Rate(26) = gammaH*theta*If;                              Change(26,10) = -1; Cha
 % General:susc -> General:recovered
 Rate(27) =(1-epsilon)*betaI*Sg*Ig/Ng;                               Change(27,1) = -1; Change(27,17) = +1;
 % Funeral:susc -> Funeral:recovered
-Rate(28) = (1-epsilon)*Sf*(omega-1)*betaI*KikwitPrev;                    Change(28,2) = -1; Change(28,18) = +1; %betaF*Sf;
+%Rate(28) = (1-epsilon)*Sf*(omega-1)*betaI*KikwitPrev;                    Change(28,2) = -1; Change(28,18) = +1; %betaF*Sf;
+Rate(28) = (1-epsilon)*(omega-1)*betaI*Sf*F/N;                    Change(28,2) = -1; Change(28,18) = +1; %betaF*Sf;
 % Hosp:susc -> Hosp:recovered
 Rate(29) = (1-epsilon)*(betaH*Sh*Ih/Nh + betaW*Sh*Iw/Nw);           Change(29,3) = -1; Change(29,19) = +1;
 % Worker:susc -> Worker:recovered
@@ -106,7 +110,8 @@ Rate(30) = (1-epsilon)*(betaW*Sw*Ih/Nh + betaI*Sw*Ih/Nh);           Change(30,4)
 % General: susc -> exposed
 Rate(31) = epsilon*betaI*Sg*Ig/Ng;                         Change(31,25) = +1;
 % Funeral: susc -> exposed
-Rate(32) = epsilon*Sf*(omega-1)*betaI*KikwitPrev;          Change(32,26) = +1; %betaF*Sf; 
+%Rate(32) = epsilon*Sf*(omega-1)*betaI*KikwitPrev;          Change(32,26) = +1; %betaF*Sf; 
+Rate(32) = epsilon*(omega-1)*betaI*Sf*F/N;          Change(32,26) = +1; %betaF*Sf; 
 % Hosp: susc -> exposed
 Rate(33) = epsilon*(betaH*Sh*Ih/Nh + betaW*Sh*Iw/Nw);      Change(33,27) = +1;  
 % Worker: susc -> exposed

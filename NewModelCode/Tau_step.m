@@ -7,7 +7,7 @@ theta= Parameters(6);
 gammaH = Parameters(7); gammaI = Parameters(8); gammaD = Parameters(9); gammaDH = Parameters(10); gammaIH = Parameters(11); gammaF = Parameters(12);
 delta1 = Parameters(13); delta2 = Parameters(14);
 M = Parameters(15); fFG = Parameters(16); fGH = Parameters(17); fHG = Parameters(18);
-epsilon = Parameters(19); KikwitPrev = Parameters(20); tau = Parameters(21);
+epsilon = Parameters(19); KikwitPrev = Parameters(20); E = Parameters(21); tau = Parameters(22);
 
 
 % Compartments
@@ -27,6 +27,7 @@ Nf = Sf+Ef+If+Ff+Rf+Df;
 Nh = Sh+Eh+Ih+Fh+Rh+Dh;
 Nw = Sw+Ew+Iw+Fw+Rw+Dw;
 N = Ng+Nf+Nh+Nw;
+Nd = Sg+Sf+Sh+Sw + Eg+Ef+Eh+Ew + Ig+If+Ih+Iw + Rg+Rf+Rh+Rw;
 
 % initialize arrays
 Change = zeros(33,size(old,1)); %33 states, 40 events
@@ -39,9 +40,9 @@ Rate(1) = epsilon*betaI*Sg*Ig/Ng;                         Change(1,1) = -1; Chan
 % Rate(2) = epsilon*Sf*(omega-1)*betaI*KikwitPrev;               Change(2,2) = -1; Change(2,6) = +1; %betaF*Sf; Ig/Ng
 Rate(2) = epsilon*(omega-1)*betaI*Sf*F/N;               Change(2,2) = -1; Change(2,6) = +1; %betaF*Sf; Ig/Ng
 % Hosp: susc -> exposed
-Rate(3) = epsilon*(betaH*Sh*Ih/Nh + betaW*Sh*Iw/Nw);      Change(3,3) = -1; Change(3,7) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
+Rate(3) = epsilon*(betaH*Sh*Ih/Nh + betaH*Sh*Iw/Nw);      Change(3,3) = -1; Change(3,7) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
 % Worker: susc -> exposed
-Rate(4) = epsilon*(betaW*Sw*Ih/Nh + betaH*Sw*Iw/Nw);      Change(4,4) = -1; Change(4,8) = +1;
+Rate(4) = epsilon*(betaW*Sw*Ih/Nh + betaW*Sw*Iw/Nw);      Change(4,4) = -1; Change(4,8) = +1;
 
 
 % General: exposed -> inf
@@ -82,7 +83,7 @@ Rate(20) = gammaF*Fw;                                    Change(20,16) = -1; Cha
 
 % General:susc -> Funeral:susc
 % Rate(21) = M*F*fFG;                                      Change(21,1) = -1; Change(21,2) = +1;
-Rate(21) = ((1/(50*360))*M*Sg +  delta1*(1-theta)*gammaD*(Ig+If)+delta2*gammaDH*(Ih+Iw));           Change(21,1) = -1; Change(21,2) = +1;
+Rate(21) = M*(Nd/E +  delta1*(1-theta)*gammaD*(Ig+If)+delta2*gammaDH*(Ih+Iw));           Change(21,1) = -1; Change(21,2) = +1;
            
 % Funeral:susc -> General:susc
 Rate(22) = fFG*Sg*Sf;                                       Change(22,2) = -1; Change(22,1) = +1;
@@ -102,9 +103,9 @@ Rate(27) =(1-epsilon)*betaI*Sg*Ig/Ng;                               Change(27,1)
 %Rate(28) = (1-epsilon)*Sf*(omega-1)*betaI*KikwitPrev;                    Change(28,2) = -1; Change(28,18) = +1; %betaF*Sf;
 Rate(28) = (1-epsilon)*(omega-1)*betaI*Sf*F/N;                    Change(28,2) = -1; Change(28,18) = +1; %betaF*Sf;
 % Hosp:susc -> Hosp:recovered
-Rate(29) = (1-epsilon)*(betaH*Sh*Ih/Nh + betaW*Sh*Iw/Nw);           Change(29,3) = -1; Change(29,19) = +1;
+Rate(29) = (1-epsilon)*(betaH*Sh*Ih/Nh + betaH*Sh*Iw/Nw);           Change(29,3) = -1; Change(29,19) = +1;
 % Worker:susc -> Worker:recovered
-Rate(30) = (1-epsilon)*(betaW*Sw*Ih/Nh + betaI*Sw*Ih/Nh);           Change(30,4) = -1; Change(30,20) = +1;
+Rate(30) = (1-epsilon)*(betaW*Sw*Ih/Nh + betaW*Sw*Iw/Nw);           Change(30,4) = -1; Change(30,20) = +1;
 
 %% Cumulative Incidences (no reductions, only additions)
 % General: susc -> exposed
@@ -113,9 +114,9 @@ Rate(31) = epsilon*betaI*Sg*Ig/Ng;                         Change(31,25) = +1;
 %Rate(32) = epsilon*Sf*(omega-1)*betaI*KikwitPrev;          Change(32,26) = +1; %betaF*Sf; 
 Rate(32) = epsilon*(omega-1)*betaI*Sf*F/N;          Change(32,26) = +1; %betaF*Sf; 
 % Hosp: susc -> exposed
-Rate(33) = epsilon*(betaH*Sh*Ih/Nh + betaW*Sh*Iw/Nw);      Change(33,27) = +1;  
+Rate(33) = epsilon*(betaH*Sh*Ih/Nh + betaH*Sh*Iw/Nw);      Change(33,27) = +1;  
 % Worker: susc -> exposed
-Rate(34) = epsilon*(betaW*Sw*Ih/Nh + betaH*Sw*Iw/Nw);      Change(34,28) = +1;
+Rate(34) = epsilon*(betaW*Sw*Ih/Nh + betaW*Sw*Iw/Nw);      Change(34,28) = +1;
 
 %% Cumulative Deaths (no reductions, only additions)
 % General: inf -> funeral
@@ -129,7 +130,7 @@ Rate(38) = delta2*gammaDH*Iw;                            Change(38,32) = +1;
 
 
 %% Cumulative Hospitalizations (including HCW)
-Rate(39) = alpha*Eh + gammaH*theta*Ig + gammaH*theta*If + gammaH*Iw;             Change(39,33) = +1;
+Rate(39) = alpha*Eh + gammaH*theta*Ig + gammaH*theta*If + alpha*Ew;             Change(39,33) = +1;  %gammaH*Iw
    
 
 %% Cumulative Hospital Discharges (including HCW)

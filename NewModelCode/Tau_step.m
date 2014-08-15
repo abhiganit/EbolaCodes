@@ -139,7 +139,7 @@ Rate(38) = gammaDH*Iw;                            Change(38,32) = +1;  %delta2*
 
 
 %% Cumulative Hospitalizations (including HCW)
-Rate(39) = alpha*Eh + gammaH*theta*Ig + gammaH*theta*If + alpha*Ew;             Change(39,33) = +1;  %gammaH*Iw
+Rate(39) = gammaH*theta*(Ig+If) + alpha*(Eh+Ew);             Change(39,33) = +1;  %gammaH*Iw
    
 
 %% Cumulative Hospital Discharges (including HCW)

@@ -13,7 +13,7 @@ function EbolaModelFit
     
     % minimize error function (betaI, betaH, betaW, ProbHosp)
     %parfor i = 1:nsamples
-        [x, fval] = fminsearchbnd( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights) , [0.23524 1.06453 0.2 0.2] , [0, 0, 0, 0], [10, 10, 10, 1.00]);
+        [x, fval] = fminsearchbnd( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights) , [0.2 0.2 0.2 0.0] , [0, 0, 0, 0], [10, 10, 10, 1.00]);
     %end    
     % plot model fit
     plotModelFit(x, timesets, datasets, maxtime);

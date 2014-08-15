@@ -1,4 +1,4 @@
-function [new_value]=Tau_step(old, Parameters)
+function [new_value]=Tau_step(old, Parameters, t)
 
 % Parameters
 betaI = Parameters(1); betaH = Parameters(2); betaW = Parameters(3); omega = Parameters(4);
@@ -93,7 +93,7 @@ Rate(21) = M*(Nd/E +  (1-theta)*gammaD*(Ig+If)+gammaDH*(Ih+Iw));           Chang
 % Funeral:susc -> General:susc
 Rate(22) = fFG*Sg*Sf;                                       Change(22,2) = -1; Change(22,1) = +1;
 % General:susc -> Hosp:susc
-Rate(23) = fGH*Sg;                                       Change(23,1) = -1; Change(23,3) = +1;      
+Rate(23) = fGH*Sg;                                        Change(23,1) = -1; Change(23,3) = +1;    % (1-t/54)    
 % Hosp:susc -> General:susc
 Rate(24) = fHG*Sh;                                       Change(24,3) = -1; Change(24,1) = +1;
 
@@ -139,7 +139,7 @@ Rate(38) = gammaDH*Iw;                            Change(38,32) = +1;  %delta2*
 
 
 %% Cumulative Hospitalizations (including HCW)
-Rate(39) = gammaH*theta*(Ig+If) + alpha*(Eh+Ew);             Change(39,33) = +1;  %gammaH*Iw
+Rate(39) = gammaH*theta*(Ig+If) + alpha*(Eh+Ew);             Change(39,33) = +1;  %gammaH*Iw  + 
    
 
 %% Cumulative Hospital Discharges (including HCW)

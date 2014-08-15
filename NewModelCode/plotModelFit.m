@@ -1,7 +1,7 @@
 function plotModelFit(estimatedvalues, timepoints, datapoints, maxtime)
 close all;
 fig = figure;
-set(fig, 'Position', [100, 100, 900, 500])
+set(fig, 'Position', [500, 100, 900, 500])
 
 onetimeset = {0:(maxtime-1)};
 alltimepoints = repmat(onetimeset, size(timepoints,1), 1);

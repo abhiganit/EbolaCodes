@@ -11,10 +11,10 @@ function EbolaModelFit
 %     upper = [0.9 0.9 0.9 0.9 0.9];        % upper bound
 %     X = bsxfun(@plus,lower,bsxfun(@times,xn,(upper-lower)));
     
-    % minimize error function (betaI, betaH, betaW, CaseFatality, ProbHosp)
+    % minimize error function (betaI, betaH, betaW, ProbHosp)
     %parfor i = 1:nsamples
-        [x, fval] = fminsearchbnd( @(x)ErrorFunction(x, timesets, datasets, maxtime) , [0.19903 0.00000 0.06437 0.64893 0.47838 13.45690] , [0, 0, 0, 0, 0, 0], [10, 10, 10, 1.00, 1.00, 20]);
-    %end
+        [x, fval] = fminsearch( @(x)ErrorFunction(x, timesets, datasets, maxtime) , [0.1 0.1 0.05 0.2]); % , [0, 0, 0, 0, 0], [10, 10, 10, 1.00, 1.00]);
+    %end    
     % plot model fit
     plotModelFit(x, timesets, datasets, maxtime);
     

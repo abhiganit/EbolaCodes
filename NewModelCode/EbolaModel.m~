@@ -1,15 +1,15 @@
-function modelout = EbolaModel(model, beta, timepoints, MaxTime)
+function modelout = EbolaModel(model, x, timepoints, MaxTime)
 % model = 0 runs stochastic model where as model = 1 runs the difference
 % equation.
     
     % Model Parameters (Liberia where possible)
     
     % Estimated Parameters
-    betaI = beta(1);      % Transmission coefficient in community
-    betaH = beta(2);      % Transmission coefficient between patients or between HCWs
-    betaW = beta(3);      % Transmission coefficient between patients-HCWs
-    delta = beta(4);      % Case fatality
-    theta = beta(5);      % Percentage of infectious cases are hospitaized
+    betaI = x(1);      % Transmission coefficient in community
+    betaH = x(2);      % Transmdission coefficient between patients or between HCWs
+    betaW = x(3);      % Transmission coefficient between patients-HCWs
+    delta = x(4);      % Case fatality
+    theta = x(5);      % Percentage of infectious cases are hospitaized
   
     %disease progression parameters
     alpha = 1/7;        % 1/alpha: mean duration of the incubation period 
@@ -17,13 +17,16 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     gammaD = 1/7;       % 1/gammaD: mean duration from onset to death
     
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
-    epsilon = 90/100;       % percentage Symptomatic illness 
+    gammaH = 1/5;       % 1/gammaH: mean duration from symptom onset to hospitalization
+    epsilon = 100/100;       % percentage Symptomatic illness 
     omega = 3.0;        % odds ratio of funeral risk relative to general population
     
     % population parameters
-    KikwitPrev = 7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
+    KikwitGeneralPrev = 7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
+    KikwitNonhospPrev = 7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     N0 = 4.4e6;         % Initial population size
     M =  5;            % average family size (number of chances per person to be at each funeral)
+    E = 62*365;          % average life expectancy in Liberia 
     
     %funeral/hospitalization parameters
     fFG = 1/2;          % 1/average time spent at close quarters with body at funeral
@@ -38,7 +41,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
 
     % Initial conditions
     Eg0 = 0; Ef0 = 0; Eh0 = 0; Ew0 = 0;         % exposed
-    Ig0 = 5; If0 = 0; Ih0 = 0; Iw0 = 0;         % infected
+    Ig0 = 2; If0 = 0; Ih0 = 2; Iw0 = 0;         % infected
     Fg0 = 0; Ff0 = 0; Fh0 = 0; Fw0 = 0;         % died:funeral
     Rg0 = 0; Rf0 = 0; Rh0 = 0; Rw0 = 0;         % recovered
     Dg0 = 0; Df0 = 0; Dh0 = 0; Dw0 = 0;         % died:buried
@@ -54,7 +57,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     MaxIt = 10;
     
     initial = [Sg0,Sf0,Sh0,Sw0,Eg0,Ef0,Eh0,Ew0,Ig0,If0,Ih0,Iw0,Fg0,Ff0,Fh0, Fw0,Rg0,Rf0,Rh0,Rw0,Dg0,Df0,Dh0,Dw0, Cincg0,Cincf0,Cinch0,Cincw0, Cdiedg0,Cdiedf0,Cdiedh0,Cdiedw0,CHosp0];
-    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, delta1,delta2,M,fFG,fGH,fHG,epsilon,KikwitPrev,tau];
+    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, delta1,delta2,M,fFG,fGH,fHG,epsilon,KikwitGeneralPrev,KikwitNonhospPrev, E, tau];
     
     if model== 0
         for i= 1:MaxIt

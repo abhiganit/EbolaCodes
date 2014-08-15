@@ -23,7 +23,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     alpha = 1/7;        % 1/alpha: mean duration of the incubation period  
     
     gammaI = 1/10;      % 1/gammaI: mean duration of the infectious period for survivors
-    gammaD = 1/9.6;     % 1/gammaD: mean duration from onset to death
+    gammaD = 1/7;     % 1/gammaD: mean duration from onset to death
     gammaH = 1/5;       % 1/gammaH: mean duration from symptom onset to hospitalization
     
     gammaIH = 1/(1/gammaI - 1/gammaH);     % 1/gammaIH: mean duration from hospitalization to end of infectiousness

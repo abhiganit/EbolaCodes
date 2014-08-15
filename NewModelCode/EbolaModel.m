@@ -33,9 +33,10 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     
     %delta1 = 80/100;      % delta1 and delta2 calculated such that case fatality rate is delta
     %delta2 = 80/100;
+    N0 = 4.4e6;         % Initial population size
     M =  5;            % average family size (number of chances per person to be at each funeral)
     fFG = 1/2;          % 1/average time spent at close quarters with body at funeral
-    fGH = 90272 / (67.8e6 * 365);  % rate of hospitalization per person per day (DRC 2012 estimates)
+    fGH = 62131 / (N0 * 365);  % rate of hospitalization per person per day (DRC 2012 estimates)
     fHG = 1/7;          % 1/average time spent at in hospital with non-ebola disease
     epsilon = 90/100;       % percentage Symptomatic illness 
     
@@ -43,7 +44,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     delta1 = delta*gammaI / (delta*gammaI + (1-delta)*gammaD);
     delta2 = delta*gammaIH / (delta*gammaIH + (1-delta)*gammaDH);
 
-    N0 = 4.4e6;         % Initial population size
+    
     
     % Initial conditions
     Eg0 = 0; Ef0 = 0; Eh0 = 0; Ew0 = 0;         % exposed

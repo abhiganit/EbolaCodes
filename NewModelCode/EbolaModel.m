@@ -22,7 +22,8 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
     omega = 3.0;        % odds ratio of funeral risk relative to general population
     
     % population parameters
-    KikwitPrev = 7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
+    KikwitGeneralPrev = 7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
+    KikwitNonhospPrev = 7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     N0 = 4.4e6;         % Initial population size
     M =  5;            % average family size (number of chances per person to be at each funeral)
     E = 62*365;          % average life expectancy in Liberia 
@@ -56,7 +57,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
     MaxIt = 10;
     
     initial = [Sg0,Sf0,Sh0,Sw0,Eg0,Ef0,Eh0,Ew0,Ig0,If0,Ih0,Iw0,Fg0,Ff0,Fh0, Fw0,Rg0,Rf0,Rh0,Rw0,Dg0,Df0,Dh0,Dw0, Cincg0,Cincf0,Cinch0,Cincw0, Cdiedg0,Cdiedf0,Cdiedh0,Cdiedw0,CHosp0];
-    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, delta1,delta2,M,fFG,fGH,fHG,epsilon,KikwitPrev,E, tau];
+    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, delta1,delta2,M,fFG,fGH,fHG,epsilon,KikwitGeneralPrev,KikwitNonhospPrev, E, tau];
     
     if model== 0
         for i= 1:MaxIt

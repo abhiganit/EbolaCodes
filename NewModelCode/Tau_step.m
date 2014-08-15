@@ -29,8 +29,8 @@ Nw = Sw+Ew+Iw+Fw+Rw+Dw;
 N = Ng+Nf+Nh+Nw;
 
 % initialize arrays
-Change = zeros(39,size(old,1)); %33 states, 40 events
-Rate = zeros(39,1);
+Change = zeros(33,size(old,1)); %33 states, 40 events
+Rate = zeros(33,1);
 
 %% Transitions
 % General: susc -> exposed

@@ -23,7 +23,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     alpha = 1/7;        % 1/alpha: mean duration of the incubation period  
     
     gammaI = 1/10;      % 1/gammaI: mean duration of the infectious period for survivors
-    gammaD = 1/7;     % 1/gammaD: mean duration from onset to death
+    gammaD = 1/7;       % 1/gammaD: mean duration from onset to death
     gammaH = 1/5;       % 1/gammaH: mean duration from symptom onset to hospitalization
     
     gammaIH = 1/(1/gammaI - 1/gammaH);     % 1/gammaIH: mean duration from hospitalization to end of infectiousness
@@ -54,7 +54,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     Cincg0 = Ig0; Cincf0 = 0; Cinch0 = 0; Cincw0 = 0;       % cumulative incidence
     Cdiedg0 = 0; Cdiedf0 = 0; Cdiedh0 = 0; Cdiedw0 = 0;       % cumulative died
     CHosp0 = 0;
-    CHospDis0 = 0;
+    %CHospDis0 = 0;
     
     Sh0 = 5*(2.8/10000)*N0; Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0; 
     
@@ -62,7 +62,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
     tau=1;
     MaxIt = 10;
 
-    initial = [Sg0,Sf0,Sh0,Sw0,Eg0,Ef0,Eh0,Ew0,Ig0,If0,Ih0,Iw0,Fg0,Ff0,Fh0, Fw0,Rg0,Rf0,Rh0,Rw0,Dg0,Df0,Dh0,Dw0, Cincg0,Cincf0,Cinch0,Cincw0, Cdiedg0,Cdiedf0,Cdiedh0,Cdiedw0,CHosp0,CHospDis0];
+    initial = [Sg0,Sf0,Sh0,Sw0,Eg0,Ef0,Eh0,Ew0,Ig0,If0,Ih0,Iw0,Fg0,Ff0,Fh0, Fw0,Rg0,Rf0,Rh0,Rw0,Dg0,Df0,Dh0,Dw0, Cincg0,Cincf0,Cinch0,Cincw0, Cdiedg0,Cdiedf0,Cdiedh0,Cdiedw0,CHosp0];
 
     params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, delta1,delta2,M,fFG,fGH,fHG,epsilon,KikwitPrev,tau];
     
@@ -97,7 +97,7 @@ function modelout = EbolaModel(model, beta, timepoints, MaxTime)
             output.Cincg = pop(:,25); output.Cincf = pop(:,26); output.Cinch = pop(:,27); output.Cincw=pop(:,28);
             output.Cdiedg = pop(:,29); output.Cdiedf = pop(:,30); output.Cdiedh = pop(:,31); output.Cdiedw = pop(:,32);
             output.CHosp = pop(:,33);
-            output.CHospDis = pop(:,34);
+           % output.CHospDis = pop(:,34);
             
     end
         

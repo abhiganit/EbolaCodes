@@ -7,9 +7,9 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
     % Estimated Parameters
     betaI = x(1);      % Transmission coefficient in community
     betaH = 0;      % Transmission coefficient between patients or between HCWs
-    betaW = x(3);      % Transmission coefficient between patients-HCWs
+    betaW = x(2);      % Transmission coefficient between patients-HCWs
    % delta = x(4);      % Case fatality
-    theta = x(4);      % Percentage of infectious cases are hospitaized
+    theta = x(3);      % Percentage of infectious cases are hospitaized
   
     %disease progression parameters
     alpha = 1/7;        % 1/alpha: mean duration of the incubation period 
@@ -24,13 +24,13 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
     % population parameters
     KikwitGeneralPrev = 7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     KikwitNonhospPrev = 7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
-    N0 = 4.4e6;         % Initial population size
+    N0 = 4.09e6; %4.4e6;         % Initial population size
     M =  5;            % average family size (number of chances per person to be at each funeral)
     E = 62*365;          % average life expectancy in Liberia 
     
     %funeral/hospitalization parameters
     fFG = 1/2;          % 1/average time spent at close quarters with body at funeral
-    fGH = 62131 / (N0 * 365);  % rate of hospitalization per person per day (DRC 2012 estimates)
+    fGH = 0; %62131 / (N0 * 365);  % rate of hospitalization per person per day (DRC 2012 estimates)
     fHG = 1/7;          % 1/average time spent at in hospital with non-ebola disease
     
     % dervied parameters
@@ -41,7 +41,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
 
     % Initial conditions
     Eg0 = 0; Ef0 = 0; Eh0 = 0; Ew0 = 0;         % exposed
-    Ig0 = x(5); If0 = 0; Ih0 = 0; Iw0 = 0;         % infected
+    Ig0 = x(4); If0 = 0; Ih0 = 0; Iw0 = 0;         % infected
     Fg0 = 0; Ff0 = 0; Fh0 = 0; Fw0 = 0;         % died:funeral
     Rg0 = 0; Rf0 = 0; Rh0 = 0; Rw0 = 0;         % recovered
     Dg0 = 0; Df0 = 0; Dh0 = 0; Dw0 = 0;         % died:buried
@@ -50,7 +50,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
     CHosp0 = 0;
     %CHospDis0 = 0;
     
-    Sh0 = 0; Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %20*(2.8/10000)*N0
+    Sh0 = 20*(2.8/10000)*N0; Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %
     
     % Algorithm parameters
     tau=1;

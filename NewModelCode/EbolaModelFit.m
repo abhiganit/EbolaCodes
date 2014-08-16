@@ -11,9 +11,9 @@ function EbolaModelFit
 %     upper = [0.9 0.9 0.9 0.9 0.9];        % upper bound
 %     X = bsxfun(@plus,lower,bsxfun(@times,xn,(upper-lower)));
     
-    % minimize error function (betaI, betaH, betaW, ProbHosp, indexcases)
+    % minimize error function (betaI, betaW, ProbHosp, indexcases)
     %parfor i = 1:nsamples
-        [x, fval] = fminsearchbnd( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights) , [0.23295 0.23295 0.01969 0.68694 10.65982] , [0, 0, 0, 0, 1], [10, 10, 10, 1.00, 20]);
+        [x, fval] = fminsearch( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights) , [0.5 0.1 0.8 10]); % , [0, 0, 0, 1], [10, 10, 1.00, 20]);
     %end    
     % plot model fit
     plotModelFit(x, timesets, datasets, maxtime);

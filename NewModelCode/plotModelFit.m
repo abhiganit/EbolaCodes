@@ -20,6 +20,7 @@ for i = 1:size(modeloutput,1)
     title(strings{i}, 'interpreter', 'latex', 'FontSize', 16)
     set(gca, 'FontSize', 14)
     ylim([0 400])
+    xlim([0 65])
 end
 
 end

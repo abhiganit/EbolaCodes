@@ -6,7 +6,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
     
     % Estimated Parameters
     betaI = x(1);      % Transmission coefficient in community
-    betaH = 0;      % Transmission coefficient between patients or between HCWs
+    betaH = x(1);      % Transmission coefficient between patients or between HCWs
     betaW = x(2);      % Transmission coefficient between patients-HCWs
    % delta = x(4);      % Case fatality
     theta = x(3);      % Percentage of infectious cases are hospitaized
@@ -30,7 +30,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
     
     %funeral/hospitalization parameters
     fFG = 1/2;          % 1/average time spent at close quarters with body at funeral
-    fGH = 0; %62131 / (N0 * 365);  % rate of hospitalization per person per day (DRC 2012 estimates)
+    fGH = 62131 / (N0 * 365);  % rate of hospitalization per person per day (DRC 2012 estimates)
     fHG = 1/7;          % 1/average time spent at in hospital with non-ebola disease
     
     % dervied parameters
@@ -50,7 +50,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
     CHosp0 = 0;
     %CHospDis0 = 0;
     
-    Sh0 = 20*(2.8/10000)*N0; Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %
+    Sh0 = 20*(2.8/10000)*N0;   Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %
     
     % Algorithm parameters
     tau=1;

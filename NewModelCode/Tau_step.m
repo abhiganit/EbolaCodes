@@ -22,11 +22,11 @@ Cdiedg = old(29); Cdiedf = old(30); Cdiedh = old(31); Cdiedw = old(32);
 CHosp = old(33); %CHospDis = old(34);
 
 F = Fg+Ff+Fh+Fw;
-Ng = Sg+Eg+Ig+Fg+Rg+Dg;
-Nf = Sf+Ef+If+Ff+Rf+Df;
-Nh = Sh+Eh+Ih+Fh+Rh+Dh;
-Nw = Sw+Ew+Iw+Fw+Rw+Dw;
-N = Ng+Nf+Nh+Nw;
+Ng = max(Sg+Eg+Ig+Fg+Rg+Dg,1);
+Nf = max(Sf+Ef+If+Ff+Rf+Df,1);
+Nh = max(Sh+Eh+Ih+Fh+Rh+Dh,1);
+Nw = max(Sw+Ew+Iw+Fw+Rw+Dw,1);
+N = Sg+Eg+Ig+Fg+Rg+Dg   +   Sf+Ef+If+Ff+Rf+Df   +    Sh+Eh+Ih+Fh+Rh+Dh  + Sw+Ew+Iw+Fw+Rw+Dw;
 Nd = Sg+Sf+Sh+Sw + Eg+Ef+Eh+Ew + Ig+If+Ih+Iw + Rg+Rf+Rh+Rw;
 
 % initialize arrays
@@ -93,7 +93,7 @@ Rate(21) = M*(Nd/E +  (1-theta)*gammaD*(Ig+If)+gammaDH*(Ih+Iw));           Chang
 % Funeral:susc -> General:susc
 Rate(22) = fFG*Sg*Sf;                                       Change(22,2) = -1; Change(22,1) = +1;
 % General:susc -> Hosp:susc
-Rate(23) = fGH*Sg;                                       Change(23,1) = -1; Change(23,3) = +1;    % ;(1-t/54)*      
+Rate(23) = fGH*Sg;                                       Change(23,1) = -1; Change(23,3) = +1;    % ; (1-t/54)*     
 % Hosp:susc -> General:susc
 Rate(24) = fHG*Sh;                                       Change(24,3) = -1; Change(24,1) = +1;
 

@@ -54,32 +54,87 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
     
     % Algorithm parameters
     tau=1;
-    MaxIt = 10;
+    MaxIt = 500;
     
-    initial = [Sg0,Sf0,Sh0,Sw0,Eg0,Ef0,Eh0,Ew0,Ig0,If0,Ih0,Iw0,Fg0,Ff0,Fh0, Fw0,Rg0,Rf0,Rh0,Rw0,Dg0,Df0,Dh0,Dw0, Cincg0,Cincf0,Cinch0,Cincw0, Cdiedg0,Cdiedf0,Cdiedh0,Cdiedw0,CHosp0];
+    initial = [Sg0,Sf0,Sh0,Sw0,...  (1-4)
+                Eg0,Ef0,Eh0,Ew0,... (5-8)
+                Ig0,If0,Ih0,Iw0,...  (9-12)
+                Fg0,Ff0,Fh0, Fw0,...  (13-16)
+                Rg0,Rf0,Rh0,Rw0,...   (17-20)
+                Dg0,Df0,Dh0,Dw0, ...   (21-24)
+                Cincg0,Cincf0,Cinch0,Cincw0, ... (25-28)
+                Cdiedg0,Cdiedf0,Cdiedh0,Cdiedw0,... (29-32)
+                CHosp0];            %33
     params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, M,fFG,fGH,fHG,epsilon,KikwitGeneralPrev,KikwitNonhospPrev, E, tau]; %delta1,delta2,
     
     if model== 0
-        for i= 1:MaxIt
+        clear output;
+%         fieldnames = {'Sg','Sf','Sh','Sw',...
+%                         'Eg','Ef','Eh','Ew',...
+%                         'Ig','If','Ih','Iw',...
+%                         'Fg','Ff','Fh','Fw',...
+%                         'Rg','Rf','Rh','Rw',...
+%                         'Dg','Df','Dh','Dw',...
+%                         'Cincg','Cincf','Cinch','Cincw',...
+%                         'Cdiedg','Cdiedf','Cdiedh','Cdiedw',...
+%                         'CHosp'};
+        %initialize output
+        output = nan(33,65,10);
+%         for field = fieldnames
+%             field = field{1};
+%             output.(field) = nan(MaxTime+1, MaxIt);
+%         end
+        parfor i = 1:MaxIt
+            %display(i)
             % The main iteration 
-            [T, pop]=Stoch_Iteration([0 MaxTime],initial,params);
-        
-            output.Sg(:,i)=pop(:,1); output.Sf(:,i) = pop(:,2); output.Sh(:,i) = pop(:,3); output.Sw(:,i) = pop(:,4); 
-            output.Eg(:,i)=pop(:,5); output.Ef(:,i) = pop(:,6); output.Eh(:,i) = pop(:,7); output.Ew(:,i) = pop(:,8);
-            output.Ig(:,i)=pop(:,9); output.If(:,i) = pop(:,10); output.Ih(:,i) = pop(:,11); output.Iw(:,i) = pop(:,12);
-            output.Fg(:,i)=pop(:,13); output.Ff(:,i) = pop(:,14); output.Fh(:,i) = pop(:,15); output.Fw(:,i)=pop(:,16); 
-            output.Rg(:,i) = pop(:,17); output.Rf(:,i)= pop(:,18); output.Rh(:,i) = pop(:,19); output.Rw(:,i)=pop(:,20);
-            output.Dg(:,i) = pop(:,21); output.Df(:,i) = pop(:,22); output.Dh(:,i) = pop(:,23); output.Dw(:,i)=pop(:,24);
-            output.Cincg(:,i) = pop(:,25); output.Cf(:,i) = pop(:,26); output.Ch(:,i) = pop(:,27); output.Cw(:,i)=pop(:,28);
-            output.Cdiedg(:,i) = pop(:,29); output.Cdiedf(:,i) = pop(:,30); output.Cdiedh(:,i) = pop(:,31); output.Cdiedw(:,i) = pop(:,32);
-            output.CHosp(:,i) = pop(:,33);
-            output.CHospDis(:,i) = pop(:,34);
+            [~, pop]=Stoch_Iteration([0 MaxTime],initial,params);
+            %% susceptible
+            output(:,:,i)=pop'; %output{2,:,i} = pop(:,2); output{3,:,i} = pop(:,3); output{4,:,i} = pop(:,4);
+            %% exposed
+%             output{5,:,i}=pop(:,5); output{6,:,i} = pop(:,6); output{7,:,i} = pop(:,7); output{8,:,i} = pop(:,8);
+%             %% infectious
+%             output{5,:,i}=pop(:,9); output{5,:,i} = pop(:,10); output{5,:,i} = pop(:,11); output{5,:,i} = pop(:,12);
+%             %% funeral (dead)
+%             output{5,:,i}=pop(:,13); output{5,:,i} = pop(:,14); output{5,:,i} = pop(:,15); output{5,:,i}=pop(:,16); 
+%             %% recovered (alive)
+%             output{5,:,i} = pop(:,17); output{5,:,i}= pop(:,18); output{5,:,i} = pop(:,19); output{5,:,i}=pop(:,20);
+%             %% dead
+%             output{5,:,i} = pop(:,21); output{5,:,i} = pop(:,22); output{5,:,i} = pop(:,23); output{5,:,i}=pop(:,24);
+%             %% cumulative incidence
+%             output{5,:,i} = pop(:,25); output{5,:,i} = pop(:,26); output{5,:,i} = pop(:,27); output.Cincw{5,:,i}=pop(:,28);
+%             %% cumulative deaths
+%             output.Cdiedg{5,:,i} = pop(:,29); output{5,:,i} = pop(:,30); output{5,:,i} = pop(:,31); output{5,:,i} = pop(:,32);
+%             %% cumulative hospitalizations
+%             output.CHosp{5,:,i} = pop(:,33);
+%            output.CHospDis(:,i) = pop(:,34);
 
         end
+        
+            
+            %% SAVE OUTPUT
+            CumulativeCases = output(25,(timepoints{1}+1),:) + output(26,(timepoints{1}+1),:) + output(27,(timepoints{1}+1),:) + output(28,(timepoints{1}+1),:);
+            CumulativeDeaths = output(29,(timepoints{1}+1),:) + output(30,(timepoints{1}+1),:) + output(31,(timepoints{1}+1),:) + output(32,(timepoints{1}+1),:);
+            CumulativeHealthworkerIncidence = output(28,timepoints{3}+1,:);
+            CumulativeHospitalAdmissions = output(33,timepoints{4}+1,:);
+            
+            CumulativeCases = reshape(CumulativeCases, 65, MaxIt);
+            CumulativeDeaths = reshape(CumulativeDeaths, 65, MaxIt);
+            CumulativeHealthworkerIncidence = reshape(CumulativeHealthworkerIncidence, 65, MaxIt);
+            CumulativeHospitalAdmissions = reshape(CumulativeHospitalAdmissions, 65, MaxIt);
+            %CumulativeCases = output.Cincg(timepoints{1}+1,:) + output.Cincf(timepoints{1}+1,:) + output.Cinch(timepoints{1}+1,:) + output.Cincw(timepoints{1}+1,:);
+%             CumulativeDeaths = output.Cdiedg(timepoints{2}+1,:) + output.Cdiedf(timepoints{2}+1,:) + output.Cdiedh(timepoints{2}+1,:) + output.Cdiedw(timepoints{2}+1,:);
+% 
+%             CumulativeHealthworkerIncidence = output.Cincw(timepoints{3}+1,:);
+%             CumulativeHospitalAdmissions = output.CHosp(timepoints{4}+1,:);
+            
+
+            %CumulativeHospitalDischarges = output.CHospDis(timepoints{5}+1);
+
+            
     else
             % The main iteration (note as it is difference equation, we
             % only run it once)
-            [T, pop]=Diffeqn_Iteration([0 MaxTime],initial,params);
+            [~, pop]=Diffeqn_Iteration([0 MaxTime],initial,params);
         
             output.Sg=pop(:,1); output.Sf = pop(:,2); output.Sh = pop(:,3); output.Sw = pop(:,4); 
             output.Eg=pop(:,5); output.Ef = pop(:,6); output.Eh = pop(:,7); output.Ew = pop(:,8);
@@ -91,22 +146,24 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
             output.Cdiedg = pop(:,29); output.Cdiedf = pop(:,30); output.Cdiedh = pop(:,31); output.Cdiedw = pop(:,32);
             output.CHosp = pop(:,33);
            % output.CHospDis = pop(:,34);
+           
+           %% OUTPUT
+            CumulativeCases = output.Cincg(timepoints{1}+1) + output.Cincf(timepoints{1}+1) + output.Cinch(timepoints{1}+1) + output.Cincw(timepoints{1}+1);
+            CumulativeDeaths = output.Cdiedg(timepoints{2}+1) + output.Cdiedf(timepoints{2}+1) + output.Cdiedh(timepoints{2}+1) + output.Cdiedw(timepoints{2}+1);
+
+            CumulativeHealthworkerIncidence = output.Cincw(timepoints{3}+1);
+            CumulativeHospitalAdmissions = output.CHosp(timepoints{4}+1);
+            %CumulativeHospitalDischarges = output.CHospDis(timepoints{5}+1);
+
+            
             
     end
         
-    %plotFigures(t, output, incidence)
-    %% OUTPUT
-    CumulativeCases = output.Cincg(timepoints{1}+1) + output.Cincf(timepoints{1}+1) + output.Cinch(timepoints{1}+1) + output.Cincw(timepoints{1}+1);
-    CumulativeDeaths = output.Cdiedg(timepoints{2}+1) + output.Cdiedf(timepoints{2}+1) + output.Cdiedh(timepoints{2}+1) + output.Cdiedw(timepoints{2}+1);
-                        
-    CumulativeHealthworkerIncidence = output.Cincw(timepoints{3}+1);
-    CumulativeHospitalAdmissions = output.CHosp(timepoints{4}+1);
-    %CumulativeHospitalDischarges = output.CHospDis(timepoints{5}+1);
-    
     modelout{1} = CumulativeCases;
     modelout{2} = CumulativeDeaths;
     modelout{3} = CumulativeHealthworkerIncidence;
     modelout{4} = CumulativeHospitalAdmissions;
     %modelout{5} = CumulativeHospitalDischarges;
+    
 
 end

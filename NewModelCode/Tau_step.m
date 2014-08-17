@@ -22,11 +22,12 @@ Cdiedg = old(29); Cdiedf = old(30); Cdiedh = old(31); Cdiedw = old(32);
 CHosp = old(33); %CHospDis = old(34);
 
 F = Fg+Ff+Fh+Fw;
-Ng = max(Sg+Eg+Ig+Fg+Rg+Dg,1);
-Nf = max(Sf+Ef+If+Ff+Rf+Df,1);
-Nh = max(Sh+Eh+Ih+Fh+Rh+Dh,1);
-Nw = max(Sw+Ew+Iw+Fw+Rw+Dw,1);
-N = Sg+Eg+Ig+Fg+Rg+Dg   +   Sf+Ef+If+Ff+Rf+Df   +    Sh+Eh+Ih+Fh+Rh+Dh  + Sw+Ew+Iw+Fw+Rw+Dw;
+%Ng = max(Sg+Eg+Ig+Fg+Rg+Dg,1);
+Ng = max(Sg+Eg+Ig+Rg,1);
+%Nf = max(Sf+Ef+If+Ff+Rf+Df,1);
+Nh = max(Sh+Eh+Ih+Rh,1);
+Nw = max(Sw+Ew+Iw+Rw,1);
+%N = Sg+Eg+Ig+Fg+Rg+Dg   +   Sf+Ef+If+Ff+Rf+Df   +    Sh+Eh+Ih+Fh+Rh+Dh  + Sw+Ew+Iw+Fw+Rw+Dw;
 Nd = Sg+Sf+Sh+Sw + Eg+Ef+Eh+Ew + Ig+If+Ih+Iw + Rg+Rf+Rh+Rw;
 
 % initialize arrays

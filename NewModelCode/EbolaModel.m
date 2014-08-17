@@ -25,12 +25,12 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
     KikwitGeneralPrev = 7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     KikwitNonhospPrev = 7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     N0 = 4.09e6; %4.4e6;         % Initial population size
-    M =  5;            % average family size (number of chances per person to be at each funeral)
+    M =  5 - 1;            % average family size (number of chances per person to be at each funeral)
     E = 62*365;          % average life expectancy in Liberia 
     
     %funeral/hospitalization parameters
     fFG = 1/2;          % 1/average time spent at close quarters with body at funeral
-    fGH = 62131 / (N0 * 365);  % rate of hospitalization per person per day (DRC 2012 estimates)
+    fGH = 0; %62131 / (N0 * 365);  % rate of hospitalization per person per day (DRC 2012 estimates)
     fHG = 1/7;          % 1/average time spent at in hospital with non-ebola disease
     
     % dervied parameters

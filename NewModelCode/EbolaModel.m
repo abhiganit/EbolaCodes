@@ -22,8 +22,8 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
     omega = 3.0;        % odds ratio of funeral risk relative to general population
     
     % population parameters
-    KikwitGeneralPrev = 7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
-    KikwitNonhospPrev = 7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
+    KikwitGeneralPrev = 6.4e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
+    KikwitNonhospPrev = 5.6e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     N0 = 4.09e6; %4.4e6;         % Initial population size
     M =  5;            % average family size
     MF = M - 1;         %number of chances to be at a funeral
@@ -58,7 +58,6 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
     % Algorithm parameters
     tau=1;
     MaxIt = 500;
-    
     initial = [Sg0,Sf0,Sh0,Sw0,...  (1-4)
                 Eg0,Ef0,Eh0,Ew0,... (5-8)
                 Ig0,If0,Ih0,Iw0,...  (9-12)
@@ -78,12 +77,9 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
             %display(i)
             % The main iteration 
             [~, pop]=Stoch_Iteration([0 MaxTime],initial,params);
-            %% susceptible
             output(:,:,i)=pop';
 
         end
-        
-            
             %% SAVE OUTPUT
             CumulativeCases = output(25,(timepoints{1}+1),:) + output(26,(timepoints{1}+1),:) + output(27,(timepoints{1}+1),:) + output(28,(timepoints{1}+1),:);
             CumulativeDeaths = output(29,(timepoints{1}+1),:) + output(30,(timepoints{1}+1),:) + output(31,(timepoints{1}+1),:) + output(32,(timepoints{1}+1),:);

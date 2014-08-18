@@ -25,11 +25,11 @@ CHosp = old(33); %CHospDis = old(34);
 F = Fg+Ff+Fh+Fw;
 %Ng = max(Sg+Eg+Ig+Fg+Rg+Dg,1);
 Ng = max(Sg+Eg+Ig+Rg,1);
-%Nf = max(Sf+Ef+If+Ff+Rf+Df,1);
+Nf = max(Sf+Ef+If+Rf,1);
 Nh = max(Sh+Eh+Ih+Rh,1);
 Nw = max(Sw+Ew+Iw+Rw,1);
 %N = Sg+Eg+Ig+Fg+Rg+Dg   +   Sf+Ef+If+Ff+Rf+Df   +    Sh+Eh+Ih+Fh+Rh+Dh  + Sw+Ew+Iw+Fw+Rw+Dw;
-Nd = Sg+Sf+Sh+Sw + Eg+Ef+Eh+Ew + Ig+If+Ih+Iw + Rg+Rf+Rh+Rw;
+Nd = Ng + Nf + Nh + Nw;
 
 % initialize arrays
 Change = zeros(33,size(old,1)); %33 states, 40 events
@@ -41,16 +41,16 @@ Rate = zeros(33,1);
 
 %% Transitions
 % General: susc -> exposed
-Rate(1) = epsilon*betaI*Sg*Ig/Ng;                         Change(1,1) = -1; Change(1,5) = +1;
+Rate(1) = epsilon*betaI*Sg*(Ig + If)/(Ng + Nf);                         Change(1,1) = -1; Change(1,5) = +1;
 % Funeral: susc -> exposed
 %Rate(2) = epsilon*Sf*(omega-1)*betaI*KikwitNonhospPrev;               Change(2,2) = -1; Change(2,6) = +1; %betaF*Sf; Ig/Ng
 %Rate(2) = epsilon*(omega-1)*betaI*Sf*F/N;               Change(2,2) = -1; Change(2,6) = +1; %betaF*Sf; Ig/Ng
 Rate(2) = epsilon*(omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
                 betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;               Change(2,2) = -1; Change(2,6) = +1; %betaF*Sf; Ig/Ng
 % Hosp: susc -> exposed
-Rate(3) = epsilon*(betaH*Sh*Ih/Nh + betaH*Sh*Iw/Nw);      Change(3,3) = -1; Change(3,7) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
+Rate(3) = epsilon*betaH*Sh*(Ih+Iw)/(Nh+Nw);      Change(3,3) = -1; Change(3,7) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
 % Worker: susc -> exposed
-Rate(4) = epsilon*(betaW*Sw*Ih/Nh + betaW*Sw*Iw/Nw);      Change(4,4) = -1; Change(4,8) = +1;
+Rate(4) = epsilon*betaW*Sw*(Ih+Iw)/(Nh+Nw);      Change(4,4) = -1; Change(4,8) = +1;
 
 
 % General: exposed -> inf
@@ -94,57 +94,57 @@ Rate(21) = MF*(Nd/E +  (1-theta)*gammaD*(Ig+If)+gammaDH*(Ih+Iw));           Chan
 % Funeral:susc -> General:susc
 Rate(22) = fFG*Sf;                                       Change(22,2) = -1; Change(22,1) = +1;
 % General:susc -> Hosp:susc
-Rate(23) = (MH+1)*fGH*Sg;                                     Change(23,1) = -1; Change(23,3) = +1;    % ; (1-t/54)*     
+Rate(23) = (MH+1)*fGH*Sg + MH*gammaH*theta*Ig;                                     Change(23,1) = -1; Change(23,3) = +1;    % ; (1-t/54)*  family members attending hospital for non-ebola cases + ebola cases   
 % Hosp:susc -> General:susc
 Rate(24) = fHG*Sh;                                       Change(24,3) = -1; Change(24,1) = +1;
 % General:exp -> Hosp:exp
-Rate(25) = (MH+1)*fGH*Eg;                                     Change(25,5) = -1; Change(25,7) = +1;    % ; (1-t/54)* 
-% Hosp:exp -> General:exp
-Rate(26) = fHG*Eh;                                       Change(26,7) = -1; Change(26,5) = +1;
+% Rate(25) = 0;                                     Change(25,5) = -1; Change(25,7) = +1;    % ; (1-t/54)* %(MH+1)*fGH*Eg + MH*gammaH*theta*Ig*(Eg/(Sg+Eg));
+% % Hosp:exp -> General:exp
+% Rate(26) = 0;                                       Change(26,7) = -1; Change(26,5) = +1;  %fHG*Eh;
 
 % General:inf -> Hosp:inf
-Rate(27) = gammaH*theta*Ig;                              Change(27,9) = -1; Change(27,11) = +1;
+Rate(25) = gammaH*theta*Ig;                              Change(25,9) = -1; Change(25,11) = +1;
 % Funeral:inf -> Hosp:inf
-Rate(28) = gammaH*theta*If;                              Change(28,10) = -1; Change(28,11) = +1;
+Rate(26) = gammaH*theta*If;                              Change(26,10) = -1; Change(26,11) = +1;
 
 % General:susc -> General:recovered
-Rate(29) =(1-epsilon)*betaI*Sg*Ig/Ng;                               Change(29,1) = -1; Change(29,17) = +1;
+Rate(27) =(1-epsilon)*betaI*Sg*Ig/Ng;                               Change(27,1) = -1; Change(27,17) = +1;
 % Funeral:susc -> Funeral:recovered
 %Rate(28) = (1-epsilon)*Sf*(omega-1)*betaI*KikwitNonhospPrev;                    Change(28,2) = -1; Change(28,18) = +1; %betaF*Sf;
-Rate(30) = (1-epsilon)*(omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*betaI*...
-            (newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;       Change(30,2) = -1; Change(30,18) = +1; %betaF*Sf;
+Rate(28) = (1-epsilon)*(omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*betaI*...
+            (newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;       Change(28,2) = -1; Change(28,18) = +1; %betaF*Sf;
 %Rate(28) = (1-epsilon)*(omega-1)*betaI*Sf*F/N;                    Change(28,2) = -1; Change(28,18) = +1; %betaF*Sf;
 % Hosp:susc -> Hosp:recovered
-Rate(31) = (1-epsilon)*(betaH*Sh*Ih/Nh + betaH*Sh*Iw/Nw);           Change(31,3) = -1; Change(31,19) = +1;
+Rate(29) = (1-epsilon)*(betaH*Sh*Ih/Nh + betaH*Sh*Iw/Nw);           Change(29,3) = -1; Change(29,19) = +1;
 % Worker:susc -> Worker:recovered
-Rate(32) = (1-epsilon)*(betaW*Sw*Ih/Nh + betaW*Sw*Iw/Nw);           Change(32,4) = -1; Change(32,20) = +1;
+Rate(30) = (1-epsilon)*(betaW*Sw*Ih/Nh + betaW*Sw*Iw/Nw);           Change(30,4) = -1; Change(30,20) = +1;
 
 %% Cumulative Incidences (no reductions, only additions)
 % General: susc -> exposed
-Rate(33) = epsilon*betaI*Sg*Ig/Ng;                         Change(33,25) = +1;
+Rate(31) = epsilon*betaI*Sg*Ig/Ng;                         Change(31,25) = +1;
 % Funeral: susc -> exposed
 %Rate(32) = epsilon*Sf*(omega-1)*betaI*KikwitNonhospPrev;          Change(32,26) = +1; %betaF*Sf; 
-Rate(34) = epsilon*(omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
-                betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;     Change(34,26) = +1; %betaF*Sf;
+Rate(32) = epsilon*(omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
+                betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;     Change(32,26) = +1; %betaF*Sf;
 %Rate(32) = epsilon*(omega-1)*betaI*Sf*F/N;          Change(32,26) = +1; %betaF*Sf; 
 % Hosp: susc -> exposed
-Rate(35) = epsilon*(betaH*Sh*Ih/Nh + betaH*Sh*Iw/Nw);      Change(35,27) = +1;  
+Rate(33) = epsilon*betaH*Sh*(Ih+Iw)/(Nh+Nw);      Change(33,27) = +1;  
 % Worker: susc -> exposed
-Rate(36) = epsilon*(betaW*Sw*Ih/Nh + betaW*Sw*Iw/Nw);      Change(36,28) = +1;
+Rate(34) = epsilon*betaW*Sw*(Ih+Iw)/(Nh+Nw);      Change(34,28) = +1;
 
 %% Cumulative Deaths (no reductions, only additions)
 % General: inf -> funeral
-Rate(37) = (1-theta)*gammaD*Ig;                   Change(37,29) = +1;  %delta1*
+Rate(35) = (1-theta)*gammaD*Ig;                   Change(35,29) = +1;  %delta1*
 % Funeral: inf -> funeral
-Rate(38) = (1-theta)*gammaD*If;                   Change(38,30) = +1;  %delta1*
+Rate(36) = (1-theta)*gammaD*If;                   Change(36,30) = +1;  %delta1*
 % Hosp: inf -> funeral
-Rate(39) = gammaDH*Ih;                            Change(39,31) = +1;  %delta2*
+Rate(37) = gammaDH*Ih;                            Change(37,31) = +1;  %delta2*
 % Worker: inf -> funeral
-Rate(40) = gammaDH*Iw;                            Change(40,32) = +1;  %delta2*
+Rate(38) = gammaDH*Iw;                            Change(38,32) = +1;  %delta2*
 
 
 %% Cumulative Hospitalizations (including HCW)
-Rate(41) = gammaH*theta*(Ig+If) + alpha*(Eh+Ew);             Change(41,33) = +1;  %gammaH*Iw  + 
+Rate(39) = gammaH*theta*(Ig+If) + alpha*(Eh+Ew);             Change(39,33) = +1;  %gammaH*Iw  + 
    
 
 %% Cumulative Hospital Discharges (including HCW)

@@ -108,7 +108,7 @@ Rate(25) = gammaH*theta*Ig;                              Change(25,9) = -1; Chan
 Rate(26) = gammaH*theta*If;                              Change(26,10) = -1; Change(26,11) = +1;
 
 % General:susc -> General:recovered
-Rate(27) =(1-epsilon)*betaI*Sg*Ig/Ng;                               Change(27,1) = -1; Change(27,17) = +1;
+Rate(27) =(1-epsilon)*betaI*Sg*(Ig/Ng + If/Nf);                               Change(27,1) = -1; Change(27,17) = +1;
 % Funeral:susc -> Funeral:recovered
 %Rate(28) = (1-epsilon)*Sf*(omega-1)*betaI*KikwitNonhospPrev;                    Change(28,2) = -1; Change(28,18) = +1; %betaF*Sf;
 Rate(28) = (1-epsilon)*(omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*betaI*...
@@ -121,7 +121,7 @@ Rate(30) = (1-epsilon)*betaW*Sw*(Ih/Nh + Iw/Nw);           Change(30,4) = -1; Ch
 
 %% Cumulative Incidences (no reductions, only additions)
 % General: susc -> exposed
-Rate(31) = epsilon*betaI*Sg*Ig/Ng;                         Change(31,25) = +1;
+Rate(31) = epsilon*betaI*Sg*(Ig/Ng + If/Nf);                         Change(31,25) = +1;
 % Funeral: susc -> exposed
 %Rate(32) = epsilon*Sf*(omega-1)*betaI*KikwitNonhospPrev;          Change(32,26) = +1; %betaF*Sf; 
 Rate(32) = epsilon*(omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...

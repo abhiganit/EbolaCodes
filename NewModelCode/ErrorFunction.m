@@ -4,7 +4,7 @@ function f = ErrorFunction(beta, timepoints, datapoints, maxtime, weights)
     
     % calculate model points
 %   model = EbolaModel(1, beta, timepoints, maxtime);
-    model = EbolaModel_AbhiSimple(1, beta, timepoints, maxtime);
+    %model = EbolaModel_AbhiSimple(1, beta, timepoints, maxtime);
 
     %model = EbolaModel(1, beta, timepoints, maxtime);
     model = EbolaModel_KatieSimple(1, beta, timepoints, maxtime);

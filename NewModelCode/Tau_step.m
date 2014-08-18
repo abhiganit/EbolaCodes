@@ -22,12 +22,12 @@ Cincg = old(25); Cincf = old(26); Cinch = old(27); Cincw = old(28);
 Cdiedg = old(29); Cdiedf = old(30); Cdiedh = old(31); Cdiedw = old(32);
 CHosp = old(33); %CHospDis = old(34);
 
-F = Fg+Ff+Fh+Fw;
+%F = Fg+Ff+Fh+Fw;
 %Ng = max(Sg+Eg+Ig+Fg+Rg+Dg,1);
-Ng = max(Sg+Eg+Ig+Rg,1);
-Nf = max(Sf+Ef+If+Rf,1);
-Nh = max(Sh+Eh+Ih+Rh,1);
-Nw = max(Sw+Ew+Iw+Rw,1);
+Ng = Sg+Eg+Ig+Rg;
+Nf = Sf+Ef+If+Rf;
+Nh = Sh+Eh+Ih+Rh;
+Nw = Sw+Ew+Iw+Rw;
 %N = Sg+Eg+Ig+Fg+Rg+Dg   +   Sf+Ef+If+Ff+Rf+Df   +    Sh+Eh+Ih+Fh+Rh+Dh  + Sw+Ew+Iw+Fw+Rw+Dw;
 Nd = Ng + Nf + Nh + Nw;
 

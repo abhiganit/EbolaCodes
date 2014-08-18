@@ -24,12 +24,14 @@ CHosp = old(33); %CHospDis = old(34);
 
 F = Fg+Ff+Fh+Fw;
 %Ng = max(Sg+Eg+Ig+Fg+Rg+Dg,1);
-Ng = max(Sg+Eg+Ig+Rg,1);
+Ng = Sg+Eg+Ig+Rg;
 %Nf = max(Sf+Ef+If+Ff+Rf+Df,1);
-Nh = max(Sh+Eh+Ih+Rh,1);
-Nw = max(Sw+Ew+Iw+Rw,1);
+Nf = Sf+Ef+If+Rf;
+Nh = Sh+Eh+Ih+Rh;
+Nw = Sw+Ew+Iw+Rw;
 %N = Sg+Eg+Ig+Fg+Rg+Dg   +   Sf+Ef+If+Ff+Rf+Df   +    Sh+Eh+Ih+Fh+Rh+Dh  + Sw+Ew+Iw+Fw+Rw+Dw;
-Nd = Sg+Sf+Sh+Sw + Eg+Ef+Eh+Ew + Ig+If+Ih+Iw + Rg+Rf+Rh+Rw;
+%Nd = Sg+Sf+Sh+Sw + Eg+Ef+Eh+Ew + Ig+If+Ih+Iw + Rg+Rf+Rh+Rw;
+Nd = Ng + Nf + Nh + Nw;
 
 % initialize arrays
 Change = zeros(33,size(old,1)); %33 states, 40 events
@@ -41,7 +43,7 @@ Rate = zeros(33,1);
 
 %% Transitions
 % General: susc -> exposed
-Rate(1) = epsilon*betaI*Sg*Ig/Ng;                         Change(1,1) = -1; Change(1,5) = +1;
+Rate(1) = epsilon*betaI*Sg*((Ig+If)/(Nf+Ng));                         Change(1,1) = -1; Change(1,5) = +1;
 % Funeral: susc -> exposed
 %Rate(2) = epsilon*Sf*(omega-1)*betaI*KikwitNonhospPrev;               Change(2,2) = -1; Change(2,6) = +1; %betaF*Sf; Ig/Ng
 %Rate(2) = epsilon*(omega-1)*betaI*Sf*F/N;               Change(2,2) = -1; Change(2,6) = +1; %betaF*Sf; Ig/Ng
@@ -108,7 +110,7 @@ Rate(27) = gammaH*theta*Ig;                              Change(27,9) = -1; Chan
 Rate(28) = gammaH*theta*If;                              Change(28,10) = -1; Change(28,11) = +1;
 
 % General:susc -> General:recovered
-Rate(29) =(1-epsilon)*betaI*Sg*Ig/Ng;                               Change(29,1) = -1; Change(29,17) = +1;
+Rate(29) =(1-epsilon)*betaI*Sg*(Ig+If)/(Ng+Nf);                               Change(29,1) = -1; Change(29,17) = +1;
 % Funeral:susc -> Funeral:recovered
 %Rate(28) = (1-epsilon)*Sf*(omega-1)*betaI*KikwitNonhospPrev;                    Change(28,2) = -1; Change(28,18) = +1; %betaF*Sf;
 Rate(30) = (1-epsilon)*(omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*betaI*...
@@ -121,7 +123,7 @@ Rate(32) = (1-epsilon)*(betaW*Sw*Ih/Nh + betaW*Sw*Iw/Nw);           Change(32,4)
 
 %% Cumulative Incidences (no reductions, only additions)
 % General: susc -> exposed
-Rate(33) = epsilon*betaI*Sg*Ig/Ng;                         Change(33,25) = +1;
+Rate(33) = epsilon*betaI*Sg*(Ig+If)/(Ng +Nf);                         Change(33,25) = +1;
 % Funeral: susc -> exposed
 %Rate(32) = epsilon*Sf*(omega-1)*betaI*KikwitNonhospPrev;          Change(32,26) = +1; %betaF*Sf; 
 Rate(34) = epsilon*(omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...

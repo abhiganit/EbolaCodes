@@ -10,7 +10,8 @@ old=Initial;
 
 loop=1;
 while (T(loop)<Time(2)) 
-    [new]=Tau_leap(old,Parameters);
+%     [new]=Tau_leap(old,Parameters);
+    [new]=Tau_leap_AbhiSimple(old,Parameters);
     loop=loop+1;
     P(loop,:)=new; old=new;
 end

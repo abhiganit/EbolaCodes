@@ -7,7 +7,8 @@ old=Initial;
 
 loop=1;
 while (T(loop)<Time(2))  
-    [new]=Tau_step(old,Parameters, T(loop));
+%     [new]=Tau_step(old,Parameters, T(loop));
+    [new]=Tau_step_AbhiSimple(old,Parameters, T(loop));
     loop=loop+1;
     P(loop,:)=new; old=new;
 end

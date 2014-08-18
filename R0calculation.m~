@@ -1,0 +1,149 @@
+% Variables
+syms Sg Eg Ig Fg Sf Ef If Ff  Sh Eh Ih Fh Sw Ew Iw Fw Ng Nf Nh Nw N
+% Parameters
+syms betaI betaH betaF betaW delta1 delta2 theta alpha gammaI gammaD gammaH gammaF gammaDH gammaIH M fFG fGH fHG epsilon
+
+% Infectious variables
+x = [Eg;Ig;Fg; Ef; If; Ff; Eh; Ih; Fh; Ew; Iw; Fw]
+
+% f and v matrices
+f = [betaI*Sg*Ig/N;0;0;betaF*Sf*(Fg+Ff+Fh+Fw)/N;0;0;betaH*Sh*(Ih/Nh + Iw/Nw);0;0;betaW*Sw*(Ih/Nh + Iw/Nw);0;0] % New Infections
+
+v = [alpha*Eg;-alpha*Eg+delta1*(1-theta)*gammaD*Ig+gammaI*(1-theta)*(1-delta1)*Ig+gammaH*theta*Ig;-delta1*(1-theta)*gammaD*Ig+gammaF*Fg;
+     alpha*Ef;-alpha*Ef+delta1*(1-theta)*gammaD*If+gammaI*(1-theta)*(1-delta1)*If+gammaH*theta*If;-delta1*(1-theta)*gammaD*If+gammaF*Ff;
+     alpha*Eh;-alpha*Eh-gammaH*theta*Ig-gammaH*theta*If + delta2*gammaDH*Ih+gammaIH*(1-delta2)*Ih;-delta2*gammaDH*Ih+gammaF*Fh;
+     alpha*Ew;-alpha*Ew + delta2*gammaDH*Iw+gammaIH*(1-delta2)*Iw;-delta2*gammaDH*Iw+gammaF*Fw]
+
+
+%  F and V matrices
+F = [0 betaI*Sg/N 0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0 0 0 0 0
+    0 0 betaF*Sf/N 0 0 betaF*Sf/N 0 0 betaF*Sf/N 0 0 betaF*Sf/N
+    0 0 0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 betaH*Sh/Nh 0 0 betaH*Sh/Nw 0
+    0 0 0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 betaW*Sw/Nh 0 0 betaW*Sw/Nw 0
+    0 0 0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0 0 0 0 0]
+
+V = [alpha 0 0 0 0 0 0 0 0 0 0 0
+    -alpha  delta1*(1-theta)*gammaD+gammaI*(1-theta)*(1-delta1)+gammaH*theta 0 0 0 0 0 0 0 0 0 0 
+    0 -delta1*(1-theta)*gammaD  gammaF 0 0 0 0 0 0 0 0 0 
+    0 0 0 alpha 0 0 0 0 0 0 0 0
+    0 0 0 -alpha delta1*(1-theta)*gammaD+gammaI*(1-theta)*(1-delta1)+gammaH*theta 0 0 0 0 0 0 0
+    0 0 0 0 -delta1*(1-theta)*gammaD  gammaF 0 0 0 0 0 0
+    0 0 0 0 0 0 alpha 0 0 0 0 0
+    0 -gammaH*theta 0 0 -gammaH*theta 0 -alpha delta2*gammaDH+gammaIH*(1-delta2) 0 0 0 0
+    0 0 0 0 0 0 0 -delta2*gammaDH gammaF 0 0 0
+    0 0 0 0 0 0 0 0 0 alpha 0 0
+    0 0 0 0 0 0 0 0 0 -alpha delta2*gammaDH+gammaIH*(1-delta2)  0
+    0 0 0 0 0 0 0 0 0 0 -delta2*gammaDH gammaF]
+
+% Calculate inverse of V
+Vinv = inv(V);
+
+% Calculate FV**-1 matrix
+
+F*Vinv;
+
+% Calculating eigenvalues for R0;
+R0matrix = eig(F*Vinv)  % Taking long time/hangs
+
+
+
+% Alternative/Simplifying the R0 calculation
+%a = delta1*(1-theta)*gammaD+gammaI*(1-theta)*(1-delta1)+gammaH*theta;
+%b = delta2*gammaDH+gammaIH*(1-delta2);
+% c = -delta1*(1-theta)*gammaD
+% d = -delta2*gammaDH
+% p = betaI*Sg/N ;
+% q = betaF*Sf/N;
+% r = betaH*Sh/Nh
+% s = betaH*Sh/Nw
+% t = betaW*Sw/Nh
+% u = betaW*Sw/Nw 
+
+syms a b c d
+syms p q r s t u
+
+F1 =     [0 p 0 0 0 0 0 0 0 0 0 0
+          0 0 0 0 0 0 0 0 0 0 0 0
+          0 0 0 0 0 0 0 0 0 0 0 0
+          0 0 q 0 0 q 0 0 q 0 0 q
+          0 0 0 0 0 0 0 0 0 0 0 0
+          0 0 0 0 0 0 0 0 0 0 0 0
+          0 0 0 0 0 0 0 r 0 0 s 0
+          0 0 0 0 0 0 0 0 0 0 0 0
+          0 0 0 0 0 0 0 0 0 0 0 0
+          0 0 0 0 0 0 0 t 0 0 u 0
+          0 0 0 0 0 0 0 0 0 0 0 0
+          0 0 0 0 0 0 0 0 0 0 0 0]
+
+
+
+V1 = [alpha 0 0 0 0 0 0 0 0 0 0 0
+    -alpha  a 0 0 0 0 0 0 0 0 0 0 
+    0 c  gammaF 0 0 0 0 0 0 0 0 0 
+    0 0 0 alpha 0 0 0 0 0 0 0 0
+    0 0 0 -alpha a 0 0 0 0 0 0 0
+    0 0 0 0 c  gammaF 0 0 0 0 0 0
+    0 0 0 0 0 0 alpha 0 0 0 0 0
+    0 -gammaH*theta 0 0 -gammaH*theta 0 -alpha b 0 0 0 0
+    0 0 0 0 0 0 0 d gammaF 0 0 0
+    0 0 0 0 0 0 0 0 0 alpha 0 0
+    0 0 0 0 0 0 0 0 0 -alpha b  0
+    0 0 0 0 0 0 0 0 0 0 d gammaF]
+
+
+
+
+% Calculating eigenvalues for R0;
+R0matrix1 = eig(F1*inv(V1))  % Simplification gives result but is still complicated.
+
+
+%%%%%%%%%%%%%%%%  R0 components for general community,funerals, hospital
+%%%%%%%%%%%%%%%%  and health workers
+
+xG = [Eg;Ig;Fg];
+xF = [Ef;If;Ff];
+
+FG = [0 betaI*Sg/N 0
+    0 0 0 
+    0 0 0];
+
+FF = [0 0 betaF*Sf/N
+    0 0 0 
+    0 0 0];
+
+FH = [0 betaH*Sh/Nh 0
+    0 0 0 
+    0 0 0 ];
+    
+FW = [0 betaW*Sw/Nw 0
+    0 0 0 
+    0 0 0];
+
+VG = [alpha 0 0 
+    -alpha  delta1*gammaD+gammaI*(1-delta1)+gammaH*theta 0
+    0 -delta1*gammaD  gammaF ];
+
+VF = [alpha 0 0
+     -alpha delta1*gammaD+gammaI*(1-delta1)+gammaH*theta 0
+    0 -delta1*gammaD  gammaF];
+
+
+VH = [alpha 0 0
+      -alpha delta2*gammaDH+gammaIH*(1-delta2) 0 
+    0 0 0 0 0 0 0 -delta2*gammaDH gammaF 
+    0 0 0 0 0 0 0 0 0 alpha 0 0
+    0 0 0 0 0 0 0 0 0 -alpha delta2*gammaDH+gammaIH*(1-delta2)  0
+    0 0 0 0 0 0 0 0 0 0 -delta2*gammaDH gammaF]
+
+
+
+
+
+

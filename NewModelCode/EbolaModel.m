@@ -25,12 +25,15 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
     KikwitGeneralPrev = 7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     KikwitNonhospPrev = 7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     N0 = 4.09e6; %4.4e6;         % Initial population size
-    M =  5 - 1;            % average family size (number of chances per person to be at each funeral)
+    M =  5;            % average family size
+    MF = M - 1;         %number of chances to be at a funeral
+    MH = 1;             % additional family members visiting hospital
+    
     E = 62*365;          % average life expectancy in Liberia 
     
     %funeral/hospitalization parameters
     fFG = 1/2;          % 1/average time spent at close quarters with body at funeral
-    fGH = M*(62131 / (N0 * 365));  % rate of hospitalization per person per day (DRC 2012 estimates)
+    fGH = 62131 / (N0 * 365);  % rate of hospitalization per person per day (DRC 2012 estimates)
     fHG = 1/7;          % 1/average time spent at in hospital with non-ebola disease
     
     % dervied parameters
@@ -65,7 +68,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
                 Cincg0,Cincf0,Cinch0,Cincw0, ... (25-28)
                 Cdiedg0,Cdiedf0,Cdiedh0,Cdiedw0,... (29-32)
                 CHosp0];            %33
-    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, M,fFG,fGH,fHG,epsilon,KikwitGeneralPrev,KikwitNonhospPrev, E, tau]; %delta1,delta2,
+    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, MF,MH,fFG,fGH,fHG,epsilon,KikwitGeneralPrev,KikwitNonhospPrev, E, tau]; %delta1,delta2,
     
     if model== 0
         clear output;

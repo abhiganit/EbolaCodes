@@ -22,13 +22,10 @@ Cincg = old(25); Cincf = old(26); Cinch = old(27); Cincw = old(28);
 Cdiedg = old(29); Cdiedf = old(30); Cdiedh = old(31); Cdiedw = old(32);
 CHosp = old(33); %CHospDis = old(34);
 
-%F = Fg+Ff+Fh+Fw;
-%Ng = max(Sg+Eg+Ig+Fg+Rg+Dg,1);
 Ng = Sg+Eg+Ig+Rg;
 Nf = Sf+Ef+If+Rf;
 Nh = Sh+Eh+Ih+Rh;
 Nw = Sw+Ew+Iw+Rw;
-%N = Sg+Eg+Ig+Fg+Rg+Dg   +   Sf+Ef+If+Ff+Rf+Df   +    Sh+Eh+Ih+Fh+Rh+Dh  + Sw+Ew+Iw+Fw+Rw+Dw;
 Nd = Ng + Nf + Nh + Nw;
 
 % initialize arrays
@@ -41,7 +38,7 @@ Rate = zeros(33,1);
 
 %% Transitions
 % General: susc -> exposed
-Rate(1) = epsilon*betaI*Sg*(Ig/Ng + If/Nf);                         Change(1,1) = -1; Change(1,5) = +1;
+Rate(1) = epsilon*betaI*Sg*((Ig+If)/(Nf+Ng));                         Change(1,1) = -1; Change(1,5) = +1;
 % Funeral: susc -> exposed
 %Rate(2) = epsilon*Sf*(omega-1)*betaI*KikwitNonhospPrev;               Change(2,2) = -1; Change(2,6) = +1; %betaF*Sf; Ig/Ng
 %Rate(2) = epsilon*(omega-1)*betaI*Sf*F/N;               Change(2,2) = -1; Change(2,6) = +1; %betaF*Sf; Ig/Ng
@@ -108,7 +105,11 @@ Rate(25) = gammaH*theta*Ig;                              Change(25,9) = -1; Chan
 Rate(26) = gammaH*theta*If;                              Change(26,10) = -1; Change(26,11) = +1;
 
 % General:susc -> General:recovered
-Rate(27) =(1-epsilon)*betaI*Sg*(Ig/Ng + If/Nf);                               Change(27,1) = -1; Change(27,17) = +1;
+%<<<<<<< HEAD
+Rate(27) =(1-epsilon)*betaI*Sg*(Ig+If)/(Ng+Nf);                               Change(27,1) = -1; Change(27,17) = +1;
+% =======
+% Rate(29) =(1-epsilon)*betaI*Sg*(Ig+If)/(Ng+Nf);                               Change(29,1) = -1; Change(29,17) = +1;
+% >>>>>>> RecoverRates
 % Funeral:susc -> Funeral:recovered
 %Rate(28) = (1-epsilon)*Sf*(omega-1)*betaI*KikwitNonhospPrev;                    Change(28,2) = -1; Change(28,18) = +1; %betaF*Sf;
 Rate(28) = (1-epsilon)*(omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*betaI*...
@@ -121,7 +122,11 @@ Rate(30) = (1-epsilon)*betaW*Sw*(Ih/Nh + Iw/Nw);           Change(30,4) = -1; Ch
 
 %% Cumulative Incidences (no reductions, only additions)
 % General: susc -> exposed
-Rate(31) = epsilon*betaI*Sg*(Ig/Ng + If/Nf);                         Change(31,25) = +1;
+% <<<<<<< HEAD
+Rate(31) = epsilon*betaI*Sg*(Ig+If)/(Ng+Nf);                         Change(31,25) = +1;
+% =======
+% Rate(33) = epsilon*betaI*Sg*(Ig+If)/(Ng +Nf);                         Change(33,25) = +1;
+% >>>>>>> RecoverRates
 % Funeral: susc -> exposed
 %Rate(32) = epsilon*Sf*(omega-1)*betaI*KikwitNonhospPrev;          Change(32,26) = +1; %betaF*Sf; 
 Rate(32) = epsilon*(omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...

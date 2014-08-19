@@ -50,6 +50,17 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
 %     CHosp0 = 0;
 %     Sh0 = 20*(2.8/10000)*N0;   Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %susceptible
     
+
+    % intervention parameters
+    iG = 0;
+    iH = 0;
+    C = 0;
+    phiG = 1;
+    phiW = 1;
+    phiC = 1;
+    pG = 0;
+    pH = 0;
+    
     % Algorithm parameters
     tau=1;
     MaxIt = 100;
@@ -62,12 +73,14 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
 %                 Cincg0,Cincf0,Cinch0,Cincw0, ... (20-23)
 %                 Cdiedg0,Cdiedh0,Cdiedw0,... (24-26)
 %                 CHosp0];            %27
-    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, MF,MH,fFG,fGH,fHG,epsilon,KikwitGeneralPrev,KikwitNonhospPrev, E, tau]; 
+    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, MF,MH,fFG,fGH,fHG,epsilon,KikwitGeneralPrev,KikwitNonhospPrev, E,...
+                    iG, iH, C, phiG, phiW, phiC, pG, pH,...
+                    tau]; 
     
     if model== 0
         clear output;
         %initialize output
-        output = nan(27,MaxTime+1,MaxIt);
+        output = nan(29,MaxTime+1,MaxIt);
         parfor i = 1:MaxIt
             %display(i)
             % The main iteration 

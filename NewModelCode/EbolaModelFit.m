@@ -40,6 +40,4 @@ function ic = Initial(x)
                 Cincg0,Cincf0,Cinch0,Cincw0, ... (20-23)
                 Cdiedg0,Cdiedh0,Cdiedw0,... (24-26)
                 CHosp0];            %27
-
-
 end

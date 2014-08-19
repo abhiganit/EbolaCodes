@@ -31,8 +31,8 @@ Nw = max(Sw+Ew+Iw+Rw,1);
 Nd = Ng + Nh + Nw;
 
 % initialize arrays
-Change = zeros(32,size(old,1)); %33 states, 40 events
-Rate = zeros(32,1);
+Change = zeros(27,size(old,1)); %33 states, 40 events
+Rate = zeros(27,1);
 
 %prob ebola funeral
  newebolafunerals = (1-theta)*gammaD*(Ig) + gammaDH*(Ih+Iw);  %delta1*   delta2*

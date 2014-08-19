@@ -67,7 +67,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial)
     if model== 0
         clear output;
         %initialize output
-        output = nan(27,65,10);
+        output = nan(27,MaxTime+1,MaxIt);
         parfor i = 1:MaxIt
             %display(i)
             % The main iteration 
@@ -90,33 +90,45 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial)
             % The main iteration (note as it is difference equation, we
             % only run it once)
             [~, pop]=Diffeqn_Iteration([0 MaxTime],initial,params);
-        
-            output.Sg=pop(:,1); output.Sf = pop(:,2); output.Sh = pop(:,3); output.Sw = pop(:,4); 
-            output.Eg=pop(:,5); output.Eh = pop(:,6); output.Ew = pop(:,7); 
-            output.Ig=pop(:,8); output.Ih = pop(:,9); output.Iw = pop(:,10);
-            output.Fg=pop(:,11);  output.Fh = pop(:,12); output.Fw=pop(:,13); 
-            output.Rg = pop(:,14); output.Rh = pop(:,15); output.Rw=pop(:,16);
-            output.Dg = pop(:,17); output.Dh = pop(:,18); output.Dw=pop(:,19);
-            output.Cincg = pop(:,20); output.Cincf = pop(:,21); output.Cinch = pop(:,22); output.Cincw=pop(:,23);
-            output.Cdiedg = pop(:,24); output.Cdiedh = pop(:,25); output.Cdiedw = pop(:,26);
-            output.CHosp = pop(:,27);
+            output=pop';
+%             output.Sg=pop(:,1); output.Sf = pop(:,2); output.Sh = pop(:,3); output.Sw = pop(:,4); 
+%             output.Eg=pop(:,5); output.Eh = pop(:,6); output.Ew = pop(:,7); 
+%             output.Ig=pop(:,8); output.Ih = pop(:,9); output.Iw = pop(:,10);
+%             output.Fg=pop(:,11);  output.Fh = pop(:,12); output.Fw=pop(:,13); 
+%             output.Rg = pop(:,14); output.Rh = pop(:,15); output.Rw=pop(:,16);
+%             output.Dg = pop(:,17); output.Dh = pop(:,18); output.Dw=pop(:,19);
+%             output.Cincg = pop(:,20); output.Cincf = pop(:,21); output.Cinch = pop(:,22); output.Cincw=pop(:,23);
+%             output.Cdiedg = pop(:,24); output.Cdiedh = pop(:,25); output.Cdiedw = pop(:,26);
+%             output.CHosp = pop(:,27);
            % output.CHospDis = pop(:,34);
            
            %% OUTPUT
-            CumulativeCases = output.Cincg(timepoints{1}+1) + output.Cincf(timepoints{1}+1) + output.Cinch(timepoints{1}+1) + output.Cincw(timepoints{1}+1);
-            CumulativeDeaths = output.Cdiedg(timepoints{2}+1) + output.Cdiedh(timepoints{2}+1) + output.Cdiedw(timepoints{2}+1);
-
-            CumulativeHealthworkerIncidence = output.Cincw(timepoints{3}+1);
-            CumulativeHospitalAdmissions = output.CHosp(timepoints{4}+1);
+           
+            %% SAVE OUTPUT
+            CumulativeCases = output(20,(timepoints{1}+1)) + output(21,(timepoints{1}+1)) + output(22,(timepoints{1}+1)) + output(23,(timepoints{1}+1));
+            CumulativeDeaths = output(24,(timepoints{1}+1)) + output(25,(timepoints{1}+1)) + output(26,(timepoints{1}+1));
+            CumulativeHealthworkerIncidence = output(23,timepoints{3}+1);
+            CumulativeHospitalAdmissions = output(27,timepoints{4}+1);
+            
+%             CumulativeCases = reshape(CumulativeCases, 65, MaxIt);
+%             CumulativeDeaths = reshape(CumulativeDeaths, 65, MaxIt);
+%             CumulativeHealthworkerIncidence = reshape(CumulativeHealthworkerIncidence, 65, MaxIt);
+%             CumulativeHospitalAdmissions = reshape(CumulativeHospitalAdmissions, 65, MaxIt);
+            
+%             CumulativeCases = output.Cincg(timepoints{1}+1) + output.Cincf(timepoints{1}+1) + output.Cinch(timepoints{1}+1) + output.Cincw(timepoints{1}+1);
+%             CumulativeDeaths = output.Cdiedg(timepoints{2}+1) + output.Cdiedh(timepoints{2}+1) + output.Cdiedw(timepoints{2}+1);
+% 
+%             CumulativeHealthworkerIncidence = output.Cincw(timepoints{3}+1);
+%             CumulativeHospitalAdmissions = output.CHosp(timepoints{4}+1);
             %CumulativeHospitalDischarges = output.CHospDis(timepoints{5}+1);
             
     end
         
     % get model output ready to passing
-    FittingOut{1} = CumulativeCases;
-    FittingOut{2} = CumulativeDeaths;
-    FittingOut{3} = CumulativeHealthworkerIncidence;
-    FittingOut{4} = CumulativeHospitalAdmissions;
+    FittingOut{1} = CumulativeCases';
+    FittingOut{2} = CumulativeDeaths';
+    FittingOut{3} = CumulativeHealthworkerIncidence';
+    FittingOut{4} = CumulativeHospitalAdmissions';
     %modelout{5} = CumulativeHospitalDischarges;
     
     modelout{1} = FittingOut;

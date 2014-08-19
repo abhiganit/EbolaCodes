@@ -80,7 +80,7 @@ Rate(15) = gammaF*Fh;                                    Change(15,12) = -1; Cha
 Rate(16) = gammaF*Fw;                                    Change(16,13) = -1; Change(16,19) = +1;
 
 % General:susc -> Funeral:susc
-Rate(17) = MF*(Nd/E +  (1-theta)*gammaD*Ig+gammaDH*(Ih+Iw))*Sg/Ng;           Change(17,1) = -1; Change(17,2) = +1;  %delta1* delta2*    
+Rate(17) = MF*(Nd/E +  (1-theta)*gammaD*Ig+gammaDH*(Ih+Iw))*Sg/(Ng-Sf);           Change(17,1) = -1; Change(17,2) = +1;  %delta1* delta2*    
 % Funeral:susc -> General:susc
 Rate(18) = fFG*Sf;                                       Change(18,2) = -1; Change(18,1) = +1;
 % General:susc -> Hosp:susc

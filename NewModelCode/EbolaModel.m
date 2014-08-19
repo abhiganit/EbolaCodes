@@ -1,4 +1,4 @@
-function modelout = EbolaModel(model, x, timepoints, MaxTime)
+function modelout = EbolaModel(model, x, timepoints, MaxTime, initial)
 % model = 0 runs stochastic model where as model = 1 runs the difference
 % equation.
     
@@ -9,7 +9,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
     betaW = x(2);      % Transmission coefficient between patients-HCWs
     theta = x(3);      % Percentage of infectious cases are hospitaized
     gammaDH = x(4);    % 1/Time between hospitalization and death
-    Ig0 = x(5);  
+    %Ig0 = x(5);  
     
     %disease progression parameters
     alpha = 1/7;        % 1/alpha: mean duration of the incubation period 
@@ -38,29 +38,30 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
     gammaIH = 1/(1/gammaI - 1/gammaH);     % 1/gammaIH: mean duration from hospitalization to end of infectiousness
     betaH = betaI;      % Transmission coefficient between patients or between HCWs
 
-    % Initial conditions
-    Eg0 = 0;  Eh0 = 0; Ew0 = 0;         % exposed
-              Ih0 = 0; Iw0 = 0;         % infected
-    Fg0 = 0;  Fh0 = 0; Fw0 = 0;         % died:funeral
-    Rg0 = 0;  Rh0 = 0; Rw0 = 0;         % recovered
-    Dg0 = 0;  Dh0 = 0; Dw0 = 0;         % died:buried
-    Cincg0 = Ig0; Cincf0 = 0; Cinch0 = 0; Cincw0 = 0;       % cumulative incidence
-    Cdiedg0 = 0;  Cdiedh0 = 0; Cdiedw0 = 0;       % cumulative died
-    CHosp0 = 0;
-    Sh0 = 20*(2.8/10000)*N0;   Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %susceptible
+%     % Initial conditions
+%     Ig0 = x(5);  
+%     Eg0 = 0;  Eh0 = 0; Ew0 = 0;         % exposed
+%               Ih0 = 0; Iw0 = 0;         % infected
+%     Fg0 = 0;  Fh0 = 0; Fw0 = 0;         % died:funeral
+%     Rg0 = 0;  Rh0 = 0; Rw0 = 0;         % recovered
+%     Dg0 = 0;  Dh0 = 0; Dw0 = 0;         % died:buried
+%     Cincg0 = Ig0; Cincf0 = 0; Cinch0 = 0; Cincw0 = 0;       % cumulative incidence
+%     Cdiedg0 = 0;  Cdiedh0 = 0; Cdiedw0 = 0;       % cumulative died
+%     CHosp0 = 0;
+%     Sh0 = 20*(2.8/10000)*N0;   Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %susceptible
     
     % Algorithm parameters
     tau=1;
-    MaxIt = 500;
-    initial = [Sg0,Sf0,Sh0,Sw0,...  (1-4)
-                Eg0,Eh0,Ew0,... (5-7)
-                Ig0,Ih0,Iw0,...  (8-10)
-                Fg0,Fh0, Fw0,...  (11-13)
-                Rg0,Rh0,Rw0,...   (14-16)
-                Dg0,Dh0,Dw0, ...   (17-19)
-                Cincg0,Cincf0,Cinch0,Cincw0, ... (20-23)
-                Cdiedg0,Cdiedh0,Cdiedw0,... (24-26)
-                CHosp0];            %27
+    MaxIt = 100;
+%     initial = [Sg0,Sf0,Sh0,Sw0,...  (1-4)
+%                 Eg0,Eh0,Ew0,... (5-7)
+%                 Ig0,Ih0,Iw0,...  (8-10)
+%                 Fg0,Fh0, Fw0,...  (11-13)
+%                 Rg0,Rh0,Rw0,...   (14-16)
+%                 Dg0,Dh0,Dw0, ...   (17-19)
+%                 Cincg0,Cincf0,Cinch0,Cincw0, ... (20-23)
+%                 Cdiedg0,Cdiedh0,Cdiedw0,... (24-26)
+%                 CHosp0];            %27
     params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, MF,MH,fFG,fGH,fHG,epsilon,KikwitGeneralPrev,KikwitNonhospPrev, E, tau]; 
     
     if model== 0
@@ -112,11 +113,13 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
     end
         
     % get model output ready to passing
-    modelout{1} = CumulativeCases;
-    modelout{2} = CumulativeDeaths;
-    modelout{3} = CumulativeHealthworkerIncidence;
-    modelout{4} = CumulativeHospitalAdmissions;
+    FittingOut{1} = CumulativeCases;
+    FittingOut{2} = CumulativeDeaths;
+    FittingOut{3} = CumulativeHealthworkerIncidence;
+    FittingOut{4} = CumulativeHospitalAdmissions;
     %modelout{5} = CumulativeHospitalDischarges;
     
+    modelout{1} = FittingOut;
+    modelout{2} = output;
 
 end

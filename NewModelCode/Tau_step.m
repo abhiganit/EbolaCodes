@@ -100,14 +100,18 @@ Rate(24) = (1-epsilon)*alpha*Ew;           Change(24,7) = -1; Change(24,16) = +1
 
 %% Cumulative Incidences (no reductions, only additions)
 % General: susc -> exposed
-Rate(25) = betaI*Sg*Ig/Ng;                         Change(25,20) = +1;
+%Rate(25) = betaI*Sg*Ig/Ng;                         Change(25,20) = +1;
+Rate(25) = epsilon*alpha*Eg;                         Change(25,20) = +1;
 % Funeral: susc -> exposed
-Rate(26) = (omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
-                betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;     Change(26,21) = +1; %betaF*Sf;
+% Rate(26) = (omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
+%                 betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;     Change(26,21) = +1; %betaF*Sf;
+Rate(26) = 0;  Change(26,21) = +1; %betaF*Sf;
 % Hosp: susc -> exposed
-Rate(27) = betaH*Sh*(Ih+Iw)/(Nh+Nw);      Change(27,22) = +1;  
+% Rate(27) = betaH*Sh*(Ih+Iw)/(Nh+Nw);      Change(27,22) = +1; 
+Rate(27) = epsilon*alpha*Eh;      Change(27,22) = +1;  
 % Worker: susc -> exposed
-Rate(28) = betaW*Sw*(Ih+Iw)/(Nh+Nw);      Change(28,23) = +1;
+%Rate(28) = betaW*Sw*(Ih+Iw)/(Nh+Nw);      Change(28,23) = +1;
+Rate(28) = epsilon*alpha*Ew;      Change(28,23) = +1;
 
 %% Cumulative Deaths (no reductions, only additions)
 % General: inf -> funeral

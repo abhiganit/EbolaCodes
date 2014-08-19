@@ -6,29 +6,26 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
     
     % Estimated Parameters
     betaI = x(1);      % Transmission coefficient in community
-    betaH = x(1);      % Transmission coefficient between patients or between HCWs
     betaW = x(2);      % Transmission coefficient between patients-HCWs
-   % delta = x(4);      % Case fatality
     theta = x(3);      % Percentage of infectious cases are hospitaized
-    gammaDH = x(4);
+    gammaDH = x(4);    % 1/Time between hospitalization and death
+    Ig0 = x(5);  
+    
     %disease progression parameters
     alpha = 1/7;        % 1/alpha: mean duration of the incubation period 
     gammaI = 1/10;      % 1/gammaI: mean duration of the infectious period for survivors
     gammaD = 1/7;       % 1/gammaD: mean duration from onset to death
-    
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
-    gammaH = x(4); %1/5;       % 1/gammaH: mean duration from symptom onset to hospitalization
     epsilon = 100/100;       % percentage Symptomatic illness 
     omega = 3.0;        % odds ratio of funeral risk relative to general population
     
     % population parameters
     KikwitGeneralPrev = 6.4e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     KikwitNonhospPrev = 5.6e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
-    N0 = 4.09e6; %4.4e6;         % Initial population size
+    N0 = 4.09e6;          % Initial population size
     M =  5;            % average family size
     MF = M - 1;         %number of chances to be at a funeral
     MH = 1;             % additional family members visiting hospital
-    
     E = 62*365;          % average life expectancy in Liberia 
     
     %funeral/hospitalization parameters
@@ -39,26 +36,22 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
     % dervied parameters
     gammaH = 1/(1/gammaD - 1/gammaDH);
     gammaIH = 1/(1/gammaI - 1/gammaH);     % 1/gammaIH: mean duration from hospitalization to end of infectiousness
-    %gammaDH = 1/(1/gammaD - 1/gammaH);     % 1/gammaDH: mean duration from hospitalization to death
-   % delta1 = delta*gammaI / (delta*gammaI + (1-delta)*gammaD);
-   % delta2 = delta*gammaIH / (delta*gammaIH + (1-delta)*gammaDH);
+    betaH = betaI;      % Transmission coefficient between patients or between HCWs
 
     % Initial conditions
     Eg0 = 0;  Eh0 = 0; Ew0 = 0;         % exposed
-    Ig0 = x(5);  Ih0 = 0; Iw0 = 0;         % infected
+              Ih0 = 0; Iw0 = 0;         % infected
     Fg0 = 0;  Fh0 = 0; Fw0 = 0;         % died:funeral
     Rg0 = 0;  Rh0 = 0; Rw0 = 0;         % recovered
     Dg0 = 0;  Dh0 = 0; Dw0 = 0;         % died:buried
     Cincg0 = Ig0; Cincf0 = 0; Cinch0 = 0; Cincw0 = 0;       % cumulative incidence
     Cdiedg0 = 0;  Cdiedh0 = 0; Cdiedw0 = 0;       % cumulative died
     CHosp0 = 0;
-    %CHospDis0 = 0;
-    
-    Sh0 = 20*(2.8/10000)*N0;   Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %
+    Sh0 = 20*(2.8/10000)*N0;   Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %susceptible
     
     % Algorithm parameters
     tau=1;
-    MaxIt = 1000;
+    MaxIt = 500;
     initial = [Sg0,Sf0,Sh0,Sw0,...  (1-4)
                 Eg0,Eh0,Ew0,... (5-7)
                 Ig0,Ih0,Iw0,...  (8-10)
@@ -68,7 +61,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime)
                 Cincg0,Cincf0,Cinch0,Cincw0, ... (20-23)
                 Cdiedg0,Cdiedh0,Cdiedw0,... (24-26)
                 CHosp0];            %27
-    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, MF,MH,fFG,fGH,fHG,epsilon,KikwitGeneralPrev,KikwitNonhospPrev, E, tau]; %delta1,delta2,
+    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, MF,MH,fFG,fGH,fHG,epsilon,KikwitGeneralPrev,KikwitNonhospPrev, E, tau]; 
     
     if model== 0
         clear output;

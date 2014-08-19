@@ -22,11 +22,11 @@ Cincg = old(20); Cincf = old(21); Cinch = old(22); Cincw = old(23);
 Cdiedg = old(24); Cdiedh = old(25); Cdiedw = old(26);
 CHosp = old(27); %CHospDis = old(34);
 
-F = Fg+Fh+Fw;
+%F = Fg+Fh+Fw;
 %Ng = max(Sg+Eg+Ig+Fg+Rg+Dg,1);
 Ng = max(Sg+Sf+Eg+Ig+Rg,1);
-Nh = max(Sh+Eh+Ih+Iw+Rh,1);
-Nw = max(Sw+Ew+Rw,1);
+Nh = max(Sh+Eh+Ih+Rh,1);
+Nw = max(Sw+Ew+Iw+Rw,1);
 %N = Sg+Eg+Ig+Fg+Rg+Dg   +   Sf+Ef+If+Ff+Rf+Df   +    Sh+Eh+Ih+Fh+Rh+Dh  + Sw+Ew+Iw+Fw+Rw+Dw;
 Nd = Ng + Nh + Nw;
 
@@ -45,9 +45,9 @@ Rate(1) = betaI*Sg*(Ig/Ng);                         Change(1,1) = -1; Change(1,5
 Rate(2) = (omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
                 betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;               Change(2,2) = -1; Change(2,5) = +1; %betaF*Sf; Ig/Ng
 % Hosp: susc -> exposed
-Rate(3) = betaH*Sh*(Ih/Nh + Iw/Nw);      Change(3,3) = -1; Change(3,6) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
+Rate(3) = betaH*Sh*(Ih+Iw)/(Nh+Nw);      Change(3,3) = -1; Change(3,6) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
 % Worker: susc -> exposed
-Rate(4) = betaW*Sw*(Ih/Nh + Iw/Nw);      Change(4,4) = -1; Change(4,7) = +1;
+Rate(4) = betaW*Sw*(Ih+Iw)/(Nh+Nw);      Change(4,4) = -1; Change(4,7) = +1;
 
 
 % General: exposed -> inf
@@ -105,9 +105,9 @@ Rate(25) = betaI*Sg*Ig/Ng;                         Change(25,20) = +1;
 Rate(26) = (omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
                 betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;     Change(26,21) = +1; %betaF*Sf;
 % Hosp: susc -> exposed
-Rate(27) = betaH*Sh*(Ih/Nh + Iw/Nw);      Change(27,22) = +1;  
+Rate(27) = betaH*Sh*(Ih+Iw)/(Nh+Nw);      Change(27,22) = +1;  
 % Worker: susc -> exposed
-Rate(28) = betaW*Sw*(Ih/Nh + Iw/Nw);      Change(28,23) = +1;
+Rate(28) = betaW*Sw*(Ih+Iw)/(Nh+Nw);      Change(28,23) = +1;
 
 %% Cumulative Deaths (no reductions, only additions)
 % General: inf -> funeral

@@ -23,7 +23,7 @@ Dg = old(17); Dh = old(18); Dw = old(19);
 Cincg = old(20); Cincf = old(21); Cinch = old(22); Cincw = old(23);
 Cdiedg = old(24); Cdiedh = old(25); Cdiedw = old(26);
 CHosp = old(27); %CHospDis = old(34);
-T = old(28; A = old(29);
+T = old(28); A = old(29);
 
 %F = Fg+Fh+Fw;
 %Ng = max(Sg+Eg+Ig+Fg+Rg+Dg,1);
@@ -43,12 +43,12 @@ Rate = zeros(40,1);
 
 %% Transitions
 % General: susc -> exposed
-Rate(1) = phiI*betaI*Sg*(Ig/Ng);                         Change(1,1) = -1; Change(1,5) = +1;
+Rate(1) = phiG*betaI*Sg*(Ig/Ng);                         Change(1,1) = -1; Change(1,5) = +1;
 % Funeral: susc -> exposed
 Rate(2) = (omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
                 betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;               Change(2,2) = -1; Change(2,5) = +1; %betaF*Sf; Ig/Ng
 % Hosp: susc -> exposed
-Rate(3) = phiI*betaH*Sh*(Ih+Iw)/(Nh+Nw);      Change(3,3) = -1; Change(3,6) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
+Rate(3) = phiG*betaH*Sh*(Ih+Iw)/(Nh+Nw);      Change(3,3) = -1; Change(3,6) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
 % Worker: susc -> exposed
 Rate(4) = phiW*betaW*Sw*(Ih+Iw)/(Nh+Nw);      Change(4,4) = -1; Change(4,7) = +1;
 
@@ -130,7 +130,7 @@ Rate(32) = gammaH*theta*Ig + alpha*(Eh+Ew);             Change(32,27) = +1;  %ga
 Rate(33) = iG*Ig;                                  Change(33,8) = -1;   Change(33,28) = +1;
 Rate(34) = iH*Ih;                                  Change(34,9) = -1;   Change(34,28) = +1;
 Rate(35) = iH*Iw;                                  Change(35,10) = -1;   Change(35,28) = +1;
-Rate(36) = c*phiC*epsilon*(Eg+Eh+Ew)*Eg/(Sg+Eg);   Change(36,5) = -1;   Change(36,29) = +1;
+Rate(36) = C*phiC*epsilon*(Eg+Eh+Ew)*Eg/(Sg+Eg);   Change(36,5) = -1;   Change(36,29) = +1;
 Rate(37) = alpha*epsilon*A;                        Change(37,29) = -1;  Change(37,28) = +1;
 Rate(38) = pG*(1-theta)*gammaD*Ig;                 Change(38,8) = -1;   Change(38,17) = +1;
 Rate(39) = pH*gammaDH*Ih;                          Change(39,9) = -1;   Change(39,18) = +1;

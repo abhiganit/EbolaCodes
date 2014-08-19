@@ -34,8 +34,8 @@ Nd = Ng + Nh + Nw;
 
 %%UPDATE THESE INTIIALIZESE
 % initialize arrays
-Change = zeros(38,size(old,1)); 
-Rate = zeros(38,1);
+Change = zeros(40,size(old,1)); 
+Rate = zeros(40,1);
 
 %prob ebola funeral
  newebolafunerals = (1-theta)*gammaD*(Ig) + gammaDH*(Ih+Iw);  %delta1*   delta2*
@@ -68,11 +68,11 @@ Rate(9) = (1-pH)*gammaDH*Ih;                            Change(9,9) = -1; Change
 Rate(10) = (1-pH)*gammaDH*Iw;                            Change(10,10) = -1; Change(10,13) = +1;  %delta2*
 
 % General: inf -> recovered
-Rate(11) = (1-pG)*gammaI*(1-theta)*Ig;               Change(11,8) = -1; Change(11,14) = +1;  %*(1-delta1)
+Rate(11) = gammaI*(1-theta)*Ig;               Change(11,8) = -1; Change(11,14) = +1;  %*(1-delta1)
 % Hosp: inf -> recovered
-Rate(12) = (1-pH)*gammaIH*Ih;                        Change(12,9) = -1; Change(12,15) = +1;  %*(1-delta2)
+Rate(12) = gammaIH*Ih;                        Change(12,9) = -1; Change(12,15) = +1;  %*(1-delta2)
 % Worker: inf -> recovered
-Rate(13) = (1-pH)*gammaIH*Iw;                        Change(13,10) = -1; Change(13,16) = +1;  %*(1-delta2)
+Rate(13) = gammaIH*Iw;                        Change(13,10) = -1; Change(13,16) = +1;  %*(1-delta2)
 
 % General: funeral -> dead
 Rate(14) = gammaF*Fg;                                    Change(14,11) = -1; Change(14,17) = +1;
@@ -102,14 +102,19 @@ Rate(24) = (1-epsilon)*alpha*Ew;           Change(24,7) = -1; Change(24,16) = +1
 
 %% Cumulative Incidences (no reductions, only additions)
 % General: susc -> exposed
-Rate(25) = phiG*betaI*Sg*Ig/Ng;                         Change(25,20) = +1;
+%Rate(25) = betaI*Sg*Ig/Ng;                         Change(25,20) = +1;
+Rate(25) = epsilon*alpha*Eg;                         Change(25,20) = +1;
 % Funeral: susc -> exposed
-Rate(26) = (omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
-                betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;     Change(26,21) = +1; %betaF*Sf;
+% Rate(26) = (omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
+%                 betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;     Change(26,21) = +1; %betaF*Sf;
+Rate(26) = 0;  Change(26,21) = +1; %betaF*Sf;
 % Hosp: susc -> exposed
-Rate(27) = betaH*Sh*(Ih+Iw)/(Nh+Nw);      Change(27,22) = +1;  
+% Rate(27) = betaH*Sh*(Ih+Iw)/(Nh+Nw);      Change(27,22) = +1; 
+Rate(27) = epsilon*alpha*Eh;      Change(27,22) = +1;  
 % Worker: susc -> exposed
-Rate(28) = phiW*betaW*Sw*(Ih+Iw)/(Nh+Nw);      Change(28,23) = +1;
+%Rate(28) = betaW*Sw*(Ih+Iw)/(Nh+Nw);      Change(28,23) = +1;
+Rate(28) = epsilon*alpha*Ew;      Change(28,23) = +1;
+
 
 %% Cumulative Deaths (no reductions, only additions)
 % General: inf -> funeral
@@ -126,17 +131,17 @@ Rate(32) = gammaH*theta*Ig + alpha*(Eh+Ew);             Change(32,27) = +1;  %ga
 %% Intervention Rates
 %isolation of infectious individuals
 Rate(33) = iG*Ig;                                  Change(33,8) = -1; Change(33,28) = +1; 
-Rate(34) = iH*Ih;                                  Change(33,9) = -1; Change(33,28) = +1;
-Rate(35) = iH*Iw;                                  Change(33,10) = -1; Change(33,28) = +1;
+Rate(34) = iH*Ih;                                  Change(34,9) = -1; Change(34,28) = +1;
+Rate(35) = iH*Iw;                                  Change(35,10) = -1; Change(35,28) = +1;
 
 %follow-up quarantine
 Rate(36) = C*phiC*epsilon*(Eg+Eh+Ew)*Eg/(Sg+Eg);    Change(36,5) = -1; Change(36,29) = +1;
 Rate(37) = alpha*epsilon*A;                         Change(37,29) = -1; Change(37,28) = +1;
 
 %funeral hygiene
-Rate(38) = pG*(1-theta)*gammaD*Ig;                  Change(38,8) = -1; Change(38,17) = +1;
-Rate(39) = pH*(1-theta)*gammaDH*Ih;                  Change(39,9) = -1; Change(40,18) = +1;
-Rate(40) = pH*(1-theta)*gammaDH*Iw;                  Change(40,10) = -1; Change(40,19) = +1;
+Rate(38) = pG*gammaD*Ig;                  Change(38,8) = -1; Change(38,17) = +1;
+Rate(39) = pH*gammaDH*Ih;                  Change(39,9) = -1; Change(39,18) = +1;
+Rate(40) = pH*gammaDH*Iw;                  Change(40,10) = -1; Change(40,19) = +1;
 
 
 %% Cumulative Hospital Discharges (including HCW)

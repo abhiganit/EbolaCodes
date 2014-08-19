@@ -8,6 +8,8 @@ Items to think about/include
 
 
 
+Tuesday 19th August: Movement from Eh to Eg (recovery of hospitalizeed (suggest to ignore)
+Tues 19th Aug: Intermediate infectious compartment for those already in hospital (see experimental code)
 
 
 
@@ -39,3 +41,5 @@ Thursday 14th August: Rate of hospitalization should be fitted to data instead o
 Thursday 14th August: We assume that the hospital staff do not move to Hosp class, but remain with same transmission until funeral. But we need to reconsider the movement of these workers to the hospitalized class I think.  In the cumulative hospitalizations I've assumed that all HCW that are sick go to the Ih class.  We should make this symmetric with the rest of the model. (not necessary to include )
 
 Tuesday 12th August: Currently have "case counts" being total people that have ever been infected with EBV regardless whether they are living or dead.  Make sure this is consistent with the data. (don't know how to resolve this, leave to discussion in ms)
+
+Tues 19th August: cumulative incidence for fitting should be individuals who move from E to I. (updated tues 19th august)

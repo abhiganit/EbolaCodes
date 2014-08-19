@@ -1,4 +1,4 @@
-function modelout = EbolaModel_AbhiSimple(model, x, timepoints, MaxTime)
+function modelout = EbolaModel(model, x, timepoints, MaxTime)
 % model = 0 runs stochastic model where as model = 1 runs the difference
 % equation.
     
@@ -10,14 +10,14 @@ function modelout = EbolaModel_AbhiSimple(model, x, timepoints, MaxTime)
     betaW = x(2);      % Transmission coefficient between patients-HCWs
    % delta = x(4);      % Case fatality
     theta = x(3);      % Percentage of infectious cases are hospitaized
-  
+    gammaDH = x(4);
     %disease progression parameters
     alpha = 1/7;        % 1/alpha: mean duration of the incubation period 
     gammaI = 1/10;      % 1/gammaI: mean duration of the infectious period for survivors
     gammaD = 1/7;       % 1/gammaD: mean duration from onset to death
     
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
-    gammaH = 1/5;       % 1/gammaH: mean duration from symptom onset to hospitalization
+    gammaH = x(4); %1/5;       % 1/gammaH: mean duration from symptom onset to hospitalization
     epsilon = 100/100;       % percentage Symptomatic illness 
     omega = 3.0;        % odds ratio of funeral risk relative to general population
     
@@ -37,14 +37,15 @@ function modelout = EbolaModel_AbhiSimple(model, x, timepoints, MaxTime)
     fHG = 1/7;          % 1/average time spent at in hospital with non-ebola disease
     
     % dervied parameters
+    gammaH = 1/(1/gammaD - 1/gammaDH);
     gammaIH = 1/(1/gammaI - 1/gammaH);     % 1/gammaIH: mean duration from hospitalization to end of infectiousness
-    gammaDH = 1/(1/gammaD - 1/gammaH);     % 1/gammaDH: mean duration from hospitalization to death
+    %gammaDH = 1/(1/gammaD - 1/gammaH);     % 1/gammaDH: mean duration from hospitalization to death
    % delta1 = delta*gammaI / (delta*gammaI + (1-delta)*gammaD);
    % delta2 = delta*gammaIH / (delta*gammaIH + (1-delta)*gammaDH);
 
     % Initial conditions
     Eg0 = 0;  Eh0 = 0; Ew0 = 0;         % exposed
-    Ig0 = x(4);  Ih0 = 0; Iw0 = 0;         % infected
+    Ig0 = x(5);  Ih0 = 0; Iw0 = 0;         % infected
     Fg0 = 0;  Fh0 = 0; Fw0 = 0;         % died:funeral
     Rg0 = 0;  Rh0 = 0; Rw0 = 0;         % recovered
     Dg0 = 0;  Dh0 = 0; Dw0 = 0;         % died:buried

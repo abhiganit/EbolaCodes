@@ -1,4 +1,4 @@
-function [new_value]=Tau_step_AbhiSimple(old, Parameters, t)
+function [new_value]=Tau_step(old, Parameters, t)
 
 % Parameters
 betaI = Parameters(1); betaH = Parameters(2); betaW = Parameters(3); omega = Parameters(4);

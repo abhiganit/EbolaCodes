@@ -6,17 +6,17 @@ function EbolaModelRunIntervention
 % get data
 [timesets_nointervention, datasets, maxtime, weights] = CleanData();
 % run up until current time with no intervention
-model_nointervention = EbolaModel_intervention(1, EstimatedParameters(), timesets_nointervention, maxtime, Initial(EstimatedParameters()));
+model_nointervention = EbolaModel(1, EstimatedParameters(), timesets_nointervention, maxtime, InitializeNoIntervention(EstimatedParameters()));
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%% INTERVENTION %%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % run from current time with intervention
-interventionduration = 10;
+interventionduration = 300;
 timesets_intervention = repmat({0:interventionduration},1,4);
 allruns = model_nointervention{2};
-initial = allruns(:,end);
+initial = InitializeIntervention(allruns(:,end));
 model_intervention = EbolaModel_intervention(1, EstimatedParameters(), timesets_intervention, interventionduration, initial');
 
 
@@ -41,7 +41,7 @@ function eps = EstimatedParameters()
 
 end
 
-function ic = Initial(x)
+function ic = InitializeNoIntervention(x)
     
 % Initial conditions
     N0 = 4.09e6;          % Initial population size    Ig0 = x(5);  
@@ -54,8 +54,8 @@ function ic = Initial(x)
     Cdiedg0 = 0;  Cdiedh0 = 0; Cdiedw0 = 0;       % cumulative died
     CHosp0 = 0;
     Sh0 = 20*(2.8/10000)*N0;   Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %susceptible
-    T = 0;
-    A = 0;
+%     T = 0;
+%     A = 0;
     
     ic =  [Sg0,Sf0,Sh0,Sw0,...  (1-4)
                 Eg0,Eh0,Ew0,... (5-7)
@@ -65,6 +65,15 @@ function ic = Initial(x)
                 Dg0,Dh0,Dw0, ...   (17-19)
                 Cincg0,Cincf0,Cinch0,Cincw0, ... (20-23)
                 Cdiedg0,Cdiedh0,Cdiedw0,... (24-26)
-                CHosp0,...%27
-                T, A];       %28-29      
+                CHosp0];%,...%27
+                %T, A];       %28-29      
+end
+
+function ic = InitializeIntervention(previousoutput)
+    
+T0 = 0;
+A0 = 0;
+
+ic = [previousoutput; T0; A0];
+      
 end

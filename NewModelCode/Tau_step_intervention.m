@@ -1,4 +1,4 @@
-function [new_value]=Tau_step_intervention_Katie(old, Parameters, t)
+function [new_value]=Tau_step_intervention(old, Parameters, t)
 
 % Parameters
 betaI = Parameters(1); betaH = Parameters(2); betaW = Parameters(3); omega = Parameters(4);
@@ -48,7 +48,7 @@ Rate(1) = phiG*betaI*Sg*(Ig/Ng);                         Change(1,1) = -1; Chang
 Rate(2) = (omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
                 betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;               Change(2,2) = -1; Change(2,5) = +1; %betaF*Sf; Ig/Ng
 % Hosp: susc -> exposed
-Rate(3) = betaH*Sh*(Ih+Iw)/(Nh+Nw);      Change(3,3) = -1; Change(3,6) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
+Rate(3) = phiG*betaH*Sh*(Ih+Iw)/(Nh+Nw);      Change(3,3) = -1; Change(3,6) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
 % Worker: susc -> exposed
 Rate(4) = phiW*betaW*Sw*(Ih+Iw)/(Nh+Nw);      Change(4,4) = -1; Change(4,7) = +1;
 

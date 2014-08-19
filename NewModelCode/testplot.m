@@ -14,6 +14,7 @@ for i = 1:size(fittingoutput,2)
     plot(timesets_total{i}, fittingoutput{i}, 'Color','k' , 'LineWidth', 1.6) %
     %plot(timesets{i}, datasets{i}, '.r', 'MarkerSize', 14)
     xlabel('Time Since Index Case (days)', 'interpreter', 'latex', 'FontSize', 14)
+    plot([64 64], [0 800], '--r')
     title(strings{i}, 'interpreter', 'latex', 'FontSize', 16)
     set(gca, 'FontSize', 14)
 %     ylim([0 400])

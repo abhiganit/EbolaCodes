@@ -55,8 +55,8 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
     iG = 0;
     iH = 0;
     C = 0;
-    phiG = 1;
-    phiW = 1;
+    phiG = 0;
+    phiW = 0;
     phiC = 1;
     pG = 0;
     pH = 0;
@@ -73,9 +73,13 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
 %                 Cincg0,Cincf0,Cinch0,Cincw0, ... (20-23)
 %                 Cdiedg0,Cdiedh0,Cdiedw0,... (24-26)
 %                 CHosp0];            %27
-    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, MF,MH,fFG,fGH,fHG,epsilon,KikwitGeneralPrev,KikwitNonhospPrev, E,...
-                    iG, iH, C, phiG, phiW, phiC, pG, pH,...
-                    tau]; 
+    params = [betaI,betaH,betaW, ... (1-3)
+            omega, alpha, theta, ...   (4-6)
+            gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, ... (7-12)
+            MF,MH,fFG,fGH,fHG,...       (13-17)
+            epsilon,KikwitGeneralPrev,KikwitNonhospPrev, E,... (18-21)
+                    iG, iH, C, phiG, phiW, phiC, pG, pH,... (22-29)
+                    tau];  %(30)
     
     if model== 0
         clear output;

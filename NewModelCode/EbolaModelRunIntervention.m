@@ -1,4 +1,4 @@
-function EbolaModelIntervention
+function EbolaModelRunIntervention
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%% NO INTERVENTION %%%%%%%%%%%
@@ -17,7 +17,7 @@ interventionduration = 10;
 timesets_intervention = repmat({0:interventionduration},1,4);
 allruns = model_nointervention{2};
 initial = allruns(:,end);
-model_intervention = EbolaModel(1, EstimatedParameters(), timesets_intervention, interventionduration, initial');
+model_intervention = EbolaModel_intervention(1, EstimatedParameters(), timesets_intervention, interventionduration, initial');
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -17,44 +17,43 @@ Ig = old(8);  Ih = old(9); Iw = old(10);
 Fg = old(11); Fh = old(12); Fw = old(13);
 Rg = old(14); Rh = old(15); Rw = old(16);
 Dg = old(17); Dh = old(18); Dw = old(19);
-Cincg = old(20); Cincf = old(21); Cinch = old(22); Cincw = old(23);
-Cdiedg = old(24); Cdiedh = old(25); Cdiedw = old(26);
-CHosp = old(27); %CHospDis = old(34);
+%cumulative incidences
+Cincg = old(20); Cinch = old(21); Cincw = old(22);
+Cdiedg = old(23); Cdiedh = old(24); Cdiedw = old(25);
+CHosp = old(26); 
+Iht = old(27);  Iwt = old(28);
 
-%F = Fg+Fh+Fw;
-%Ng = max(Sg+Eg+Ig+Fg+Rg+Dg,1);
-Ng = max(Sg+Sf+Eg+Ig+Rg,1);
-Nh = max(Sh+Eh+Ih+Rh,1);
-Nw = max(Sw+Ew+Iw+Rw,1);
-%N = Sg+Eg+Ig+Fg+Rg+Dg   +   Sf+Ef+If+Ff+Rf+Df   +    Sh+Eh+Ih+Fh+Rh+Dh  + Sw+Ew+Iw+Fw+Rw+Dw;
+Ng = Sg+Sf+Eg+Ig+Rg;
+Nh = Sh+Eh+Ih+Iht+Rh;
+Nw = Sw+Ew+Iw+Iwt+Rw;
 Nd = Ng + Nh + Nw;
 
 % initialize arrays
-Change = zeros(32,size(old,1)); %33 states, 40 events
-Rate = zeros(32,1);
+Change = zeros(33,size(old,1)); %33 rates, X states
+Rate = zeros(33,1);
 
 %prob ebola funeral
- newebolafunerals = (1-theta)*gammaD*(Ig) + gammaDH*(Ih+Iw);  %delta1*   delta2*
- newnonebolafunerals = Nd/E;
+newebolafunerals = (1-theta)*gammaD*(Ig) + gammaDH*(Ih+Iw);  
+newnonebolafunerals = Nd/E;
 
 %% Transitions
 % General: susc -> exposed
 Rate(1) = betaI*Sg*(Ig/Ng);                         Change(1,1) = -1; Change(1,5) = +1;
 % Funeral: susc -> exposed
 Rate(2) = (omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
-                betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;               Change(2,2) = -1; Change(2,5) = +1; %betaF*Sf; Ig/Ng
+                betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;               Change(2,2) = -1; Change(2,5) = +1; 
 % Hosp: susc -> exposed
-Rate(3) = betaH*Sh*(Ih+Iw)/(Nh+Nw);      Change(3,3) = -1; Change(3,6) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
+Rate(3) = betaH*Sh*(Ih+Iht+Iw+Iwt)/(Nh+Nw);      Change(3,3) = -1; Change(3,6) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
 % Worker: susc -> exposed
-Rate(4) = betaW*Sw*(Ih+Iw)/(Nh+Nw);      Change(4,4) = -1; Change(4,7) = +1;
+Rate(4) = betaW*Sw*(Ih+Iht+Iw+Iwt)/(Nh+Nw);      Change(4,4) = -1; Change(4,7) = +1;
 
 
 % General: exposed -> inf
 Rate(5) = epsilon*alpha*Eg;                                      Change(5,5) = -1; Change(5,8) = +1;
 % Hosp: exposed -> inf
-Rate(6) = epsilon*alpha*Eh;                                      Change(6,6) = -1; Change(6,9) = +1;
+Rate(6) = epsilon*alpha*Eh;                                      Change(6,6) = -1; Change(6,27) = +1;
 % Worker: exposed -> inf
-Rate(7) = epsilon*alpha*Ew;                                      Change(7,7) = -1; Change(7,10) = +1;
+Rate(7) = epsilon*alpha*Ew;                                      Change(7,7) = -1; Change(7,28) = +1;
 
 % General: inf -> funeral
 Rate(8) = (1-theta)*gammaD*Ig;                    Change(8,8) = -1; Change(8,11) = +1;  %delta1*
@@ -91,7 +90,7 @@ Rate(20) = fHG*Sh;                                       Change(20,3) = -1; Chan
 Rate(21) = gammaH*theta*Ig;                              Change(21,8) = -1; Change(21,9) = +1;
 
 % General:exposed -> General:recovered
-Rate(22) =(1-epsilon)*alpha*Eg;                                Change(22,5) = -1; Change(22,14) = +1;
+Rate(22) =(1-epsilon)*alpha*Eg;            Change(22,5) = -1; Change(22,14) = +1;
 % Hosp:exposed -> Hosp:recovered
 Rate(23) = (1-epsilon)*alpha*Eh;           Change(23,6) = -1; Change(23,15) = +1;
 % Worker:susc -> Worker:recovered
@@ -99,35 +98,28 @@ Rate(24) = (1-epsilon)*alpha*Ew;           Change(24,7) = -1; Change(24,16) = +1
 
 %% Cumulative Incidences (no reductions, only additions)
 % General: susc -> exposed
-Rate(25) = betaI*Sg*Ig/Ng;                         Change(25,20) = +1;
-% Funeral: susc -> exposed
-Rate(26) = (omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
-                betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;     Change(26,21) = +1; %betaF*Sf;
-% Hosp: susc -> exposed
-Rate(27) = betaH*Sh*(Ih+Iw)/(Nh+Nw);      Change(27,22) = +1;  
+Rate(25) = epsilon*alpha*Eg;                        Change(25,20) = +1;
+% Hosp: susc -> exposed 
+Rate(26) = epsilon*alpha*Eh;       					Change(26,21) = +1;  
 % Worker: susc -> exposed
-Rate(28) = betaW*Sw*(Ih+Iw)/(Nh+Nw);      Change(28,23) = +1;
+Rate(27) = epsilon*alpha*Ew;      					Change(27,22) = +1;
 
 %% Cumulative Deaths (no reductions, only additions)
 % General: inf -> funeral
-Rate(29) = (1-theta)*gammaD*Ig;                   Change(29,24) = +1;  %delta1*
+Rate(28) = (1-theta)*gammaD*Ig;                   Change(28,23) = +1; 
 % Hosp: inf -> funeral
-Rate(30) = gammaDH*Ih;                            Change(30,25) = +1;  %delta2*
+Rate(29) = gammaDH*Ih;                            Change(29,24) = +1; 
 % Worker: inf -> funeral
-Rate(31) = gammaDH*Iw;                            Change(31,26) = +1;  %delta2*
+Rate(30) = gammaDH*Iw;                            Change(30,25) = +1; 
 
 
 %% Cumulative Hospitalizations (including HCW)
-Rate(32) = gammaH*theta*Ig + alpha*(Eh+Ew);             Change(32,27) = +1;  %gammaH*Iw  + 
+Rate(31) = gammaH*theta*Ig + alpha*(Eh+Ew);             Change(31,26) = +1; 
    
 
-%% Cumulative Hospital Discharges (including HCW)
-%Rate(40) = gammaIH*(1-delta2)*Ih + gammaIH*(1-delta2)*Iw;       Change(40,34) = +1;
-
-
-%% run algorithm
-
-new_value=old;
+%% Delay for infections at hospital
+Rate(32) = gammaH*Iht;                               Change(32,27) = -1;    Change(32,9) = +1;
+Rate(33) = gammaH*Iwt;                               Change(33,28) = -1;    Change(33,10) = +1;
 
 for i=1:size(Rate,1)
     Num=poissrnd(Rate(i)*tau); 

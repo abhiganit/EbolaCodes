@@ -23,4 +23,10 @@ for i = 1:s
     xlabel('Days after intervention')
     ylabel('New ebola cases')   
 %  set(gca,'XtickLabel',1:1:m-1)
+
 end
+   
+
+
+            
+ 

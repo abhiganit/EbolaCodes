@@ -76,10 +76,10 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial)
 
         end
             %% SAVE OUTPUT
-            CumulativeCases = output(20,(timepoints{1}+1),:) + output(21,(timepoints{1}+1),:) + output(22,(timepoints{1}+1),:) + output(23,(timepoints{1}+1),:);
-            CumulativeDeaths = output(24,(timepoints{1}+1),:) + output(25,(timepoints{1}+1),:) + output(26,(timepoints{1}+1),:);
-            CumulativeHealthworkerIncidence = output(23,timepoints{3}+1,:);
-            CumulativeHospitalAdmissions = output(27,timepoints{4}+1,:);
+            CumulativeCases = output(20,(timepoints{1}+1),:) + output(21,(timepoints{1}+1),:) + output(22,(timepoints{1}+1),:);
+            CumulativeDeaths = output(23,(timepoints{1}+1),:) + output(24,(timepoints{1}+1),:) + output(25,(timepoints{1}+1),:);
+            CumulativeHealthworkerIncidence = output(22,timepoints{3}+1,:);
+            CumulativeHospitalAdmissions = output(26,timepoints{4}+1,:);
             
             CumulativeCases = reshape(CumulativeCases, 65, MaxIt);
             CumulativeDeaths = reshape(CumulativeDeaths, 65, MaxIt);
@@ -105,10 +105,10 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial)
            %% OUTPUT
            
             %% SAVE OUTPUT
-            CumulativeCases = output(20,(timepoints{1}+1)) + output(21,(timepoints{1}+1)) + output(22,(timepoints{1}+1)) + output(23,(timepoints{1}+1));
-            CumulativeDeaths = output(24,(timepoints{1}+1)) + output(25,(timepoints{1}+1)) + output(26,(timepoints{1}+1));
-            CumulativeHealthworkerIncidence = output(23,timepoints{3}+1);
-            CumulativeHospitalAdmissions = output(27,timepoints{4}+1);
+            CumulativeCases = output(20,(timepoints{1}+1)) + output(21,(timepoints{1}+1)) + output(22,(timepoints{1}+1));
+            CumulativeDeaths = output(23,(timepoints{1}+1)) + output(24,(timepoints{1}+1)) + output(25,(timepoints{1}+1));
+            CumulativeHealthworkerIncidence = output(22,timepoints{3}+1);
+            CumulativeHospitalAdmissions = output(26,timepoints{4}+1);
             
 %             CumulativeCases = reshape(CumulativeCases, 65, MaxIt);
 %             CumulativeDeaths = reshape(CumulativeDeaths, 65, MaxIt);

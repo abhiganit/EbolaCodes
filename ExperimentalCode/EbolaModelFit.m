@@ -27,7 +27,7 @@ function ic = Initial(x)
     Fg0 = 0;    Fh0 = 0; Fw0 = 0;         % died:funeral
     Rg0 = 0;    Rh0 = 0; Rw0 = 0;         % recovered
     Dg0 = 0;    Dh0 = 0; Dw0 = 0;         % died:buried
-    Cincg0 = Ig0; Cincf0 = 0; Cinch0 = 0; Cincw0 = 0;       % cumulative incidence
+    Cincg0 = Ig0; Cinch0 = 0; Cincw0 = 0;       % cumulative incidence
     Cdiedg0 = 0;  Cdiedh0 = 0; Cdiedw0 = 0;       % cumulative died
     CHosp0 = 0;Iht0 = 0; Iwt0 = 0;
     Sh0 = 20*(2.8/10000)*N0;   Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %susceptible
@@ -38,7 +38,7 @@ function ic = Initial(x)
                 Fg0,Fh0, Fw0,...  (11-13)
                 Rg0,Rh0,Rw0,...   (14-16)
                 Dg0,Dh0,Dw0, ...   (17-19)
-                Cincg0,Cincf0,Cinch0,Cincw0, ... (20-23)
-                Cdiedg0,Cdiedh0,Cdiedw0,... (24-26)
-                CHosp0, Iht0, Iwt0];            %27
+                Cincg0,Cinch0,Cincw0, ... (20-22)
+                Cdiedg0,Cdiedh0,Cdiedw0,... (23-25)
+                CHosp0, Iht0, Iwt0];            %26-28
 end

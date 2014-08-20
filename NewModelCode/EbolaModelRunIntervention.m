@@ -31,14 +31,14 @@ testplot
 end
 
 function eps = EstimatedParameters()
-    
-    betaI = 0.10533; 
-    betaW = 0.23452;
-    theta = 0.18262;
-    gammaDH = 0.17134;
-    Ig0 = 17.98059;
-    eps = [betaI, betaW, theta, gammaDH, Ig0];
 
+    betaI = 0.10260; 
+    betaW = 0.21548;
+    theta=0.43483;
+    gammaDH=0.21986;
+    Ig0=14.71689;
+%     eps = [betaI, betaW, theta, gammaDH, Ig0];
+eps =[0.10547 0.20851 0.15810 0.16696 18.21165 ];
 end
 
 function ic = InitializeNoIntervention(x)
@@ -50,12 +50,12 @@ function ic = InitializeNoIntervention(x)
     Fg0 = 0;    Fh0 = 0; Fw0 = 0;         % died:funeral
     Rg0 = 0;    Rh0 = 0; Rw0 = 0;         % recovered
     Dg0 = 0;    Dh0 = 0; Dw0 = 0;         % died:buried
-    Cincg0 = Ig0; Cincf0 = 0; Cinch0 = 0; Cincw0 = 0;       % cumulative incidence
+    Cincg0 = Ig0; Cinch0 = 0; Cincw0 = 0;       % cumulative incidence
     Cdiedg0 = 0;  Cdiedh0 = 0; Cdiedw0 = 0;       % cumulative died
-    CHosp0 = 0;
+    CHosp0 = 0; Iht0 = 0; Iwt0 = 0;
     Sh0 = 20*(2.8/10000)*N0;   Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %susceptible
-%     T = 0;
-%     A = 0;
+%      T0 = 0;
+%      A0 = 0;
     
     ic =  [Sg0,Sf0,Sh0,Sw0,...  (1-4)
                 Eg0,Eh0,Ew0,... (5-7)
@@ -63,10 +63,10 @@ function ic = InitializeNoIntervention(x)
                 Fg0,Fh0, Fw0,...  (11-13)
                 Rg0,Rh0,Rw0,...   (14-16)
                 Dg0,Dh0,Dw0, ...   (17-19)
-                Cincg0,Cincf0,Cinch0,Cincw0, ... (20-23)
-                Cdiedg0,Cdiedh0,Cdiedw0,... (24-26)
-                CHosp0];%,...%27
-                %T, A];       %28-29      
+                Cincg0,Cinch0,Cincw0, ... (20-22)
+                Cdiedg0,Cdiedh0,Cdiedw0,... (23-25)
+                CHosp0,Iht0, Iwt0]; %,... %26-28 
+                %T0,A0];             %29-30 
 end
 
 function ic = InitializeIntervention(previousoutput)

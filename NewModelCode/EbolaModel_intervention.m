@@ -30,7 +30,7 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
     
     %funeral/hospitalization parameters
     fFG = 1/2;          % 1/average time spent at close quarters with body at funeral
-    fGH = 62131 / (N0 * 365);  % rate of hospitalization per person per day 
+    fGH = 62131 / (N0 * 365);  % rate of hospitalization per person per day (DRC 2012 estimates)
     fHG = 1/7;          % 1/average time spent at in hospital with non-ebola disease
     
     % dervied parameters
@@ -52,14 +52,16 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
     
 
     % intervention parameters
-    iG = 0;  %isolation rate
-    iH = 0;  %isolation rate
-    C = 11;
+    iG = 0;
+    iH = 0;
     phiG = 1;
     phiW = 1;
-    phiC = 1;
-    pG = 0;
+    phiC = 0;
+    pG = 0.;
     pH = 0;
+    C = 11;  %not varying
+    
+    
     
     % Algorithm parameters
     tau=1;
@@ -88,7 +90,7 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
         parfor i = 1:MaxIt
             %display(i)
             % The main iteration 
-            [~, pop]=Stoch_Iteration_intervention([0 MaxTime],initial,params);
+            [T, pop]=Stoch_Iteration_intervention([0 MaxTime],initial,params);
             output(:,:,i)=pop';
 
         end
@@ -106,7 +108,7 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
     else
             % The main iteration (note as it is difference equation, we
             % only run it once)
-            [~, pop]=Diffeqn_Iteration_intervention([0 MaxTime],initial,params);
+            [T, pop]=Diffeqn_Iteration_intervention([0 MaxTime],initial,params);
             output=pop';
 %             output.Sg=pop(:,1); output.Sf = pop(:,2); output.Sh = pop(:,3); output.Sw = pop(:,4); 
 %             output.Eg=pop(:,5); output.Eh = pop(:,6); output.Ew = pop(:,7); 
@@ -122,10 +124,10 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
            %% OUTPUT
            
             %% SAVE OUTPUT
-            CumulativeCases = output(20,(timepoints{1}+1)) + output(21,(timepoints{1}+1)) + output(22,(timepoints{1}+1)) + output(23,(timepoints{1}+1));
-            CumulativeDeaths = output(24,(timepoints{1}+1)) + output(25,(timepoints{1}+1)) + output(26,(timepoints{1}+1));
-            CumulativeHealthworkerIncidence = output(23,timepoints{3}+1);
-            CumulativeHospitalAdmissions = output(27,timepoints{4}+1);
+            CumulativeCases = output(20,(timepoints{1}+1)) + output(21,(timepoints{1}+1)) + output(22,(timepoints{1}+1));
+            CumulativeDeaths = output(23,(timepoints{1}+1)) + output(24,(timepoints{1}+1)) + output(25,(timepoints{1}+1));
+            CumulativeHealthworkerIncidence = output(22,timepoints{3}+1);
+            CumulativeHospitalAdmissions = output(26,timepoints{4}+1);
             
 %             CumulativeCases = reshape(CumulativeCases, 65, MaxIt);
 %             CumulativeDeaths = reshape(CumulativeDeaths, 65, MaxIt);

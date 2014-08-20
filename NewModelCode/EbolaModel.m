@@ -71,15 +71,15 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial)
         parfor i = 1:MaxIt
             %display(i)
             % The main iteration 
-            [~, pop]=Stoch_Iteration([0 MaxTime],initial,params);
+            [T, pop]=Stoch_Iteration([0 MaxTime],initial,params);
             output(:,:,i)=pop';
 
         end
             %% SAVE OUTPUT
-            CumulativeCases = output(20,(timepoints{1}+1),:) + output(21,(timepoints{1}+1),:) + output(22,(timepoints{1}+1),:) + output(23,(timepoints{1}+1),:);
-            CumulativeDeaths = output(24,(timepoints{1}+1),:) + output(25,(timepoints{1}+1),:) + output(26,(timepoints{1}+1),:);
-            CumulativeHealthworkerIncidence = output(23,timepoints{3}+1,:);
-            CumulativeHospitalAdmissions = output(27,timepoints{4}+1,:);
+            CumulativeCases = output(20,(timepoints{1}+1),:) + output(21,(timepoints{1}+1),:) + output(22,(timepoints{1}+1),:);
+            CumulativeDeaths = output(23,(timepoints{1}+1),:) + output(24,(timepoints{1}+1),:) + output(25,(timepoints{1}+1),:);
+            CumulativeHealthworkerIncidence = output(22,timepoints{3}+1,:);
+            CumulativeHospitalAdmissions = output(26,timepoints{4}+1,:);
             
             CumulativeCases = reshape(CumulativeCases, 65, MaxIt);
             CumulativeDeaths = reshape(CumulativeDeaths, 65, MaxIt);
@@ -89,7 +89,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial)
     else
             % The main iteration (note as it is difference equation, we
             % only run it once)
-            [~, pop]=Diffeqn_Iteration([0 MaxTime],initial,params);
+            [T, pop]=Diffeqn_Iteration([0 MaxTime],initial,params);
             output=pop';
 %             output.Sg=pop(:,1); output.Sf = pop(:,2); output.Sh = pop(:,3); output.Sw = pop(:,4); 
 %             output.Eg=pop(:,5); output.Eh = pop(:,6); output.Ew = pop(:,7); 
@@ -105,10 +105,10 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial)
            %% OUTPUT
            
             %% SAVE OUTPUT
-            CumulativeCases = output(20,(timepoints{1}+1)) + output(21,(timepoints{1}+1)) + output(22,(timepoints{1}+1)) + output(23,(timepoints{1}+1));
-            CumulativeDeaths = output(24,(timepoints{1}+1)) + output(25,(timepoints{1}+1)) + output(26,(timepoints{1}+1));
-            CumulativeHealthworkerIncidence = output(23,timepoints{3}+1);
-            CumulativeHospitalAdmissions = output(27,timepoints{4}+1);
+            CumulativeCases = output(20,(timepoints{1}+1)) + output(21,(timepoints{1}+1)) + output(22,(timepoints{1}+1));
+            CumulativeDeaths = output(23,(timepoints{1}+1)) + output(24,(timepoints{1}+1)) + output(25,(timepoints{1}+1));
+            CumulativeHealthworkerIncidence = output(22,timepoints{3}+1);
+            CumulativeHospitalAdmissions = output(26,timepoints{4}+1);
             
 %             CumulativeCases = reshape(CumulativeCases, 65, MaxIt);
 %             CumulativeDeaths = reshape(CumulativeDeaths, 65, MaxIt);

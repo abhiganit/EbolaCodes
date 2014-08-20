@@ -31,12 +31,12 @@ testplot
 end
 
 function eps = EstimatedParameters()
-
-    betaI = 0.10260; 
-    betaW = 0.21548;
-    theta=0.43483;
-    gammaDH=0.21986;
-    Ig0=14.71689;
+    
+    betaI = 0.10533; 
+    betaW = 0.23452;
+    theta = 0.18262;
+    gammaDH = 0.17134;
+    Ig0 = 17.98059;
     eps = [betaI, betaW, theta, gammaDH, Ig0];
 
 end

@@ -11,7 +11,7 @@ Items to think about/include
 Tuesday 19th August: Movement from Eh to Eg (recovery of hospitalizeed (suggest to ignore)
 Tues 19th Aug: Intermediate infectious compartment for those already in hospital (see experimental code)
 
-
+Tuesday 19th August: Reduce the rate of hospitalization for non-ebola patients through time (at stop them at a specific time)
 
 
 

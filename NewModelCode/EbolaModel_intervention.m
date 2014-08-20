@@ -30,7 +30,7 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
     
     %funeral/hospitalization parameters
     fFG = 1/2;          % 1/average time spent at close quarters with body at funeral
-    fGH = 62131 / (N0 * 365);  % rate of hospitalization per person per day (DRC 2012 estimates)
+    fGH = 62131 / (N0 * 365);  % rate of hospitalization per person per day 
     fHG = 1/7;          % 1/average time spent at in hospital with non-ebola disease
     
     % dervied parameters
@@ -52,11 +52,11 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
     
 
     % intervention parameters
-    iG = 0;
-    iH = 0;
-    C = 0;
-    phiG = 0;
-    phiW = 0;
+    iG = 0;  %isolation rate
+    iH = 0;  %isolation rate
+    C = 11;
+    phiG = 1;
+    phiW = 1;
     phiC = 1;
     pG = 0;
     pH = 0;

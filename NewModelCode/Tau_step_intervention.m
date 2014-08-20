@@ -38,7 +38,7 @@ Change = zeros(40,size(old,1));
 Rate = zeros(40,1);
 
 %prob ebola funeral
- newebolafunerals = (1-theta)*gammaD*(Ig) + gammaDH*(Ih+Iw);  %delta1*   delta2*
+ newebolafunerals = (1-pG)*(1-theta)*gammaD*Ig + (1-pH)*gammaDH*(Ih+Iw);  %delta1*   delta2*
  newnonebolafunerals = Nd/E;
 
 %% Transitions
@@ -48,7 +48,7 @@ Rate(1) = phiG*betaI*Sg*(Ig/Ng);                         Change(1,1) = -1; Chang
 Rate(2) = (omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
                 betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;               Change(2,2) = -1; Change(2,5) = +1; %betaF*Sf; Ig/Ng
 % Hosp: susc -> exposed
-Rate(3) = phiG*betaH*Sh*(Ih+Iw)/(Nh+Nw);      Change(3,3) = -1; Change(3,6) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
+Rate(3) = betaH*Sh*(Ih+Iw)/(Nh+Nw);      Change(3,3) = -1; Change(3,6) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
 % Worker: susc -> exposed
 Rate(4) = phiW*betaW*Sw*(Ih+Iw)/(Nh+Nw);      Change(4,4) = -1; Change(4,7) = +1;
 
@@ -83,7 +83,7 @@ Rate(15) = gammaF*Fh;                                    Change(15,12) = -1; Cha
 Rate(16) = gammaF*Fw;                                    Change(16,13) = -1; Change(16,19) = +1;
 
 % General:susc -> Funeral:susc
-Rate(17) = MF*(Nd/E +  (1-theta)*gammaD*Ig+gammaDH*(Ih+Iw))*Sg/(Ng-Sf);           Change(17,1) = -1; Change(17,2) = +1;  %delta1* delta2*    
+Rate(17) = MF*(Nd/E +  (1-pG)*(1-theta)*gammaD*Ig + (1-pH)*gammaDH*(Ih+Iw))*Sg/(Ng-Sf);           Change(17,1) = -1; Change(17,2) = +1;  %delta1* delta2*    
 % Funeral:susc -> General:susc
 Rate(18) = fFG*Sf;                                       Change(18,2) = -1; Change(18,1) = +1;
 % General:susc -> Hosp:susc

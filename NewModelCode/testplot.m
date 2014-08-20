@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%% TEST PLOTTING OUTPUT %%%%%%%%%%%
-% close all;
+close all;
 fig = figure;
 set(fig, 'Position', [500, 100, 900, 500])
 hold on;

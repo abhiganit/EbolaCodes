@@ -10,7 +10,7 @@ fFG = Parameters(15); fGH = Parameters(16); fHG = Parameters(17);
 epsilon = Parameters(18); KikwitGeneralPrev = Parameters(19); KikwitNonhospPrev = Parameters(20); E = Parameters(21);
 % intervention parameters
 iG = Parameters(22); iH = Parameters(23); C = Parameters(24); phiG = Parameters(25); phiW = Parameters(26);
-phiC = Parameters(27); pG = Parameters(28); pH = Parameters(29);  tau = Parameters(30);
+phiCG = Parameters(27); phiCH = Parameters(28); pG = Parameters(29); pH = Parameters(30);  tau = Parameters(31);
 
 
 % Compartments
@@ -131,7 +131,7 @@ Rate(35) = iH*Iht;                                 Change(35,27) = -1;  Change(3
 Rate(36) = iH*Iwt;                                 Change(36,28) = -1;  Change(36,29) = +1;
 Rate(37) = iH*Ih;                                  Change(37,9) = -1;   Change(37,29) = +1;
 Rate(38) = iH*Iw;                                  Change(38,10) = -1;   Change(38,29) = +1;
-Rate(39) = C*phiC*epsilon*alpha*(Eg+Eh+Ew)*Eg/(Sg+Eg);   Change(39,5) = -1;   Change(39,30) = +1;
+Rate(39) = (C*epsilon*alpha*Eg/(Sg+Eg))*(phiCG*Eg + phiCH*(Eh+Ew));   Change(39,5) = -1;   Change(39,30) = +1;
 Rate(40) = alpha*epsilon*A;                        Change(40,30) = -1;  Change(40,29) = +1;
 Rate(41) = pG*(1-theta)*gammaD*Ig;                 Change(41,8) = -1;   Change(41,17) = +1;
 Rate(42) = pH*gammaDH*Ih;                          Change(42,9) = -1;   Change(42,18) = +1;

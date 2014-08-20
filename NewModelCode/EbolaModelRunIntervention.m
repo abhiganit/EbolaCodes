@@ -34,7 +34,7 @@ end
 
 function eps = EstimatedParameters()
 
-    load(paramest);
+    load('paramest');
     eps = x;
 end
 
@@ -77,6 +77,6 @@ end
 
 function cp = getControlParams()
 
-cp = [0, 0, 0, 0, 0, 0, 0, 11];
+cp = [0, 0, 0, 0, 0, 0, 0, 0, 11];
 
 end

@@ -17,7 +17,9 @@ interventionduration = 300;
 timesets_intervention = repmat({0:interventionduration},1,4);
 allruns = model_nointervention{2};
 initial = InitializeIntervention(allruns(:,end));
-model_intervention = EbolaModel_intervention(1, EstimatedParameters(), timesets_intervention, interventionduration, initial');
+controlparams = getControlParams();
+
+model_intervention = EbolaModel_intervention(1, EstimatedParameters(), timesets_intervention, interventionduration, initial', controlparams);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -27,18 +29,13 @@ model_intervention = EbolaModel_intervention(1, EstimatedParameters(), timesets_
 model_total = cellfun( @(o1,o2)[o1; o2], model_nointervention{1}, model_intervention{1}, 'UniformOutput', false);
 timesets_total =  cellfun( @(o1,o2)[o1; (o1(end)+o2')], timesets_nointervention, timesets_intervention', 'UniformOutput', false);
 
-testplot
+plotIntervention(model_total, timesets_total, maxtime)
 end
 
 function eps = EstimatedParameters()
 
-    betaI = 0.10260; 
-    betaW = 0.21548;
-    theta=0.43483;
-    gammaDH=0.21986;
-    Ig0=14.71689;
-%     eps = [betaI, betaW, theta, gammaDH, Ig0];
-eps =[0.10547 0.20851 0.15810 0.16696 18.21165 ];
+    load(paramest);
+    eps = x;
 end
 
 function ic = InitializeNoIntervention(x)
@@ -76,4 +73,10 @@ A0 = 0;
 
 ic = [previousoutput; T0; A0];
       
+end
+
+function cp = getControlParams()
+
+cp = [0, 0, 0, 0, 0, 0, 0, 11];
+
 end

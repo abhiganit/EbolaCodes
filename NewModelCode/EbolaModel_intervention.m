@@ -1,4 +1,4 @@
-function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initial)
+function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initial, ControlParams)
 % model = 0 runs stochastic model where as model = 1 runs the difference
 % equation.
     
@@ -38,28 +38,16 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
     gammaIH = 1/(1/gammaI - 1/gammaH);     % 1/gammaIH: mean duration from hospitalization to end of infectiousness
     betaH = betaI;      % Transmission coefficient between patients or between HCWs
 
-%     % Initial conditions
-%     Ig0 = x(5);  
-%     Eg0 = 0;  Eh0 = 0; Ew0 = 0;         % exposed
-%               Ih0 = 0; Iw0 = 0;         % infected
-%     Fg0 = 0;  Fh0 = 0; Fw0 = 0;         % died:funeral
-%     Rg0 = 0;  Rh0 = 0; Rw0 = 0;         % recovered
-%     Dg0 = 0;  Dh0 = 0; Dw0 = 0;         % died:buried
-%     Cincg0 = Ig0; Cincf0 = 0; Cinch0 = 0; Cincw0 = 0;       % cumulative incidence
-%     Cdiedg0 = 0;  Cdiedh0 = 0; Cdiedw0 = 0;       % cumulative died
-%     CHosp0 = 0;
-%     Sh0 = 20*(2.8/10000)*N0;   Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %susceptible
-    
 
     % intervention parameters
-    iG = 0;
-    iH = 0;
-    phiG = 0;
-    phiW = 0;
-    phiC = 0;
-    pG = 0;
-    pH = 0;
-    C = 11;  %not varying
+    iG = ControlParams(1);
+    iH = ControlParams(2);
+    phiG = ControlParams(3);
+    phiW = ControlParams(4);
+    phiC = ControlParams(5);
+    pG = ControlParams(6);
+    pH = ControlParams(7);
+    C = ControlParams(8);  %not varying
     
     
     

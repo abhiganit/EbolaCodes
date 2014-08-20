@@ -8,28 +8,56 @@ function EbolaModelRunIntervention
 % run up until current time with no intervention
 model_nointervention = EbolaModel(1, EstimatedParameters(), timesets_nointervention, maxtime, InitializeNoIntervention(EstimatedParameters()));
 
+preinterventiontime = max(timesets_nointervention{1});
+preinterventiontimes = 0:preinterventiontime;
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%% INTERVENTION %%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% run from current time with intervention
-interventionduration = 300;
+% initialize intervention runs
+numberofstrategies = 9;
+interventionduration = 365;
+frequency = 4;
+timeset = 0:(preinterventiontime+interventionduration);
+timesets_intervention0 = repmat({timeset},1,4);
 timesets_intervention = repmat({0:interventionduration},1,4);
 allruns = model_nointervention{2};
-initial = InitializeIntervention(allruns(:,end));
-controlparams = getControlParams();
+InitialSetUpForEveryIntervention = InitializeIntervention(allruns(:,end));
+initializemat = zeros(interventionduration+1, frequency);
+intervention_cases = repmat({initializemat}, 1, numberofstrategies);
 
-model_intervention = EbolaModel_intervention(1, EstimatedParameters(), timesets_intervention, interventionduration, initial', controlparams);
+% run no intervention for pre- and post-intervention time period
+controlparams = getControlParams(0);
+model_nointervention = EbolaModel_intervention(1, EstimatedParameters(), timesets_intervention0, preinterventiontime+interventionduration, InitialSetUpForEveryIntervention', controlparams);
+% grab just the cases
+nointervention_cases = repmat({model_nointervention{1}{1}}, 1, numberofstrategies);
+beforeintervention_cases = cellfun( @(a)a(maxtime:(maxtime+interventionduration),:), nointervention_cases, 'UniformOutput', false);
 
+% loop around the interventions
+for intervention_type = 1:numberofstrategies
+    for intervention_level = 1:4
+        controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
+        model_intervention = EbolaModel_intervention(1, EstimatedParameters(), timesets_intervention, interventionduration, InitialSetUpForEveryIntervention', controlparams);
+        intervention_cases{intervention_type}(:,intervention_level) = model_intervention{1}{1};
+    end
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%% COMBINE OUTPUT %%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % combined before and after intervention
-model_total = cellfun( @(o1,o2)[o1; o2], model_nointervention{1}, model_intervention{1}, 'UniformOutput', false);
-timesets_total =  cellfun( @(o1,o2)[o1; (o1(end)+o2')], timesets_nointervention, timesets_intervention', 'UniformOutput', false);
+% model_total = cellfun( @(o1,o2)[o1; o2], model_nointervention{1}, model_intervention{1}, 'UniformOutput', false);
+% timesets_total =  cellfun( @(o1,o2)[o1; (o1(end)+o2')], timesets_nointervention, timesets_intervention', 'UniformOutput', false);
 
-plotIntervention(model_total, timesets_total, maxtime)
+% combined before and after intervention
+model_total = cellfun( @(o1, o2) [o1, o2], beforeintervention_cases, intervention_cases, 'UniformOutput', false);
+
+plotAllInterventions(beforeintervention_cases, model_total, timeset);
+%timesets_total =  cellfun( @(o1,o2)[o1; (o1(end)+o2')], timesets_nointervention, timesets_intervention', 'UniformOutput', false);
+%model_total = cellfun( @(o1, o2) [o1, o2], nointervention_cases, intervention_cases, 'UniformOutput', false);
+
+% plotIntervention(model_total, timesets_total, maxtime)
 end
 
 function eps = EstimatedParameters()
@@ -75,8 +103,25 @@ ic = [previousoutput; T0; A0];
       
 end
 
-function cp = getControlParams()
+function cp_out = getControlParams(index)
 
-cp = [0, 0, 0, 0, 0, 0, 0, 0, 11];
+    index = index+1;
+    cp(0+1,:) = [0, 0, 0, 0, 0, 0, 0, 0];
+    cp(1+1,:) = [1, 0, 0, 0, 0, 0, 0, 0];
+    cp(2+1,:) = [0, 0, 0, 0, 0, 0, 0, 0];
+    cp(3+1,:) = [0, 0, 0, 0, 0, 0, 0, 0];
+    cp(4+1,:) = [0, 0, 0, 0, 0, 0, 0, 0];
+    cp(5+1,:) = [0, 0, 0, 0, 0, 0, 0, 0];
+    cp(6+1,:) = [0, 0, 0, 0, 0, 0, 0, 0];
+    cp(7+1,:) = [0, 0, 0, 0, 0, 0, 0, 0];
+    cp(8+1,:) = [0, 0, 0, 0, 0, 0, 0, 0];
+    cp(9+1,:) = [0, 0, 0, 0, 0, 0, 0, 0];
+
+    cp_out = cp(index,:);
 
 end
+
+function cl_out = getControlLevel(index, freq)
+    cl_out = index / freq;
+end
+

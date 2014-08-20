@@ -48,7 +48,7 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
     phiCH = ControlParams(6);
     pG = ControlParams(7);
     pH = ControlParams(8);
-    C = ControlParams(9);  %not varying
+    C = 11;  %not varying
     
     
     

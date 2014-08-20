@@ -42,14 +42,14 @@ Rate = zeros(43,1);
 
 %% Transitions
 % General: susc -> exposed
-Rate(1) = phiG*betaI*Sg*(Ig/Ng);                         Change(1,1) = -1; Change(1,5) = +1;
+Rate(1) = (1-phiG)*betaI*Sg*(Ig/Ng);                         Change(1,1) = -1; Change(1,5) = +1;
 % Funeral: susc -> exposed
 Rate(2) = (omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
                 betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;               Change(2,2) = -1; Change(2,5) = +1;
 % Hosp: susc -> exposed
 Rate(3) = betaH*Sh*(Ih+Iht+Iw+Iwt)/(Nh+Nw);      					Change(3,3) = -1; Change(3,6) = +1; 
 % Worker: susc -> exposed
-Rate(4) = phiW*betaW*Sw*(Ih+Iht+Iw+Iwt)/(Nh+Nw);      				Change(4,4) = -1; Change(4,7) = +1;
+Rate(4) = (1-phiW)*betaW*Sw*(Ih+Iht+Iw+Iwt)/(Nh+Nw);      				Change(4,4) = -1; Change(4,7) = +1;
 
 
 % General: exposed -> inf

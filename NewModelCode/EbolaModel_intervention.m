@@ -54,10 +54,10 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
     % intervention parameters
     iG = 0;
     iH = 0;
-    phiG = 1;
-    phiW = 1;
+    phiG = 0;
+    phiW = 0;
     phiC = 0;
-    pG = 0.;
+    pG = 0;
     pH = 0;
     C = 11;  %not varying
     

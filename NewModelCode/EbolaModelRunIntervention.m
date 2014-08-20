@@ -23,16 +23,18 @@ timeset = 0:(preinterventiontime+interventionduration);
 timesets_intervention0 = repmat({timeset},1,4);
 timesets_intervention = repmat({0:interventionduration},1,4);
 allruns = model_nointervention{2};
+InitializeSetUpForNoIntervention = InitializeIntervention(InitializeNoIntervention(EstimatedParameters())');
 InitialSetUpForEveryIntervention = InitializeIntervention(allruns(:,end));
 initializemat = zeros(interventionduration+1, frequency);
 intervention_cases = repmat({initializemat}, 1, numberofstrategies);
 
 % run no intervention for pre- and post-intervention time period
 controlparams = getControlParams(0);
-model_nointervention = EbolaModel_intervention(1, EstimatedParameters(), timesets_intervention0, preinterventiontime+interventionduration, InitialSetUpForEveryIntervention', controlparams);
+model_nointervention = EbolaModel_intervention(1, EstimatedParameters(), timesets_intervention0, preinterventiontime+interventionduration, InitializeSetUpForNoIntervention', controlparams);
 % grab just the cases
 nointervention_cases = repmat({model_nointervention{1}{1}}, 1, numberofstrategies);
-beforeintervention_cases = cellfun( @(a)a(maxtime:(maxtime+interventionduration),:), nointervention_cases, 'UniformOutput', false);
+preintervention_cases = cellfun( @(a)a(1:(maxtime+1),:), nointervention_cases, 'UniformOutput', false);
+postintervention_cases = cellfun( @(a)a((maxtime+1):(maxtime+interventionduration+1),:), nointervention_cases, 'UniformOutput', false);
 
 % loop around the interventions
 for intervention_type = 1:numberofstrategies
@@ -51,9 +53,9 @@ end
 % timesets_total =  cellfun( @(o1,o2)[o1; (o1(end)+o2')], timesets_nointervention, timesets_intervention', 'UniformOutput', false);
 
 % combined before and after intervention
-model_total = cellfun( @(o1, o2) [o1, o2], beforeintervention_cases, intervention_cases, 'UniformOutput', false);
+model_total = cellfun( @(o1, o2) [o1, o2], postintervention_cases, intervention_cases, 'UniformOutput', false);
 
-plotAllInterventions(beforeintervention_cases, model_total, timeset);
+plotAllInterventions(preintervention_cases, model_total, timeset);
 %timesets_total =  cellfun( @(o1,o2)[o1; (o1(end)+o2')], timesets_nointervention, timesets_intervention', 'UniformOutput', false);
 %model_total = cellfun( @(o1, o2) [o1, o2], nointervention_cases, intervention_cases, 'UniformOutput', false);
 
@@ -107,15 +109,15 @@ function cp_out = getControlParams(index)
 
     index = index+1;
     cp(0+1,:) = [0, 0, 0, 0, 0, 0, 0, 0];
-    cp(1+1,:) = [1, 0, 0, 0, 0, 0, 0, 0];
-    cp(2+1,:) = [0, 0, 0, 0, 0, 0, 0, 0];
-    cp(3+1,:) = [0, 0, 0, 0, 0, 0, 0, 0];
-    cp(4+1,:) = [0, 0, 0, 0, 0, 0, 0, 0];
-    cp(5+1,:) = [0, 0, 0, 0, 0, 0, 0, 0];
-    cp(6+1,:) = [0, 0, 0, 0, 0, 0, 0, 0];
-    cp(7+1,:) = [0, 0, 0, 0, 0, 0, 0, 0];
-    cp(8+1,:) = [0, 0, 0, 0, 0, 0, 0, 0];
-    cp(9+1,:) = [0, 0, 0, 0, 0, 0, 0, 0];
+    cp(1+1,:) = [0, 1, 0, 0, 0, 0, 0, 0];
+    cp(2+1,:) = [1, 1, 0, 0, 0, 0, 0, 0];
+    cp(3+1,:) = [0, 1, 0, 0, 0, 1, 0, 0];
+    cp(4+1,:) = [1, 1, 0, 0, 1, 1, 0, 0];
+    cp(5+1,:) = [0, 0, 0, 1, 0, 0, 0, 0];
+    cp(6+1,:) = [0, 0, 1, 0, 0, 0, 0, 0];
+    cp(7+1,:) = [0, 0, 1, 1, 0, 0, 0, 0];
+    cp(8+1,:) = [0, 0, 0, 0, 0, 0, 0, 1];
+    cp(9+1,:) = [0, 0, 0, 0, 0, 0, 1, 1];
 
     cp_out = cp(index,:);
 

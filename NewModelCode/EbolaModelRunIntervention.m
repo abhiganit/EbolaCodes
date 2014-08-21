@@ -39,18 +39,18 @@ postintervention_cases = cellfun( @(a)a((maxtime+1):(maxtime+interventionduratio
 % loop around the interventions
 for intervention_type = 1:numberofstrategies
     for intervention_level = 1:frequency
-        if intervention_type == 7
-            controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
-            controlparams(6) = 0.95;
-        elseif intervention_type == 2
+        if intervention_type == 2
             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
             controlparams(1) = 0.95;
-        elseif intervention_type == 5
+        elseif intervention_type == 4
             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
             controlparams(3) = 0.95;
+        elseif intervention_type == 7
+            controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
+            controlparams(6) = 0.95;
         else
-        controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
-         end
+            controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
+        end
         model_intervention = EbolaModel_intervention(1, EstimatedParameters(), timesets_intervention, interventionduration, InitialSetUpForEveryIntervention', controlparams);
         intervention_cases{intervention_type}(:,intervention_level) = model_intervention{1}{1};
     end

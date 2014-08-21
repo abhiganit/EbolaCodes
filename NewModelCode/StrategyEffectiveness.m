@@ -13,7 +13,9 @@ t = 1:m-1;
 %ColorSet = varycolor(n);
 %set(gca, 'ColorOrder', ColorSet);
 %hold all
-
+strtitle = {'Passive isolation', 'passive isolation + contact tracing',...
+            'transmission reduction (hospital)', 'transmission reduction (hospital+community)',...
+            'hygienic burial (hospital)', 'hygeinic burial (hospital+community)'};
 for i = 1:s
     for j = 1:n
         B{i}(:,j) = diff(A{i}(:,j));

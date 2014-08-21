@@ -127,11 +127,14 @@ Rate(33) = gammaH*Iwt;                               Change(33,28) = -1;    Chan
 
 %% Intervention Rates
 Rate(34) = iG*Ig;                                  Change(34,8) = -1;   Change(34,29) = +1;
-Rate(35) = iH*Iht;                                 Change(35,27) = -1;  Change(35,29) = +1;
-Rate(36) = iH*Iwt;                                 Change(36,28) = -1;  Change(36,29) = +1;
+%Rate(35) = iH*Iht;                                 Change(35,27) = -1;  Change(35,29) = +1;
+%Rate(36) = iH*Iwt;                                 Change(36,28) = -1;  Change(36,29) = +1;
+Rate(35) = 0;                                 Change(35,27) = -1;  Change(35,29) = +1;
+Rate(36) = 0;                                 Change(36,28) = -1;  Change(36,29) = +1;
 Rate(37) = iH*Ih;                                  Change(37,9) = -1;   Change(37,29) = +1;
 Rate(38) = iH*Iw;                                  Change(38,10) = -1;   Change(38,29) = +1;
-Rate(39) = (C*epsilon*alpha*Eg/(Sg+Eg))*(phiCG*Eg + phiCH*(Eh+Ew));   Change(39,5) = -1;   Change(39,30) = +1;
+% Rate(39) = (C*epsilon*alpha*Eg/(Sg+Eg))*(phiCG*Eg + phiCH*(Eh+Ew));   Change(39,5) = -1;   Change(39,30) = +1;
+Rate(39) = (11*(0.2/11))*phiCH*gammaH*(Iht+Iwt+theta*Ig);   Change(39,5) = -1;   Change(39,30) = +1;
 Rate(40) = alpha*epsilon*A;                        Change(40,30) = -1;  Change(40,29) = +1;
 Rate(41) = pG*(1-theta)*gammaD*Ig;                 Change(41,8) = -1;   Change(41,17) = +1;
 Rate(42) = pH*gammaDH*Ih;                          Change(42,9) = -1;   Change(42,18) = +1;

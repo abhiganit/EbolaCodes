@@ -8,9 +8,9 @@ fig = figure;
 set(fig, 'Position', [500, 100, 900, 500])
 % hold on;
 
-subplotorder = [1,5,2,6,3,7,11,4,8];
+subplotorder = [1,2,6,3,7,11,4,8];
 
-for i = 1:9
+for i = 1:7
     t1 = size(model_pre{i},1);
     t2 = size(model_post{i},1);
     subplot(3,4,subplotorder(i))

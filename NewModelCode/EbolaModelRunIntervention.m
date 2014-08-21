@@ -16,7 +16,7 @@ preinterventiontimes = 0:preinterventiontime;
 %%%%%%%%%%%%%%%% INTERVENTION %%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % initialize intervention runs
-numberofstrategies = 9;
+numberofstrategies = 8;
 interventionduration = 365;
 frequency = 4;
 timeset = 0:(preinterventiontime+interventionduration);
@@ -38,8 +38,12 @@ postintervention_cases = cellfun( @(a)a((maxtime+1):(maxtime+interventionduratio
 
 % loop around the interventions
 for intervention_type = 1:numberofstrategies
-    for intervention_level = 1:4
+    for intervention_level = 1:frequency
+%        if intervention_type == 3
+%            controlparams = [0,0.25+ 0.1*intervention_level,0,0,0,0.4+ 0.1*intervention_level,0,0];
+%         else
         controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
+%         end
         model_intervention = EbolaModel_intervention(1, EstimatedParameters(), timesets_intervention, interventionduration, InitialSetUpForEveryIntervention', controlparams);
         intervention_cases{intervention_type}(:,intervention_level) = model_intervention{1}{1};
     end
@@ -110,14 +114,13 @@ function cp_out = getControlParams(index)
     index = index+1;
     cp(0+1,:) = [0, 0, 0, 0, 0, 0, 0, 0];
     cp(1+1,:) = [0, 1, 0, 0, 0, 0, 0, 0];
-    cp(2+1,:) = [1, 1, 0, 0, 0, 0, 0, 0];
-    cp(3+1,:) = [0, 1, 0, 0, 0, 1, 0, 0];
-    cp(4+1,:) = [1, 1, 0, 0, 1, 1, 0, 0];
-    cp(5+1,:) = [0, 0, 0, 1, 0, 0, 0, 0];
-    cp(6+1,:) = [0, 0, 1, 0, 0, 0, 0, 0];
-    cp(7+1,:) = [0, 0, 1, 1, 0, 0, 0, 0];
-    cp(8+1,:) = [0, 0, 0, 0, 0, 0, 0, 1];
-    cp(9+1,:) = [0, 0, 0, 0, 0, 0, 1, 1];
+    cp(2+1,:) = [0, 0, 0, 0, 0, 1, 0, 0];
+    cp(3+1,:) = [0, 1, 0, 0, 0, 1, 0, 0]; %  iH with phi_CH
+    cp(4+1,:) = [0, 0, 0, 1, 0, 0, 0, 0];
+    cp(5+1,:) = [0, 0, 1, 0, 0, 0, 0, 0];
+    cp(6+1,:) = [0, 0, 1, 1, 0, 0, 0, 0];
+    cp(7+1,:) = [0, 0, 0, 0, 0, 0, 0, 1];
+    cp(8+1,:) = [0, 0, 0, 0, 0, 0, 1, 1];
 
     cp_out = cp(index,:);
 

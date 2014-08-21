@@ -12,9 +12,9 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
     %Ig0 = x(5);  
     
     %disease progression parameters
-    alpha = 1/7;        % 1/alpha: mean duration of the incubation period 
-    gammaI = 1/10;      % 1/gammaI: mean duration of the infectious period for survivors
-    gammaD = 1/7;       % 1/gammaD: mean duration from onset to death
+    alpha = 1/8;        % 1/alpha: mean duration of the incubation period 
+    gammaI = 1/9; %10;      % 1/gammaI: mean duration of the infectious period for survivors
+    gammaD = 1/7.5;       % 1/gammaD: mean duration from onset to death
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
     epsilon = 100/100;       % percentage Symptomatic illness 
     omega = 3.0;        % odds ratio of funeral risk relative to general population

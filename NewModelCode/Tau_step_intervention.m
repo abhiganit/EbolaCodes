@@ -126,9 +126,10 @@ Rate(33) = gammaH*Iwt;                               Change(33,28) = -1;    Chan
 
 
 %% Intervention Rates
-Rate(34) = iG*Ig;                                  Change(34,8) = -1;   Change(34,29) = +1;
+%Rate(34) = iG*Ig;                                  Change(34,8) = -1;   Change(34,29) = +1;
 %Rate(35) = iH*Iht;                                 Change(35,27) = -1;  Change(35,29) = +1;
 %Rate(36) = iH*Iwt;                                 Change(36,28) = -1;  Change(36,29) = +1;
+Rate(34) = 0;                                  Change(34,8) = -1;   Change(34,29) = +1;
 Rate(35) = 0;                                 Change(35,27) = -1;  Change(35,29) = +1;
 Rate(36) = 0;                                 Change(36,28) = -1;  Change(36,29) = +1;
 Rate(37) = iH*Ih;                                  Change(37,9) = -1;   Change(37,29) = +1;

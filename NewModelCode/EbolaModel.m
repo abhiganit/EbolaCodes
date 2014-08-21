@@ -12,9 +12,9 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial)
     %Ig0 = x(5);  
     
     %disease progression parameters
-    alpha = 1/7;        % 1/alpha: mean duration of the incubation period 
-    gammaI = 1/10;      % 1/gammaI: mean duration of the infectious period for survivors
-    gammaD = 1/7;       % 1/gammaD: mean duration from onset to death
+    alpha = 1/8;        % 1/alpha: mean duration of the incubation period 
+    gammaI = 1/9; %10;      % 1/gammaI: mean duration of the infectious period for survivors
+    gammaD = 1/7.5;       % 1/gammaD: mean duration from onset to death
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
     epsilon = 100/100;       % percentage Symptomatic illness 
     omega = 3.0;        % odds ratio of funeral risk relative to general population
@@ -81,10 +81,10 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial)
             CumulativeHealthworkerIncidence = output(22,timepoints{3}+1,:);
             CumulativeHospitalAdmissions = output(26,timepoints{4}+1,:);
             
-            CumulativeCases = reshape(CumulativeCases, 65, MaxIt);
-            CumulativeDeaths = reshape(CumulativeDeaths, 65, MaxIt);
-            CumulativeHealthworkerIncidence = reshape(CumulativeHealthworkerIncidence, 65, MaxIt);
-            CumulativeHospitalAdmissions = reshape(CumulativeHospitalAdmissions, 65, MaxIt);
+            CumulativeCases = reshape(CumulativeCases, MaxTime+1, MaxIt);
+            CumulativeDeaths = reshape(CumulativeDeaths, MaxTime+1, MaxIt);
+            CumulativeHealthworkerIncidence = reshape(CumulativeHealthworkerIncidence, MaxTime+1, MaxIt);
+            CumulativeHospitalAdmissions = reshape(CumulativeHospitalAdmissions, MaxTime+1, MaxIt);
             
     else
             % The main iteration (note as it is difference equation, we

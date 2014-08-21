@@ -4,7 +4,7 @@ function [T,P]=Stoch_Iteration_intervention(Time,Initial,Parameters)
 tau=Parameters(end);
 
 
-T=0:tau:Time(2); 
+T=Time(1):tau:Time(2); 
 P(1,:)= Initial;
 old=Initial;
 

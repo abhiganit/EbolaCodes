@@ -16,7 +16,7 @@ preinterventiontimes = 0:preinterventiontime;
 %%%%%%%%%%%%%%%% INTERVENTION %%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % initialize intervention runs
-numberofstrategies = 8;
+numberofstrategies = 7;
 interventionduration = 365;
 frequency = 4;
 timeset = 0:(preinterventiontime+interventionduration);
@@ -110,17 +110,18 @@ ic = [previousoutput; T0; A0];
 end
 
 function cp_out = getControlParams(index)
-
+    % iH, phiG, phiW, phiC, pG, pH
     index = index+1;
-    cp(0+1,:) = [0, 0, 0, 0, 0, 0, 0, 0]; 
-    cp(1+1,:) = [0, 1, 0, 0, 0, 0, 0, 0];
-    cp(2+1,:) = [0, 0, 0, 0, 0, 1, 0, 0];
-    cp(3+1,:) = [0, 1, 0, 0, 0, 1, 0, 0]; %  iH with phi_CH
-    cp(4+1,:) = [0, 0, 0, 1, 0, 0, 0, 0];
-    cp(5+1,:) = [0, 0, 1, 0, 0, 0, 0, 0];
-    cp(6+1,:) = [0, 0, 1, 1, 0, 0, 0, 0];
-    cp(7+1,:) = [0, 0, 0, 0, 0, 0, 0, 1];
-    cp(8+1,:) = [0, 0, 0, 0, 0, 0, 1, 1];
+
+    cp(0+1,:) = [0, 0, 0, 0, 0, 0];
+    cp(1+1,:) = [1, 0, 0, 0, 0, 0];  %passive isolation
+    cp(2+1,:) = [1, 0, 0, 1, 0, 0];  %passive isolation + contact tracing/follow-up
+    cp(3+1,:) = [0, 0, 1, 0, 0, 0];  %transmission reduction (hospital)
+    cp(4+1,:) = [0, 1, 0, 0, 0, 0];  %transmission reduction (community)
+    cp(5+1,:) = [0, 1, 1, 0, 0, 0];  %transmission reduction (hospital+community)
+    cp(6+1,:) = [0, 0, 0, 0, 0, 1];  %hygienic burial (hospital)
+    cp(7+1,:) = [0, 0, 0, 0, 1, 1];  %hygeinic burial (hospital+community)
+
 
     cp_out = cp(index,:);
 

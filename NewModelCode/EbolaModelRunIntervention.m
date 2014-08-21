@@ -39,11 +39,18 @@ postintervention_cases = cellfun( @(a)a((maxtime+1):(maxtime+interventionduratio
 % loop around the interventions
 for intervention_type = 1:numberofstrategies
     for intervention_level = 1:frequency
-%        if intervention_type == 3
-%            controlparams = [0,0.25+ 0.1*intervention_level,0,0,0,0.4+ 0.1*intervention_level,0,0];
-%         else
+        if intervention_type == 7
+            controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
+            controlparams(6) = 0.95;
+        elseif intervention_type == 2
+            controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
+            controlparams(1) = 0.95;
+        elseif intervention_type == 5
+            controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
+            controlparams(3) = 0.95;
+        else
         controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
-%         end
+         end
         model_intervention = EbolaModel_intervention(1, EstimatedParameters(), timesets_intervention, interventionduration, InitialSetUpForEveryIntervention', controlparams);
         intervention_cases{intervention_type}(:,intervention_level) = model_intervention{1}{1};
     end
@@ -77,7 +84,7 @@ function ic = InitializeNoIntervention(x)
 % Initial conditions
     N0 = 4.09e6;          % Initial population size    Ig0 = x(5);  
     Eg0 = 0;    Eh0 = 0; Ew0 = 0;         % exposed
-    Ig0 = x(5); Ih0 = 0; Iw0 = 0;         % infected
+    Ig0 = x(4); Ih0 = 0; Iw0 = 0;         % infected
     Fg0 = 0;    Fh0 = 0; Fw0 = 0;         % died:funeral
     Rg0 = 0;    Rh0 = 0; Rw0 = 0;         % recovered
     Dg0 = 0;    Dh0 = 0; Dw0 = 0;         % died:buried
@@ -128,6 +135,6 @@ function cp_out = getControlParams(index)
 end
 
 function cl_out = getControlLevel(index, freq)
-    cl_out = index / freq;
+    cl_out = min(0.95,index / freq);
 end
 

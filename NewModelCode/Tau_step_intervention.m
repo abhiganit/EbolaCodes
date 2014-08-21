@@ -31,7 +31,8 @@ Ng = Sg+Sf+Eg+Ig+Rg;
 Nh = Sh+Eh+Ih+Iht+Rh;
 Nw = Sw+Ew+Iw+Iwt+Rw;
 Nd = Ng + Nh + Nw;
-
+F = Fg + Fh + Fw;
+NF = Nd/(gammaF*E);
 % initialize arrays
 Change = zeros(43,size(old,1)); 
 Rate = zeros(43,1);
@@ -44,8 +45,11 @@ Rate = zeros(43,1);
 % General: susc -> exposed
 Rate(1) = (1-phiG)*betaI*Sg*(Ig/Ng);                         Change(1,1) = -1; Change(1,5) = +1;
 % Funeral: susc -> exposed
+%Rate(2) = gammaF*(omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
+%                 betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;               Change(2,2) = -1; Change(2,5) = +1;
+
 Rate(2) = (omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
-                betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;               Change(2,2) = -1; Change(2,5) = +1;
+               betaI*(F/(F+NF))*Sf;               Change(2,2) = -1; Change(2,5) = +1; 
 % Hosp: susc -> exposed
 Rate(3) = betaH*Sh*(Ih+Iht+Iw+Iwt)/(Nh+Nw);      					Change(3,3) = -1; Change(3,6) = +1; 
 % Worker: susc -> exposed
@@ -85,7 +89,9 @@ Rate(17) = MF*(Nd/E +  (1-pG)*(1-theta)*gammaD*Ig+(1-pH)*gammaDH*(Ih+Iw))*Sg/(Ng
 % Funeral:susc -> General:susc
 Rate(18) = fFG*Sf;                                       		Change(18,2) = -1; Change(18,1) = +1;
 % General:susc -> Hosp:susc
-Rate(19) = (MH+1)*fGH*Sg + MH*gammaH*theta*Ig*Sg/Ng;            Change(19,1) = -1; Change(19,3) = +1;    
+%Rate(19) = (MH+1)*fGH*Sg + MH*gammaH*theta*Ig*Sg/Ng;            Change(19,1) = -1; Change(19,3) = +1;    
+Rate(19) = 0;                                                    Change(19,1) = -1; Change(19,3) = +1;    
+
 % Hosp:susc -> General:susc
 Rate(20) = fHG*Sh;                                       		Change(20,3) = -1; Change(20,1) = +1;
 % General:inf -> Hosp:inf
@@ -135,7 +141,7 @@ Rate(36) = 0;                                 Change(36,28) = -1;  Change(36,29)
 Rate(37) = iH*Ih;                                  Change(37,9) = -1;   Change(37,29) = +1;
 Rate(38) = iH*Iw;                                  Change(38,10) = -1;   Change(38,29) = +1;
 % Rate(39) = (C*epsilon*alpha*Eg/(Sg+Eg))*(phiCG*Eg + phiCH*(Eh+Ew));   Change(39,5) = -1;   Change(39,30) = +1;
-Rate(39) = (C*(betaI/C))*phiC*gammaH*(Iht+Iwt+theta*Ig);   Change(39,5) = -1;   Change(39,30) = +1;
+Rate(39) = (C*(1-(1-betaI/C)^(1/gammaH)))*phiC*gammaH*(Iht+Iwt+theta*Ig);   Change(39,5) = -1;   Change(39,30) = +1;
 Rate(40) = alpha*epsilon*A;                        Change(40,30) = -1;  Change(40,29) = +1;
 Rate(41) = pG*(1-theta)*gammaD*Ig;                 Change(41,8) = -1;   Change(41,17) = +1;
 Rate(42) = pH*gammaDH*Ih;                          Change(42,9) = -1;   Change(42,18) = +1;

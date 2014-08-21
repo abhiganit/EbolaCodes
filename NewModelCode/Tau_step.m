@@ -28,21 +28,24 @@ Ng = Sg+Sf+Eg+Ig+Rg;
 Nh = Sh+Eh+Ih+Iht+Rh;
 Nw = Sw+Ew+Iw+Iwt+Rw;
 Nd = Ng + Nh + Nw;
-
+F = Fg + Fh + Fw;
+NF = Nd/(gammaF*E);
 % initialize arrays
 Change = zeros(33,size(old,1)); %33 rates, X states
 Rate = zeros(33,1);
 
 %prob ebola funeral
-newebolafunerals = (1-theta)*gammaD*(Ig) + gammaDH*(Ih+Iw);  
-newnonebolafunerals = Nd/E;
+% newebolafunerals = (1-theta)*gammaD*(Ig) + gammaDH*(Ih+Iw);  
+% newnonebolafunerals = Nd/E;
 
 %% Transitions
 % General: susc -> exposed
 Rate(1) = betaI*Sg*(Ig/Ng);                         Change(1,1) = -1; Change(1,5) = +1;
 % Funeral: susc -> exposed
+%Rate(2) = gammaF*(omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
+ %               betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;               Change(2,2) = -1; Change(2,5) = +1; 
 Rate(2) = (omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
-                betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;               Change(2,2) = -1; Change(2,5) = +1; 
+                 betaI*(F/(F+NF))*Sf;               Change(2,2) = -1; Change(2,5) = +1; 
 % Hosp: susc -> exposed
 Rate(3) = betaH*Sh*(Ih+Iht+Iw+Iwt)/(Nh+Nw);      Change(3,3) = -1; Change(3,6) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
 % Worker: susc -> exposed

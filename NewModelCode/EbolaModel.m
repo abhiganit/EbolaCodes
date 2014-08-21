@@ -8,7 +8,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial)
     betaI = x(1);      % Transmission coefficient in community
     betaW = x(2);      % Transmission coefficient between patients-HCWs
     theta = x(3);      % Percentage of infectious cases are hospitaized
-    gammaDH = x(4);    % 1/Time between hospitalization and death
+    gammaH = 1/5;    % 1/Time between hospitalization and death
     %Ig0 = x(5);  
     
     %disease progression parameters
@@ -34,7 +34,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial)
     fHG = 1/7;          % 1/average time spent at in hospital with non-ebola disease
     
     % dervied parameters
-    gammaH = 1/(1/gammaD - 1/gammaDH);
+    gammaDH = 1/(1/gammaD - 1/gammaH);
     gammaIH = 1/(1/gammaI - 1/gammaH);     % 1/gammaIH: mean duration from hospitalization to end of infectiousness
     betaH = betaI;      % Transmission coefficient between patients or between HCWs
 

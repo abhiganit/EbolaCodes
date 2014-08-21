@@ -13,21 +13,21 @@ t = 1:m-1;
 %ColorSet = varycolor(n);
 %set(gca, 'ColorOrder', ColorSet);
 %hold all
-strtitle = {'Passive isolation', 'passive isolation + contact tracing',...
-            'transmission reduction (hospital)', 'transmission reduction (hospital+community)',...
-            'hygienic burial (hospital)', 'hygeinic burial (hospital+community)'};
+strtitle = {'Passive isolation', 'Passive isolation + contact tracing',...
+            'Transmission reduction (hospital)', 'Transmission reduction (hospital+community)',...
+            'Hygienic burial (hospital)', 'Hygeinic burial (hospital+community)'};
 for i = 1:s
     for j = 1:n
         B{i}(:,j) = diff(A{i}(:,j));
     end
     subplot(2,3,subplotorder(i))
-
+    
     plot(t,B{i}(:,2:end));
    % set(gca,'Xtick',1:1:m-1)
-    xlabel('Days after intervention')
-    ylabel('New ebola cases')   
+    xlabel('Days after intervention', 'FontSize', 14)
+    ylabel('New ebola cases',  'FontSize',14)  
 %  set(gca,'XtickLabel',1:1:m-1)
-
+    title(strtitle{i}, 'FontSize', 12)
 end
    
 

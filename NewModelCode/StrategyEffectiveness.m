@@ -18,7 +18,7 @@ for i = 1:s
     for j = 1:n
         B{i}(:,j) = diff(A{i}(:,j));
     end
-    subplot(3,3,subplotorder(i))
+    subplot(2,3,subplotorder(i))
 
     plot(t,B{i}(:,2:end));
    % set(gca,'Xtick',1:1:m-1)

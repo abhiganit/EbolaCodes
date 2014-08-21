@@ -16,7 +16,7 @@ preinterventiontimes = 0:preinterventiontime;
 %%%%%%%%%%%%%%%% INTERVENTION %%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % initialize intervention runs
-numberofstrategies = 7;
+numberofstrategies = 6;
 interventionduration = 365;
 frequency = 4;
 timeset = 0:(preinterventiontime+interventionduration);
@@ -124,10 +124,9 @@ function cp_out = getControlParams(index)
     cp(1+1,:) = [1, 0, 0, 0, 0, 0];  %passive isolation
     cp(2+1,:) = [1, 0, 0, 1, 0, 0];  %passive isolation + contact tracing/follow-up
     cp(3+1,:) = [0, 0, 1, 0, 0, 0];  %transmission reduction (hospital)
-    cp(4+1,:) = [0, 1, 0, 0, 0, 0];  %transmission reduction (community)
-    cp(5+1,:) = [0, 1, 1, 0, 0, 0];  %transmission reduction (hospital+community)
-    cp(6+1,:) = [0, 0, 0, 0, 0, 1];  %hygienic burial (hospital)
-    cp(7+1,:) = [0, 0, 0, 0, 1, 1];  %hygeinic burial (hospital+community)
+    cp(4+1,:) = [0, 1, 1, 0, 0, 0];  %transmission reduction (hospital+community)
+    cp(5+1,:) = [0, 0, 0, 0, 0, 1];  %hygienic burial (hospital)
+    cp(6+1,:) = [0, 0, 0, 0, 1, 1];  %hygeinic burial (hospital+community)
 
 
     cp_out = cp(index,:);

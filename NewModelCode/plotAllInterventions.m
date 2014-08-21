@@ -8,12 +8,12 @@ fig = figure;
 set(fig, 'Position', [500, 100, 900, 500])
 % hold on;
 
-subplotorder = [1,4,2,5,8,3,6];
+subplotorder = [1,4,2,5,3,6];
 
-for i = 1:7
+for i = 1:6
     t1 = size(model_pre{i},1);
     t2 = size(model_post{i},1);
-    subplot(3,3,subplotorder(i))
+    subplot(2,3,subplotorder(i))
    
     % pre-intervention era
     plot(1:t1, model_pre{i});

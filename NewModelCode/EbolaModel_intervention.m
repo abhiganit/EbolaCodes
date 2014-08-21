@@ -89,10 +89,10 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
             CumulativeHealthworkerIncidence = output(23,timepoints{3}+1,:);
             CumulativeHospitalAdmissions = output(27,timepoints{4}+1,:);
             
-            CumulativeCases = reshape(CumulativeCases, 65, MaxIt);
-            CumulativeDeaths = reshape(CumulativeDeaths, 65, MaxIt);
-            CumulativeHealthworkerIncidence = reshape(CumulativeHealthworkerIncidence, 65, MaxIt);
-            CumulativeHospitalAdmissions = reshape(CumulativeHospitalAdmissions, 65, MaxIt);
+            CumulativeCases = reshape(CumulativeCases, MaxTime+1, MaxIt);
+            CumulativeDeaths = reshape(CumulativeDeaths, MaxTime+1, MaxIt);
+            CumulativeHealthworkerIncidence = reshape(CumulativeHealthworkerIncidence, MaxTime+1, MaxIt);
+            CumulativeHospitalAdmissions = reshape(CumulativeHospitalAdmissions, MaxTime+1, MaxIt);
             
     else
             % The main iteration (note as it is difference equation, we

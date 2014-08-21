@@ -18,7 +18,7 @@ for i = 1:s
         B{i}(:,j) = diff(A{i}(:,j));
     end
     figure;
-    plot(t,B{i},'linewidth',2');
+    plot(t,B{i}(2:end));
     set(gca,'Xtick',1:1:m-1)
     xlabel('Days after intervention')
     ylabel('New ebola cases')   

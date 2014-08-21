@@ -6,7 +6,7 @@ function EbolaModelFit
     % get data and clean it
     [timesets, datasets, maxtime, weights] = CleanData();
     % fit model
-    startingconditions = [0.10260 0.21548 0.43483 0.21987 14.71682];
+    startingconditions = [0.10575 0.21217 0.29135 0.20382 15.10372 ];%[0.10260 0.21548 0.43483 0.21987 14.71682];
     [x, fval] = fminsearch( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights, Initial(x)) , startingconditions); % , [0, 0, 0, 1], [10, 10, 1.00, 20]); 
     % plot model fit
     plotModelFit(x, timesets, datasets, maxtime, Initial(x));

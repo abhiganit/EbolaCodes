@@ -32,7 +32,7 @@ postintervention_cases = cellfun( @(a)a((maxtime+1):(maxtime+interventionduratio
 initializemat = zeros(interventionduration+1, frequency);
 intervention_cases = repmat({initializemat}, 1, numberofstrategies);
 allruns = model_nointervention{2};
-InitialSetUpForEveryIntervention = InitializeIntervention(allruns(:,maxtime));
+InitialSetUpForEveryIntervention = InitializeIntervention(allruns(:,maxtime+1));
 
 % loop around the interventions
 for intervention_type = 1:numberofstrategies

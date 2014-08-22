@@ -38,8 +38,8 @@ Change = zeros(43,size(old,1));
 Rate = zeros(43,1);
 
 %prob ebola funeral
- newebolafunerals = (1-pG)*((1-theta)*gammaD*(Ig)) +(1-pH)*gammaDH*(Ih+Iw); 
- newnonebolafunerals = Nd/E;
+% newebolafunerals = (1-pG)*((1-theta)*gammaD*(Ig)) +(1-pH)*gammaDH*(Ih+Iw); 
+% newnonebolafunerals = Nd/E;
 
 %% Transitions
 % General: susc -> exposed
@@ -89,8 +89,8 @@ Rate(17) = MF*(Nd/E +  (1-pG)*(1-theta)*gammaD*Ig+(1-pH)*gammaDH*(Ih+Iw))*Sg/(Ng
 % Funeral:susc -> General:susc
 Rate(18) = fFG*Sf;                                       		Change(18,2) = -1; Change(18,1) = +1;
 % General:susc -> Hosp:susc
-%Rate(19) = (MH+1)*fGH*Sg + MH*gammaH*theta*Ig*Sg/Ng;            Change(19,1) = -1; Change(19,3) = +1;    
-Rate(19) = 0;                                                    Change(19,1) = -1; Change(19,3) = +1;    
+Rate(19) = (MH+1)*fGH*Sg + MH*gammaH*theta*Ig*Sg/Ng;            Change(19,1) = -1; Change(19,3) = +1;    
+%Rate(19) = 0;                                                    Change(19,1) = -1; Change(19,3) = +1;    
 
 % Hosp:susc -> General:susc
 Rate(20) = fHG*Sh;                                       		Change(20,3) = -1; Change(20,1) = +1;

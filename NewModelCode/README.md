@@ -13,7 +13,7 @@ Tues 19th Aug: Intermediate infectious compartment for those already in hospital
 
 Tuesday 19th August: Reduce the rate of hospitalization for non-ebola patients through time (at stop them at a specific time)
 
-
+Thurs 21st Aug: are we fitting to the right Ih Iw - should it be Ihw and Iht
 
 
 

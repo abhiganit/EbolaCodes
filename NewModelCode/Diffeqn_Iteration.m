@@ -1,7 +1,7 @@
 function [T,P]=Diffeqn_Iteration(Time,Initial,Parameters)
 
 tau=Parameters(end);
-T=Time(1):tau:Time(2); 
+T=0:tau:Time(2); 
 P(1,:)= Initial;
 old=Initial;
 

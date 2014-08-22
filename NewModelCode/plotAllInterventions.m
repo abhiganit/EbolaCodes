@@ -4,27 +4,13 @@
 function plotAllInterventions(model_pre, model_post, times)
 
 close all;
-fig = figure;
-set(fig, 'Position', [500, 100, 900, 500])
-% hold on;
+subplotorder_plots = [1,7,2,8,3,9];
+subplotorder_hists = [4,10,5,11,6,12];
 
-subplotorder = [1,4,2,5,3,6];
 
-for i = 1:6
-    t1 = size(model_pre{i},1) - 1;
-    t2 = size(model_post{i},1) - 1;
-    subplot(2,3,subplotorder(i))
-   
-    % pre-intervention era
-    plot(0:t1, model_pre{i});
-    hold on;
-    %plot([t1 t1],[0 max(max(model_post{i}(:,1:end)))],'m--','linewidth',1.4)
-    % intervention
-    plot(t1:(t1+t2), model_post{i}(:,2:end)) %autmomaticlaly plots 5 scales of intevention, only need to plot 4
-   % xlim([0 100]);
+% cumulative incidences
+%plotCumulativeIncidence(model_pre, model_post, subplotorder)
 
-    
-end
-hold off;
-StrategyEffectiveness(model_post,subplotorder);
+% new cases
+StrategyEffectiveness(model_post,subplotorder_plots, subplotorder_hists);
 end

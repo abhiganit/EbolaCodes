@@ -124,6 +124,6 @@ function cp_out = getControlParams(index)
 end
 
 function cl_out = getControlLevel(index, freq)
-    cl_out = min(0.95,index / freq);
+    cl_out = 0.5 + min(0.45,index / (2*freq));
 end
 

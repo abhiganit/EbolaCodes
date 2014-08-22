@@ -1,4 +1,4 @@
-function [new_value]=Tau_leap(old, Parameters)
+function [new_value]=Tau_leap(old, Parameters,HospitalVisitors)
 % Parameters
 betaI = Parameters(1); betaH = Parameters(2); betaW = Parameters(3); omega = Parameters(4);
 alpha = Parameters(5);

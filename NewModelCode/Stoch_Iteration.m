@@ -1,4 +1,4 @@
-function [T,P]=Stoch_Iteration(Time,Initial,Parameters)
+function [T,P]=Stoch_Iteration(Time,Initial,Parameters,HospitalVisitors)
 
 
 tau=Parameters(end);
@@ -10,7 +10,7 @@ old=Initial;
 
 loop=1;
 while (T(loop)<Time(2)) 
-    [new]=Tau_leap(old,Parameters);
+    [new]=Tau_leap(old,Parameters,HospitalVisitors);
     loop=loop+1;
     P(loop,:)=new; old=new;
 end

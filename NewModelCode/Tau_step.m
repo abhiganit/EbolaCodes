@@ -1,4 +1,4 @@
-function [new_value]=Tau_step(old, Parameters, t)
+function [new_value]=Tau_step(old, Parameters, t, HospitalVisitors)
 
 % Parameters
 betaI = Parameters(1); betaH = Parameters(2); betaW = Parameters(3); omega = Parameters(4);
@@ -87,7 +87,7 @@ Rate(17) = MF*(Nd/E +  (1-theta)*gammaD*Ig+gammaDH*(Ih+Iw))*Sg/(Ng-Sf);         
 % Funeral:susc -> General:susc
 Rate(18) = fFG*Sf;                                       Change(18,2) = -1; Change(18,1) = +1;
 % General:susc -> Hosp:susc
-Rate(19) = (MH+1)*fGH*Sg + MH*gammaH*theta*Ig*Sg/Ng;                                     Change(19,1) = -1; Change(19,3) = +1;    % ; (1-t/54)*  family members attending hospital for non-ebola cases + ebola cases   
+Rate(19) = HospitalVisitors*((MH+1)*fGH*Sg + MH*gammaH*theta*Ig*Sg/Ng);                                     Change(19,1) = -1; Change(19,3) = +1;    % ; (1-t/54)*  family members attending hospital for non-ebola cases + ebola cases   
 % Hosp:susc -> General:susc
 Rate(20) = fHG*Sh;                                       Change(20,3) = -1; Change(20,1) = +1;
 % General:inf -> Hosp:inf

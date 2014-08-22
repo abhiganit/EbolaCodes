@@ -19,7 +19,7 @@ timesets_intervention = repmat({0:interventionduration},1,4);
 %%%%%%% run model with no intervention  %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 initial_conditions = InitializeNoIntervention(EstimatedParameters());
-model_nointervention = EbolaModel(1, EstimatedParameters(), timesets_intervention0, preinterventiontime+interventionduration, initial_conditions);
+model_nointervention = EbolaModel(1, EstimatedParameters(), timesets_intervention0, preinterventiontime+interventionduration, initial_conditions, 1);
 nointervention_cases = repmat({model_nointervention{1}{1}}, 1, numberofstrategies);
 preintervention_cases = cellfun( @(a)a(1:(maxtime+1),:), nointervention_cases, 'UniformOutput', false);
 postintervention_cases = cellfun( @(a)a((maxtime+1):(maxtime+interventionduration+1),:), nointervention_cases, 'UniformOutput', false);
@@ -49,7 +49,7 @@ for intervention_type = 1:numberofstrategies
         else
             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
         end
-        model_intervention = EbolaModel_intervention(1, EstimatedParameters(), timesets_intervention, interventionduration, InitialSetUpForEveryIntervention', controlparams);
+        model_intervention = EbolaModel_intervention(1, EstimatedParameters(), timesets_intervention, interventionduration, InitialSetUpForEveryIntervention', controlparams, 0);
         intervention_cases{intervention_type}(:,intervention_level) = model_intervention{1}{1};
     end
 end

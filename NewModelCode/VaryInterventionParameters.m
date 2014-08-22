@@ -40,30 +40,25 @@ model_nointervention = EbolaModel(1, EstimatedParameters(), timesets_nointervent
 controlparams = zeros(1,6); % Varying 6 variables
 model_nointervention = EbolaModelVaryingParams(1, EstimatedParameters(), timesets_intervention0, preinterventiontime+interventionduration, InitializeSetUpForNoIntervention', controlparams);
 time = timesets_intervention{1};
+varycolor(20);
 % Startlooping through the varying rates
- for iH = 0.1
-     for phiC = 0.5
+% Change the parameters to be varied 
+% Rates are varying incremently by 5 % right now (can be changed)
+j = 1;
+for pH = 0:0.05:1
+     i = 1;
+     for pG = 0:0.05:1
          controlparams = [iH,phiG,phiW,phiC,pG,pH];   
          model_intervention = EbolaModelVaryingParams(1, EstimatedParameters(), timesets_intervention, interventionduration, InitialSetUpForEveryIntervention', controlparams);
-         plot(time,model_intervention);
-    end
- end
-% 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% %%%%%%%%%%%%%% COMBINE OUTPUT %%%%%%%%%%%%%%%%
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% % combined before and after intervention
-% % model_total = cellfun( @(o1,o2)[o1; o2], model_nointervention{1}, model_intervention{1}, 'UniformOutput', false);
-% % timesets_total =  cellfun( @(o1,o2)[o1; (o1(end)+o2')], timesets_nointervention, timesets_intervention', 'UniformOutput', false);
-% 
-% % combined before and after intervention
-% model_total = cellfun( @(o1, o2) [o1, o2], postintervention_cases, intervention_cases, 'UniformOutput', false);
-% 
-% plotAllInterventions(preintervention_cases, model_total, timeset);
-% %timesets_total =  cellfun( @(o1,o2)[o1; (o1(end)+o2')], timesets_nointervention, timesets_intervention', 'UniformOutput', false);
-% %model_total = cellfun( @(o1, o2) [o1, o2], nointervention_cases, intervention_cases, 'UniformOutput', false);
-% 
-% % plotIntervention(model_total, timesets_total, maxtime)
+        A(:,i) = model_intervention;
+     %     plot(time,model_intervention,'Color',ColorSet(i,:));
+         i = i+1;
+     end
+     B{j} = A;
+     j = j+1;    
+end
+ 
+save('pH_pG','B');
 end
 
 function eps = EstimatedParameters()
@@ -107,27 +102,5 @@ A0 = 0;
 
 ic = [previousoutput; T0; A0];
       
-end
-
-function cp_out = getControlParams(index)
-    % iH, phiG, phiW, phiC, pG, pH
-    index = index+1;
-
-    cp(0+1,:) = [0, 0, 0, 0, 0, 0];
-    cp(1+1,:) = [1, 0, 0, 0, 0, 0];  %passive isolation
-    cp(2+1,:) = [1, 0, 0, 1, 0, 0];  %passive isolation + contact tracing/follow-up
-    cp(3+1,:) = [0, 0, 1, 0, 0, 0];  %transmission reduction (hospital)
-    cp(4+1,:) = [0, 1, 0, 0, 0, 0];  %transmission reduction (community)
-    cp(5+1,:) = [0, 1, 1, 0, 0, 0];  %transmission reduction (hospital+community)
-    cp(6+1,:) = [0, 0, 0, 0, 0, 1];  %hygienic burial (hospital)
-    cp(7+1,:) = [0, 0, 0, 0, 1, 1];  %hygeinic burial (hospital+community)
-
-
-    cp_out = cp(index,:);
-
-end
-
-function cl_out = getControlLevel(index, freq)
-    cl_out = min(0.95,index / freq);
 end
 

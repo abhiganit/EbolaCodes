@@ -1,4 +1,4 @@
-function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalVisitors)
+function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalVisitors, MaxIt)
 % model = 0 runs stochastic model where as model = 1 runs the difference
 % equation.
     
@@ -52,7 +52,6 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     
     % Algorithm parameters
     tau=1;
-    MaxIt = 100;
 %     initial = [Sg0,Sf0,Sh0,Sw0,...  (1-4)
 %                 Eg0,Eh0,Ew0,... (5-7)
 %                 Ig0,Ih0,Iw0,...  (8-10)

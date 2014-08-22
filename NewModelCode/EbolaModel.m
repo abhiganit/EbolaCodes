@@ -17,7 +17,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     gammaD = 1/7.5;       % 1/gammaD: mean duration from onset to death
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
     epsilon = 100/100;       % percentage Symptomatic illness 
-    omega = 3.0;        % odds ratio of funeral risk relative to general population
+    omega = 1.2;        % overall funeral risk relative to general population
     
     % population parameters
     KikwitGeneralPrev = 6.4e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI

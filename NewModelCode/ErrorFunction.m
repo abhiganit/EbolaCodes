@@ -3,7 +3,7 @@
 function f = ErrorFunction(beta, timepoints, datapoints, maxtime, weights, initial, HospitalVisitors)
     
     % calculate model points
-    model = EbolaModel(1, beta, timepoints, maxtime, initial,HospitalVisitors, 1);
+    model = EbolaModel(1, beta, timepoints, maxtime, initial,HospitalVisitors);
     modelfit = model{1};
     partsumf = zeros(size(timepoints,1),1);
     % sum up square diffs for each dataset

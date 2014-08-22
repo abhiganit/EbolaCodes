@@ -52,6 +52,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     
     % Algorithm parameters
     tau=1;
+    %MaxIt = 100;
 %     initial = [Sg0,Sf0,Sh0,Sw0,...  (1-4)
 %                 Eg0,Eh0,Ew0,... (5-7)
 %                 Ig0,Ih0,Iw0,...  (8-10)
@@ -66,7 +67,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     if model== 0
         clear output;
         %initialize output
-        output = nan(27,MaxTime+1,MaxIt);
+        output = nan(28,MaxTime+1,MaxIt);
         parfor i = 1:MaxIt
             %display(i)
             % The main iteration 

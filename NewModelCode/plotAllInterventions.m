@@ -21,7 +21,7 @@ for i = 1:6
     %plot([t1 t1],[0 max(max(model_post{i}(:,1:end)))],'m--','linewidth',1.4)
     % intervention
     plot(t1:(t1+t2), model_post{i}(:,2:end)) %autmomaticlaly plots 5 scales of intevention, only need to plot 4
-    xlim([0 100]);
+   % xlim([0 100]);
 
     
 end

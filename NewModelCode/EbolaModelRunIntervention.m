@@ -19,7 +19,7 @@ timesets_intervention = repmat({0:interventionduration},1,4);
 %%%%%%% run model with no intervention  %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 initial_conditions = InitializeNoIntervention(EstimatedParameters());
-model_nointervention = EbolaModel(1, EstimatedParameters(), timesets_intervention0, preinterventiontime+interventionduration, initial_conditions);
+model_nointervention = EbolaModel(1, EstimatedParameters(), timesets_intervention0, preinterventiontime+interventionduration, initial_conditions, 1);
 nointervention_cases = repmat({model_nointervention{1}{1}}, 1, numberofstrategies);
 preintervention_cases = cellfun( @(a)a(1:(maxtime+1),:), nointervention_cases, 'UniformOutput', false);
 postintervention_cases = cellfun( @(a)a((maxtime+1):(maxtime+interventionduration+1),:), nointervention_cases, 'UniformOutput', false);
@@ -49,7 +49,7 @@ for intervention_type = 1:numberofstrategies
         else
             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
         end
-        model_intervention = EbolaModel_intervention(1, EstimatedParameters(), timesets_intervention, interventionduration, InitialSetUpForEveryIntervention', controlparams);
+        model_intervention = EbolaModel_intervention(1, EstimatedParameters(), timesets_intervention, interventionduration, InitialSetUpForEveryIntervention', controlparams, 0);
         intervention_cases{intervention_type}(:,intervention_level) = model_intervention{1}{1};
     end
 end
@@ -81,7 +81,7 @@ function ic = InitializeNoIntervention(x)
     Cincg0 = Ig0; Cinch0 = 0; Cincw0 = 0;       % cumulative incidence
     Cdiedg0 = 0;  Cdiedh0 = 0; Cdiedw0 = 0;       % cumulative died
     CHosp0 = 0; Iht0 = 0; Iwt0 = 0;
-    Sh0 = 20*(2.8/10000)*N0;   Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %susceptible
+    Sh0 = 5*(2.8/10000)*N0;   Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %susceptible
 %      T0 = 0;
 %      A0 = 0;
     
@@ -124,6 +124,6 @@ function cp_out = getControlParams(index)
 end
 
 function cl_out = getControlLevel(index, freq)
-    cl_out = min(0.95,index / freq);
+    cl_out = 0.5 + min(0.45,index / (2*freq));
 end
 

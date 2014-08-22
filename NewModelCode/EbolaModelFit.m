@@ -7,10 +7,11 @@ function EbolaModelFit
     [timesets, datasets, maxtime, weights] = CleanData();
     % fit model
     startingconditions = [0.1 0.1 0.5466 22.93557];
-
-    [x, fval] = fminsearch( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights, Initial(x)) , startingconditions); % , [0, 0, 0, 1], [10, 10, 1.00, 20]); 
+    HospitalVisitors = 1;
+    MaxIt = 2^11;
+    [x, fval] = fminsearch( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights, Initial(x), HospitalVisitors) , startingconditions); % , [0, 0, 0, 1], [10, 10, 1.00, 20]); 
     % plot model fit
-    plotModelFit(x, timesets, datasets, maxtime, Initial(x));
+    plotModelFit(x, timesets, datasets, maxtime, Initial(x), HospitalVisitors, MaxIt);
     
     h = toc;
     save('paramest','x');
@@ -31,7 +32,7 @@ function ic = Initial(x)
     Cincg0 = Ig0; Cinch0 = 0; Cincw0 = 0;       % cumulative incidence
     Cdiedg0 = 0;  Cdiedh0 = 0; Cdiedw0 = 0;       % cumulative died
     CHosp0 = 0;Iht0 = 0; Iwt0 = 0;
-    Sh0 = 20*(2.8/10000)*N0;   Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %susceptible
+    Sh0 = 5*(2.8/10000)*N0;   Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %susceptible
     
     ic =  [Sg0,Sf0,Sh0,Sw0,...  (1-4)
                 Eg0,Eh0,Ew0,... (5-7)

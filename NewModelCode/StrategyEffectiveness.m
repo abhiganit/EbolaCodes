@@ -14,29 +14,31 @@ t = 1:m-1;
 
 % figure properties
 labelsize = 14;
-cmap = [0 0 1;...
-        0 0.5 0;...
-        1 0 0;...
-        0 0.75 0.75];
+c = [0 0 1; 0 0.5 0; 1 0 0; 0 0.75 0.75];
+h = rgb2hsv(c);
+h2 = h;
+h2(:,2) = 0.5*h2(:,2);
+cmap = hsv2rgb(h2);
 colormap(cmap);
 %cmap = {'k', 'b', 'g', 'r', 'c'};
 
 %ColorSet = varycolor(n);
 %set(gca, 'ColorOrder', ColorSet);
 %hold all
-strtitle = {{'Isolation (90\%) \& Contact Follow-up'},...
-            {'Transmission Reduction (Hospital (100\%) \& Community Cases)'},...
-            {'Hygienic Burial (Hospital (90\%) + Community Cases)'},...
-            {'Isolation (90\%) \& Contact Follow-up (50\%) \& Hygienic Burial (Hospital Cases)'},...
-            {'Transmission Reduction (Hospital (90\%) \& Community Cases (70\%)) \& Hygienic Burial (Hospital Cases)'},...
-            {'Hygienic Burial (Hospital Cases (90\%) \& Community Cases (50\%)) \& Isolation (Hospital Cases)'}};
+strtitle = {{'a) Hospital Case Isolation (90\%)'},...
+            {'b) Hospital Transmission Reduction (100\%)'},...
+            {'c) Hygienic Burial of Hospital Cases (90\%)'},...
+            {'d) Hospital Case Isolation (90\%) \& Contact Follow-up (50\%)'},...
+            {'e) Transmission Reduction (Hospital (90\%) \& Community (70\%))'},...
+            {'f) Hygienic Burial (Hospital Cases (90\%) \& Community Cases (50\%))'}};
 legendtext = {{'70\%', '80\%' '90\%', '95\%'},...
                {'95\%', '97\%' '99\%', '100\%'},...
                {'0\%', '30\%' '60\%', '95\%'},...
                {'50\%', '65\%' '80\%', '95\%'},...
                {'50\%', '65\%' '80\%', '95\%'},...
                {'0\%', '30\%' '60\%', '95\%'}};
-              
+legendtitle = {'Hospital Case Contact Follow-up/Isolation', 'Community Transmission Reduction','Hygienic Burial for Community Cases',...
+               'Hygienic Burial for Hospital Cases', 'Hygienic Burial for Hospital Cases','Hospital Case Isolation'};              
         
 strategies = 4:9;
 for i = 1:s
@@ -68,8 +70,10 @@ for i = strategies
     ylim([0 30])
     xlim([0 366])
     leg = legend(legendtext{i-3}, 'interpreter', 'latex');
+    v = get(leg,'title');
+    set(v,'string',legendtitle{i-3}, 'interpreter', 'latex');
     set(gca, 'XTick', tickmarks, 'XTickLabel', ticklabels);
-    legend('boxoff');
+    set(leg, 'EdgeColor', 'white')
     box off;
 end
 
@@ -91,7 +95,7 @@ for i = strategies
     subplot(6,3,subplotorder(i-3))
     bar(Boutputsums{i}(:,2:end))
     ylim([0 2.8e3])
-    set(gca,'XTickLabel',xlabstr, 'FontSize', labelsize);
+    %set(gca,'XTickLabel',xlabstr, 'FontSize', labelsize);
     box off;
 end
 
@@ -105,6 +109,7 @@ for i = 1:6
     bar(B{i}');
     set(gca,'XTickLabel',xlabstr, 'FontSize', labelsize);
     ylim([0,1.05])
+    box off;
 end
 
 

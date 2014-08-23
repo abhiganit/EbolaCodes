@@ -18,7 +18,7 @@ timesets_intervention = repmat({0:interventionduration},1,4);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%% run model with no intervention  %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-MaxIt = 10;
+MaxIt = 2^11;
 initial_conditions = InitializeNoIntervention(EstimatedParameters());
 model_nointervention = EbolaModel(0, EstimatedParameters(), timesets_intervention0, preinterventiontime+interventionduration, initial_conditions, 1,MaxIt);
 
@@ -155,8 +155,9 @@ end
 
 
 
-B = ProbabilityOfExtinction(A);
-save('ExtinctionProbs', 'A','B');
+%B = ProbabilityOfExtinction(A);
+%save('ExtinctionProbs', 'A','B');
+save('StochasticRunsData','A');
 end
 
 function eps = EstimatedParameters()

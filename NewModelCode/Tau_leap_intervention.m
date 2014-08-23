@@ -143,8 +143,8 @@ Rate(38) = 0;                                  Change(38,10) = -1;   Change(38,2
 Rate(39) = (C*(1-(1-betaI/C)^(1/gammaH)))*phiC*gammaH*(Iht+Iwt+theta*Ig);   Change(39,5) = -1;   Change(39,30) = +1;
 Rate(40) = alpha*epsilon*A;                        Change(40,30) = -1;  Change(40,29) = +1;
 Rate(41) = pG*(1-theta)*gammaD*Ig;                 Change(41,8) = -1;   Change(41,17) = +1;
-Rate(42) = pH*gammaDH*Ih;                          Change(42,9) = -1;   Change(42,18) = +1;
-Rate(43) = pH*gammaDH*Iw;                          Change(43,10) = -1;  Change(43,19) = +1;
+Rate(42) = (pH+iH)*gammaDH*Ih;                          Change(42,9) = -1;   Change(42,18) = +1;
+Rate(43) = (pH+iH)*gammaDH*Iw;                          Change(43,10) = -1;  Change(43,19) = +1;
 
 
 %% run algorithm

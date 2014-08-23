@@ -45,21 +45,21 @@ for i = 1:s
     end
 end
         
-subplotorder = [1,2,3,7,8,9];
-        
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% plotting NEW CASES  %%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+subplotorder = [1,2,3,10,11,12];
 for i = strategies   
-    subplot(4,3,subplotorder(i-3))    
+    subplot(6,3,subplotorder(i-3))    
     for j=2:n
         hold on;
         plot(t,B{i}(:,j), 'Color', cmap(j-1,:), 'LineWidth', 1.2);
     end
-   % set(gca,'Xtick',1:1:m-1)
-     xlabel('Days After Intervention', 'FontSize', 14)
-    %ylabel('New Daily Ebola Cases',  'FontSize',14)  
-%  set(gca,'XtickLabel',1:1:m-1)
-    %title(strtitle{i-3}, 'FontSize', 12)
+    xlabel('Days After Intervention', 'FontSize', 14)
     set(gca, 'FontSize',labelsize)
-    ylim([0 50])
+    ylim([0 30])
     xlim([0 366])
     if (i==4 || i==7)
         text(-50, 15,{'New Daily', 'Ebola Cases'},  'FontSize',14, 'Rotation', 0, 'HorizontalAlignment','Right')  
@@ -68,6 +68,51 @@ for i = strategies
     legend('boxoff');
     box off;
 end
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%% plotting CUMULATIVE CASES  %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+outputtimes = [30, 91, 183];
+
+xlabstr = {'1 mo', '3 mo', '6 mo'};
+Bsums = cellfun(@(a)cumsum(a), B, 'UniformOutput',false);
+Boutputsums = cellfun(@(a,times)a(times,:), Bsums, repmat({outputtimes},1,9), 'UniformOutput',false);
+
+subplotorder = [4,5,6,13,14,15];
+
+colormap(cmap)
+for i = strategies
+    subplot(6,3,subplotorder(i-3))
+    bar(Boutputsums{i}(:,2:end))
+    ylim([0 2.8e3])
+    set(gca,'XTickLabel',xlabstr, 'FontSize', labelsize);
+    
+    if (i==4 || i==7)
+        text(0, 1500,{'Cumulative', 'Ebola Cases'},  'FontSize',14, 'Rotation', 0, 'HorizontalAlignment','Right')  
+    end
+    box off;
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%% plotting PROBS OF EXTINCTION  %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+subplotorder = [7,8,9,16,17,18];
+load('ExtinctionProbs');
+for i = 1:6
+    subplot(6,3,subplotorder(i))
+    bar(B{i}');
+    set(gca,'XTickLabel',xlabstr, 'FontSize', labelsize);
+    ylabel('Prob. of extinction');
+end
+
+
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%% ANNOTATIONS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 % add titles
 annotation('textbox', [0.15 0.85 0.2 0.1],...
@@ -107,29 +152,6 @@ annotation('textbox', [0.7 0.43 0.2 0.1],...
            'interpreter', 'latex',...
            'LineStyle', 'none',...
             'FontSize', 16);
-
-outputtimes = [30, 91, 183];
-
-xlabstr = {'1 mo', '3 mo', '6 mo'};
-Bsums = cellfun(@(a)cumsum(a), B, 'UniformOutput',false);
-Boutputsums = cellfun(@(a,times)a(times,:), Bsums, repmat({outputtimes},1,9), 'UniformOutput',false);
-
-subplotorder = [4,5,6,10,11,12];
-
-colormap(cmap)
-for i = strategies
-    subplot(4,3,subplotorder(i-3))
-    bar(Boutputsums{i}(:,2:end))
-    ylim([0 2.8e3])
-    set(gca,'XTickLabel',xlabstr, 'FontSize', labelsize);
-    
-    if (i==4 || i==7)
-        text(0, 1500,{'Cumulative', 'Ebola Cases'},  'FontSize',14, 'Rotation', 0, 'HorizontalAlignment','Right')  
-    end
-    box off;
-end
-
- 
 end
    
 

@@ -1,4 +1,4 @@
-function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initial, ControlParams, HospitalVisitors)
+function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initial, ControlParams, HospitalVisitors, MaxIt)
 % model = 0 runs stochastic model where as model = 1 runs the difference
 % equation.
     
@@ -52,7 +52,7 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
     
     % Algorithm parameters
     tau=1;
-    MaxIt = 10;
+    %MaxIt = 10;
 %     initial = [Sg0,Sf0,Sh0,Sw0,...  (1-4)
 %                 Eg0,Eh0,Ew0,... (5-7)
 %                 Ig0,Ih0,Iw0,...  (8-10)
@@ -73,7 +73,7 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
     if model== 0
         clear output;
         %initialize output
-        output = nan(29,MaxTime+1,MaxIt);
+        %output = nan(29,MaxTime+1,MaxIt);
         parfor i = 1:MaxIt
             %display(i)
             % The main iteration 
@@ -82,7 +82,7 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
 
         end
             %% SAVE OUTPUT
-            CumulativeCases = output(20,(timepoints{1}+1),:) + output(21,(timepoints{1}+1),:) + output(22,(timepoints{1}+1),:)
+            CumulativeCases = output(20,(timepoints{1}+1),:) + output(21,(timepoints{1}+1),:) + output(22,(timepoints{1}+1),:);
             CumulativeDeaths = output(23,(timepoints{1}+1),:) + output(24,(timepoints{1}+1),:) + output(25,(timepoints{1}+1),:);
             CumulativeHealthworkerIncidence = output(22,timepoints{3}+1,:);
             CumulativeHospitalAdmissions = output(26,timepoints{4}+1,:);

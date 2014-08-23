@@ -38,12 +38,12 @@ cmap = [0 0 1;...
 colormap(cmap);
 xlabstr = {'1 mo', '3 mo', '6 mo'};
 
-subplotorder = [1 2 3 4 5 6];
-for i = subplotorder
-subplot(2,3,i)
-bar(ProbCell{i}');
-set(gca,'XTickLabel',xlabstr, 'FontSize', labelsize);
-ylabel('Prob. of extinction');
-end
+% subplotorder = [1 2 3 4 5 6];
+% for i = subplotorder
+% subplot(2,3,i)
+% bar(ProbCell{i}');
+% set(gca,'XTickLabel',xlabstr, 'FontSize', labelsize);
+% ylabel('Prob. of extinction');
+% end
 
 end

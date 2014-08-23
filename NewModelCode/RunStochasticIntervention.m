@@ -59,18 +59,62 @@ for intervention_type = 4:numberofstrategies
     
     for intervention_level = 1:frequency
         % iH and phiC
-        if intervention_type == 4
+%         if intervention_type == 4
+%             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
+%             controlparams(1) = 0.9;  %iH
+%             %startingpoint = 0.5;    %phiC
+%             variables = [0.5 0.65 0.80 0.95];
+%             controlparams(4) = variables(intervention_level); %min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %phiC
+%         % phiW and phiG
+%         elseif intervention_type == 5
+%             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
+%             controlparams(3) = 0.9;    %phiW
+%             %startingpoint = 0.7;  %phiG
+%             variables = [0.7 0.75 0.85 0.95];
+%             controlparams(2) = variables(intervention_level); %min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %phiG
+%         % pH and phG
+%         elseif intervention_type == 6
+%             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
+%             controlparams(6) = 0.9;    %pH
+%             %startingpoint = 0.0;        %pG
+%             variables = [0, 0.3, 0.6, 0.95];
+%             controlparams(5) = variables(intervention_level); %min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %pG
+%         elseif intervention_type == 7
+%             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
+%             controlparams(1) = 0.9;  %iH
+%             controlparams(4) = 0.5;  %phiC
+%             %startingpoint = 0.5;    %pH
+%             variables = [0.5 0.65 0.80 0.95];
+%             controlparams(6) = variables(intervention_level);%   min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %pH    
+%         elseif intervention_type == 8
+%             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
+%             controlparams(3) = 0.9;    %phiW
+%             controlparams(2) = 0.7;    %phiG
+%             %startingpoint = 0.2;  %pH
+%             variables = [0.2, 0.45, 0.70,  0.95];
+%             controlparams(6) = variables(intervention_level); %  min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %pH
+%         elseif intervention_type == 9
+%             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
+%             controlparams(6) = 0.9;    %pH
+%             controlparams(5) = 0.5;    %pG
+%             %startingpoint = 0.0;        %iH
+%             variables = [0, 0.3, 0.6, 0.95];
+%             controlparams(1) = variables(intervention_level); %min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %iH
+%         else
+%             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
+%         end
+if intervention_type == 4
             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
             controlparams(1) = 0.9;  %iH
             %startingpoint = 0.5;    %phiC
-            variables = [0.5 0.65 0.80 0.95];
+            variables = [0.7 0.8 0.9 0.95];
             controlparams(4) = variables(intervention_level); %min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %phiC
         % phiW and phiG
         elseif intervention_type == 5
             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
-            controlparams(3) = 0.9;    %phiW
+            controlparams(3) = 1.0;    %phiW
             %startingpoint = 0.7;  %phiG
-            variables = [0.7 0.75 0.85 0.95];
+            variables = [0.95 0.97 0.99 1];
             controlparams(2) = variables(intervention_level); %min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %phiG
         % pH and phG
         elseif intervention_type == 6
@@ -112,7 +156,7 @@ end
 
 
 B = ProbabilityOfExtinction(A);
-
+save('ExtinctionProbs', 'A','B');
 end
 
 function eps = EstimatedParameters()

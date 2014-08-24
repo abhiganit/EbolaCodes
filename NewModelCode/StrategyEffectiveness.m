@@ -30,28 +30,29 @@ labelsize = 14;
 c = [0 0 1; 0 0.5 0; 1 0 0; 0 0.75 0.75];
 h = rgb2hsv(c);
 h2 = h; h3 = h;
-h2(:,2) = 0.5*h2(:,2);
-h3(:,2) = 0.5*h3(:,2);
+h2(:,2) = 0.6*h2(:,2);
+h3(:,2) = 0.2*h3(:,2);
 cmap1 = hsv2rgb(h2);
 cmap2 = hsv2rgb(h3);
-colormap(cmap1);
+cmap_all = [cmap1; cmap2];
+colormap(cmap_all);
 %cmap = {'k', 'b', 'g', 'r', 'c'};
 
 %ColorSet = varycolor(n);
 %set(gca, 'ColorOrder', ColorSet);
 %hold all
-strtitle = {{'a) Hospital Transmission Reduction (100\%)'},...
+strtitle = {{'a) Hospital Transmission Reduction (100%)'},...
             {'b) Hygienic Burial of Hospital Cases'},...
             {'c) Hospital Case Isolation'},...
-            {'d) Hospital Transmission Reduction (90\%)'},...
-            {'e) Hygienic Burial of Hospital Cases (80\%)'},...
-            {'f) Hospital Case Isolation (80\%)'}};
-legendtext = {{'95\%', '97\%' '99\%', '100\%'},...
-               {'80\%', '85\%' '90\%', '95\%'},...
-               {'80\%', '85\%' '90\%', '95\%'},...
-               {'70\%', '80\%' '90\%', '95\%'},...
-               {'30\%', '50\%' '70\%', '95\%'},...
-               {'50\%', '65\%' '80\%', '95\%'}};
+            {'d) Hospital Transmission Reduction (90%)'},...
+            {'e) Hygienic Burial of Hospital Cases (80%)'},...
+            {'f) Hospital Case Isolation (80%)'}};
+legendtext = {{'95%', '97%' '99%', '100%'},...
+               {'80%', '85%' '90%', '95%'},...
+               {'80%', '85%' '90%', '95%'},...
+               {'70%', '80%' '90%', '95%'},...
+               {'30%', '50%' '70%', '95%'},...
+               {'50%', '65%' '80%', '95%'}};
 legendtitle = {'Community Transmission Reduction','','', ...
                'Hygienic Burial for Hospital Cases','Hygienic Burial for Community Cases','Hospital Contacts Follow-up/Isolation'};              
         
@@ -80,13 +81,13 @@ for i = strategies
         hold on;
         plot(t,Bdet{i}(:,j), 'Color', cmap1(j-1,:), 'LineWidth', 1.2);
     end
-    xlabel('Months After Intervention', 'FontSize', 14)
+    xlabel('Months After Intervention', 'FontSize', 14, 'FontName', 'Palatino')
     set(gca, 'FontSize',labelsize)
     ylim([0 30])
     xlim([0 366])
-    leg = legend(legendtext{i-3}, 'interpreter', 'latex');
+    leg = legend(legendtext{i-3}, 'FontName', 'Palatino');
     v = get(leg,'title');
-    set(v,'string',legendtitle{i-3}, 'interpreter', 'latex');
+    set(v,'string',legendtitle{i-3}, 'FontName', 'Palatino');
     set(gca, 'XTick', tickmarks, 'XTickLabel', ticklabels);
     set(leg, 'EdgeColor', 'white')
     box off;
@@ -108,14 +109,21 @@ upperdifference = cellfun( @(u,m) u-m(:,2:end), cihighmat, Boutputsumsdet(4:9), 
 lowerdifference = cellfun( @(l,m) m(:,2:end)-l, cilowmat, Boutputsumsdet(4:9), 'UniformOutput', false);
 subplotorder = [4,5,6,13,14,15];
 
-colormap(cmap1)
+%colormap(cmap1)
 for i = strategies
-    index = strategies-3;
+    index = i-3;
     subplot(6,3,subplotorder(index))
+    bar(Boutputsumsdet{i}(:,2:end), 'LineStyle', 'none')
+    caxis([1,8])
+    numgroups = size(Boutputsumsdet{i}(:,2:end), 1); 
+    numbars = size(Boutputsumsdet{i}(:,2:end), 2); 
+    groupwidth = min(0.8, numbars/(numbars+1.5));
     hold on;
-    bar(Boutputsumsdet{i}(:,2:end))
-    plot([1,2,3], Boutputsumsdet{i}(:,2:end) + upperdifference{i});
-    plot([1,2,3], Boutputsumsdet{i}(:,2:end)-lowerdifference{i});
+    for j = 1:numbars
+      % Based on barweb.m by Bolu Ajiboye from MATLAB File Exchange
+      x = (1:numgroups) - groupwidth/2 + (2*j-1) * groupwidth / (2*numbars);  % Aligning error bar with individual bar
+      errorbar(x, Boutputsumsdet{i}(:,j+1), upperdifference{index}(:,j), 'k', 'linestyle', 'none');
+    end
     ylim([0 3.4e3])
     set(gca,'XTickLabel',{'','',''}, 'FontSize', labelsize);
     set(gca, 'YTick', [0, 1000, 2000,3000])
@@ -128,14 +136,16 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%% plotting PROBS OF EXTINCTION  %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-colormap(cmap2);
+%colormap(cmap2);
 subplotorder = [7,8,9,16,17,18];
 
 for i = 1:6
     subplot(6,3,subplotorder(i))
-    bar(ExtProbs{i}');
+    bar(ExtProbs{i}', 'LineStyle', 'none');
+    caxis([-3,4])
     set(gca,'XTickLabel',xlabstr, 'FontSize', labelsize)
     ylim([0,1.05])
+   
     box off;
 end
 

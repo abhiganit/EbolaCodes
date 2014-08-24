@@ -1,59 +1,123 @@
-function EbolaModelRunIntervention
+function[sixmonthcumsum] = EbolaModelRunIntervention(x,y);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%% NO INTERVENTION %%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % get data
 [timesets_nointervention, datasets, maxtime, weights] = CleanData();
-% run up until current time with no intervention
-model_nointervention = EbolaModel(1, EstimatedParameters(), timesets_nointervention, maxtime, InitializeNoIntervention(EstimatedParameters()));
+
+% set up parameters
+MaxIt = 10;
+numberofstrategies = 9;
+interventionduration = 365;
+frequency = 4;
+preinterventiontime = max(timesets_nointervention{1});
+timeset = 0:(preinterventiontime+interventionduration);
+timesets_intervention0 = repmat({timeset},1,4);
+timesets_intervention = repmat({0:interventionduration},1,4);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% run model with no intervention  %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+initial_conditions = InitializeNoIntervention(x,y);
+model_nointervention = EbolaModel(1, x, timesets_intervention0, preinterventiontime+interventionduration, initial_conditions, 1, MaxIt,y);
+nointervention_cases = repmat({model_nointervention{1}{1}}, 1, numberofstrategies);
+preintervention_cases = cellfun( @(a)a(1:(maxtime+1),:), nointervention_cases, 'UniformOutput', false);
+postintervention_cases = cellfun( @(a)a((maxtime+1):(maxtime+interventionduration+1),:), nointervention_cases, 'UniformOutput', false);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%% INTERVENTION %%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% run from current time with intervention
-interventionduration = 300;
-timesets_intervention = repmat({0:interventionduration},1,4);
+% initialize intervention runs
+initializemat = zeros(interventionduration+1, frequency);
+intervention_cases = repmat({initializemat}, 1, numberofstrategies);
 allruns = model_nointervention{2};
-initial = InitializeIntervention(allruns(:,end));
-model_intervention = EbolaModel_intervention(1, EstimatedParameters(), timesets_intervention, interventionduration, initial');
+InitialSetUpForEveryIntervention = InitializeIntervention(allruns(:,maxtime+1));
 
+% loop around the interventions
+for intervention_type = 1:numberofstrategies
+    
+    for intervention_level = 1:frequency
+        % iH and phiC
+        if intervention_type == 6 %4
+            controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
+            controlparams(1) = 0.9;  %iH
+            %startingpoint = 0.5;    %phiC
+            variables = [0.7 0.8 0.9 0.95];
+            controlparams(4) = variables(intervention_level); %min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %phiC
+        % phiW and phiG
+        elseif intervention_type == 4 %5
+            controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
+            controlparams(3) = 1.0;    %phiW
+            %startingpoint = 0.7;  %phiG
+            variables = [0.95 0.97 0.99 1];
+            controlparams(2) = variables(intervention_level); %min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %phiG
+        % pH and phG
+        elseif intervention_type == 5 %6
+            controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
+            controlparams(6) = 0.9;    %pH
+            %startingpoint = 0.0;        %pG
+            variables = [0, 0.3, 0.6, 0.95];
+            controlparams(5) = variables(intervention_level); %min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %pG
+        elseif intervention_type == 9 %7
+            controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
+            controlparams(1) = 0.9;  %iH
+            controlparams(4) = 0.5;  %phiC
+            %startingpoint = 0.5;    %pH
+            variables = [0.5 0.65 0.80 0.95];
+            controlparams(6) = variables(intervention_level);%   min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %pH    
+        elseif intervention_type == 7 %8
+            controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
+            controlparams(3) = 0.9;    %phiW
+            controlparams(2) = 0; %0.7;    %phiG
+            %startingpoint = 0.2;  %pH
+            variables = [0.7 0.8 0.9 0.95]; %[0.5 0.65 0.80 0.95];
+            controlparams(6) = variables(intervention_level); %  min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %pH
+        elseif intervention_type == 8 %9
+            controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
+            controlparams(6) = 0.9;    %pH
+            controlparams(5) = 0.5;    %pG
+            %startingpoint = 0.0;        %iH
+            variables = [0, 0.3, 0.6, 0.95];
+            controlparams(1) = variables(intervention_level); %min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %iH
+        else
+            controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
+        end
+        model_intervention = EbolaModel_intervention(1, x, timesets_intervention, interventionduration, InitialSetUpForEveryIntervention', controlparams, 0,10,y);
+        intervention_cases{intervention_type}(:,intervention_level) = model_intervention{1}{1};
+    end
+    
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%% COMBINE OUTPUT %%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % combined before and after intervention
-model_total = cellfun( @(o1,o2)[o1; o2], model_nointervention{1}, model_intervention{1}, 'UniformOutput', false);
-timesets_total =  cellfun( @(o1,o2)[o1; (o1(end)+o2')], timesets_nointervention, timesets_intervention', 'UniformOutput', false);
+model_total = cellfun( @(o1, o2) [o1, o2], postintervention_cases, intervention_cases, 'UniformOutput', false);
+sixmonthcumsum = plotAllInterventions(preintervention_cases, model_total, timeset);
 
-testplot
 end
 
 function eps = EstimatedParameters()
 
-    betaI = 0.10260; 
-    betaW = 0.21548;
-    theta=0.43483;
-    gammaDH=0.21986;
-    Ig0=14.71689;
-%     eps = [betaI, betaW, theta, gammaDH, Ig0];
-eps =[0.10547 0.20851 0.15810 0.16696 18.21165 ];
+    load('paramest');
+    eps = x;
 end
 
-function ic = InitializeNoIntervention(x)
+function ic = InitializeNoIntervention(x,y)
     
 % Initial conditions
     N0 = 4.09e6;          % Initial population size    Ig0 = x(5);  
     Eg0 = 0;    Eh0 = 0; Ew0 = 0;         % exposed
-    Ig0 = x(5); Ih0 = 0; Iw0 = 0;         % infected
+    Ig0 = x(4); Ih0 = 0; Iw0 = 0;         % infected
     Fg0 = 0;    Fh0 = 0; Fw0 = 0;         % died:funeral
     Rg0 = 0;    Rh0 = 0; Rw0 = 0;         % recovered
     Dg0 = 0;    Dh0 = 0; Dw0 = 0;         % died:buried
     Cincg0 = Ig0; Cinch0 = 0; Cincw0 = 0;       % cumulative incidence
     Cdiedg0 = 0;  Cdiedh0 = 0; Cdiedw0 = 0;       % cumulative died
     CHosp0 = 0; Iht0 = 0; Iwt0 = 0;
-    Sh0 = 20*(2.8/10000)*N0;   Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %susceptible
+    Sh0 = 5*(2.8/10000)*N0;   Sf0 = 0; Sw0 = y(1);  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %susceptible
 %      T0 = 0;
 %      A0 = 0;
     
@@ -77,3 +141,34 @@ A0 = 0;
 ic = [previousoutput; T0; A0];
       
 end
+
+function cp_out = getControlParams(index)
+    % iH, phiG, phiW, phiC, pG, pH
+    index = index+1;
+
+    cp(0+1,:) = [0, 0, 0, 0, 0, 0];
+    
+    
+    cp(1+1,:) = [0, 0, 1, 0, 0, 0];  %transmission reduction (hospital)
+    cp(2+1,:) = [0, 0, 0, 0, 0, 1];  %hygienic burial (hospital)
+    cp(3+1,:) = [1, 0, 0, 0, 0, 0];  %isolation (hospital cases)
+    
+    
+    cp(4+1,:) = [0, 1, 1, 0, 0, 0];  %transmission reduction (hospital+community)
+    cp(5+1,:) = [0, 0, 0, 0, 1, 1];  %hygeinic burial (hospital+community cases)
+    cp(6+1,:) = [1, 0, 0, 1, 0, 0];  %isolation (hospital cases) + contact follow-up
+    
+    
+    cp(7+1,:) = [0, 1, 1, 0, 0, 1];  %transmission reduction (hospital+community) + hygienic burial (hospital cases) 
+    cp(8+1,:) = [1, 0, 0, 0, 1, 1];  %hygeinic burial (hospital+community) + isolation (hospital cases)
+    cp(9+1,:) = [1, 0, 0, 1, 0, 1];  %isolation (hospital cases) + contact follow-up + hygienic burial (hospital cases)
+
+
+    cp_out = cp(index,:);
+
+end
+
+function cl_out = getControlLevel(index, freq)
+    cl_out = 0.5 + min(0.45,index / (2*freq));
+end
+

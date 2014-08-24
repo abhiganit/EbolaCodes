@@ -1,4 +1,4 @@
-function EbolaModelFit
+function[x] =  EbolaModelFit(y);
  
     tic;
     
@@ -6,31 +6,35 @@ function EbolaModelFit
     % get data and clean it
     [timesets, datasets, maxtime, weights] = CleanData();
     % fit model
-    startingconditions = [0.10260 0.21548 0.43483 0.21987 14.71682];
-    [x, fval] = fminsearch( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights, Initial(x)) , startingconditions); % , [0, 0, 0, 1], [10, 10, 1.00, 20]); 
+    startingconditions = [0.07849 0.29095 0.53542 22.42888];
+    HospitalVisitors = 1;
+    MaxIt = 4;
+    [x, fval] = fminsearch( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights, Initial(x,y), HospitalVisitors,y) , startingconditions); % , [0, 0, 0, 1], [10, 10, 1.00, 20]); 
     % plot model fit
-    plotModelFit(x, timesets, datasets, maxtime, Initial(x));
-    
+   % plotModelFit(x, timesets, datasets, maxtime, Initial(x), HospitalVisitors, MaxIt);
+   
     h = toc;
-    save('paramest','x');
+    
+%     save('paramest','x');
+    %save('e90','x');
     sprintf('%.5f ', x)
     sprintf('Fval: %.3f', fval)
     sprintf('Run time: %f mins', h/60)
 end
 
-function ic = Initial(x)
+function ic = Initial(x,y)
     
 % Initial conditions
     N0 = 4.09e6;          % Initial population size    Ig0 = x(5);  
     Eg0 = 0;    Eh0 = 0; Ew0 = 0;         % exposed
-    Ig0 = x(5); Ih0 = 0; Iw0 = 0;         % infected
+    Ig0 = x(4); Ih0 = 0; Iw0 = 0;         % infected
     Fg0 = 0;    Fh0 = 0; Fw0 = 0;         % died:funeral
     Rg0 = 0;    Rh0 = 0; Rw0 = 0;         % recovered
     Dg0 = 0;    Dh0 = 0; Dw0 = 0;         % died:buried
     Cincg0 = Ig0; Cinch0 = 0; Cincw0 = 0;       % cumulative incidence
     Cdiedg0 = 0;  Cdiedh0 = 0; Cdiedw0 = 0;       % cumulative died
     CHosp0 = 0;Iht0 = 0; Iwt0 = 0;
-    Sh0 = 20*(2.8/10000)*N0;   Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %susceptible
+    Sh0 = 5*(2.8/10000)*N0;   Sf0 = 0; Sw0 = y(1);  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %susceptible
     
     ic =  [Sg0,Sf0,Sh0,Sw0,...  (1-4)
                 Eg0,Eh0,Ew0,... (5-7)

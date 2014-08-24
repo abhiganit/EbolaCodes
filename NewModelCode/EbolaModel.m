@@ -3,12 +3,11 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
 % equation.
     
     % Model Parameters (Liberia where possible)
-    
-    % Estimated Parameters
+     % Estimated Parameters
     betaI = x(1);      % Transmission coefficient in community
     betaW = x(2);      % Transmission coefficient between patients-HCWs
     theta = x(3);      % Percentage of infectious cases are hospitaized
-    gammaH = 1/5;    % 1/Time between hospitalization and death
+    gammaH = 1./5;    % 1/Time between hospitalization and death
     %Ig0 = x(5);  
     
     %disease progression parameters
@@ -16,7 +15,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     gammaI = 1/9; %10;      % 1/gammaI: mean duration of the infectious period for survivors
     gammaD = 1/7.5;       % 1/gammaD: mean duration from onset to death
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
-    epsilon = 100/100;       % percentage Symptomatic illness 
+    epsilon = 90/100;       % percentage Symptomatic illness 
     omega = 1.2;        % overall funeral risk relative to general population
     
     % population parameters
@@ -25,7 +24,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     N0 = 4.09e6;          % Initial population size
     M =  5;            % average family size
     MF = M - 1;         %number of chances to be at a funeral
-    MH = 1;             % additional family members visiting hospital
+    MH = 2;             % additional family members visiting hospital
     E = 62*365;          % average life expectancy in Liberia 
     
     %funeral/hospitalization parameters
@@ -37,7 +36,9 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     gammaDH = 1/(1/gammaD - 1/gammaH);
     gammaIH = 1/(1/gammaI - 1/gammaH);     % 1/gammaIH: mean duration from hospitalization to end of infectiousness
     betaH = betaI;      % Transmission coefficient between patients or between HCWs
-
+    
+    
+   
 %     % Initial conditions
 %     Ig0 = x(5);  
 %     Eg0 = 0;  Eh0 = 0; Ew0 = 0;         % exposed

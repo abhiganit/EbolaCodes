@@ -1,4 +1,4 @@
-function [new_value]=Tau_step(old, Parameters, t)
+function [new_value]=Tau_step(old, Parameters, t, HospitalVisitors)
 
 % Parameters
 betaI = Parameters(1); betaH = Parameters(2); betaW = Parameters(3); omega = Parameters(4);
@@ -28,21 +28,24 @@ Ng = Sg+Sf+Eg+Ig+Rg;
 Nh = Sh+Eh+Ih+Iht+Rh;
 Nw = Sw+Ew+Iw+Iwt+Rw;
 Nd = Ng + Nh + Nw;
-
+F = Fg + Fh + Fw;
+NF = Nd/(gammaF*E);
 % initialize arrays
 Change = zeros(33,size(old,1)); %33 rates, X states
 Rate = zeros(33,1);
 
 %prob ebola funeral
-newebolafunerals = (1-theta)*gammaD*(Ig) + gammaDH*(Ih+Iw);  
-newnonebolafunerals = Nd/E;
+% newebolafunerals = (1-theta)*gammaD*(Ig) + gammaDH*(Ih+Iw);  
+% newnonebolafunerals = Nd/E;
 
 %% Transitions
 % General: susc -> exposed
 Rate(1) = betaI*Sg*(Ig/Ng);                         Change(1,1) = -1; Change(1,5) = +1;
 % Funeral: susc -> exposed
-Rate(2) = (omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
-                betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;               Change(2,2) = -1; Change(2,5) = +1; 
+%Rate(2) = gammaF*(omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
+ %               betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;               Change(2,2) = -1; Change(2,5) = +1; 
+Rate(2) = ((21*omega-19)/2)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
+                 betaI*(F/(F+NF))*Sf;               Change(2,2) = -1; Change(2,5) = +1; 
 % Hosp: susc -> exposed
 Rate(3) = betaH*Sh*(Ih+Iht+Iw+Iwt)/(Nh+Nw);      Change(3,3) = -1; Change(3,6) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
 % Worker: susc -> exposed
@@ -84,7 +87,7 @@ Rate(17) = MF*(Nd/E +  (1-theta)*gammaD*Ig+gammaDH*(Ih+Iw))*Sg/(Ng-Sf);         
 % Funeral:susc -> General:susc
 Rate(18) = fFG*Sf;                                       Change(18,2) = -1; Change(18,1) = +1;
 % General:susc -> Hosp:susc
-Rate(19) = (MH+1)*fGH*Sg + MH*gammaH*theta*Ig*Sg/Ng;                                     Change(19,1) = -1; Change(19,3) = +1;    % ; (1-t/54)*  family members attending hospital for non-ebola cases + ebola cases   
+Rate(19) = HospitalVisitors*((MH+1)*fGH*Sg + MH*gammaH*theta*Ig*Sg/Ng);                                     Change(19,1) = -1; Change(19,3) = +1;    % ; (1-t/54)*  family members attending hospital for non-ebola cases + ebola cases   
 % Hosp:susc -> General:susc
 Rate(20) = fHG*Sh;                                       Change(20,3) = -1; Change(20,1) = +1;
 % General:inf -> Hosp:inf

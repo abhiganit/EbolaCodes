@@ -14,4 +14,5 @@ close all;
 
 % new cases
 [B,sixmonthcumsum] = StrategyEffectiveness(model_post);
+
 end

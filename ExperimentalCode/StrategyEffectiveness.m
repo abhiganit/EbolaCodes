@@ -87,7 +87,7 @@ outputtimes = [30, 91, 183];
 %xlabstr = {'1 mo', '3 mo', '6 mo'};
 Bsums = cellfun(@(a)cumsum(a), B, 'UniformOutput',false);
 Boutputsums = cellfun(@(a,times)a(times,:), Bsums, repmat({outputtimes},1,9), 'UniformOutput',false);
-sixmonthcumsum = Boutputsums{7}(3,2);
+sixmonthcumsum = Boutputsums{7}(3,4);
 subplotorder = [4,5,6,13,14,15];
 
 

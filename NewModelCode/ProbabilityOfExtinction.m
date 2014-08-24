@@ -30,13 +30,13 @@ for i = 1:s
 end
 
 % figure properties
-labelsize = 14;
-cmap = [0 0 1;...
-        0 0.5 0;...
-        1 0 0;...
-        0 0.75 0.75];
-colormap(cmap);
-xlabstr = {'1 mo', '3 mo', '6 mo'};
+% labelsize = 14;
+% cmap = [0 0 1;...
+%         0 0.5 0;...
+%         1 0 0;...
+%         0 0.75 0.75];
+% colormap(cmap);
+% xlabstr = {'1 mo', '3 mo', '6 mo'};
 
 % subplotorder = [1 2 3 4 5 6];
 % for i = subplotorder

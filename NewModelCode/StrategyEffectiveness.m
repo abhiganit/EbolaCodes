@@ -16,29 +16,31 @@ t = 1:m-1;
 labelsize = 14;
 c = [0 0 1; 0 0.5 0; 1 0 0; 0 0.75 0.75];
 h = rgb2hsv(c);
-h2 = h;
+h2 = h; h3 = h;
 h2(:,2) = 0.5*h2(:,2);
-cmap = hsv2rgb(h2);
-colormap(cmap);
+h3(:,2) = 0.5*h3(:,2);
+cmap1 = hsv2rgb(h2);
+cmap2 = hsv2rgb(h3);
+colormap(cmap1);
 %cmap = {'k', 'b', 'g', 'r', 'c'};
 
 %ColorSet = varycolor(n);
 %set(gca, 'ColorOrder', ColorSet);
 %hold all
 strtitle = {{'a) Hospital Transmission Reduction (100\%)'},...
-            {'b) Hygienic Burial of Hospital Cases (90\%)'},...
-            {'c) Hospital Case Isolation (90\%)'},...
-            {'d) Transmission Reduction (Hospital (90\%) \& Community (70\%))'},...
-            {'e) Hygienic Burial (Hospital Cases (90\%) \& Community Cases (50\%))'},...
-            {'f) Hospital Case Isolation (90\%) \& Contact Follow-up (50\%)'}};
+            {'b) Hygienic Burial of Hospital Cases'},...
+            {'c) Hospital Case Isolation'},...
+            {'d) Hospital Transmission Reduction (90\%)'},...
+            {'e) Hygienic Burial of Hospital Cases (80\%)'},...
+            {'f) Hospital Case Isolation (80\%)'}};
 legendtext = {{'95\%', '97\%' '99\%', '100\%'},...
-               {'0\%', '30\%' '60\%', '95\%'},...
+               {'80\%', '85\%' '90\%', '95\%'},...
+               {'80\%', '85\%' '90\%', '95\%'},...
                {'70\%', '80\%' '90\%', '95\%'},...
-               {'70\%', '80\%' '90\%', '95\%'},...
-               {'0\%', '30\%' '60\%', '95\%'},...
+               {'30\%', '50\%' '70\%', '95\%'},...
                {'50\%', '65\%' '80\%', '95\%'}};
-legendtitle = {'Community Transmission Reduction','Hygienic Burial for Community Cases','Hospital Case Contact Follow-up/Isolation', ...
-               'Hygienic Burial for Hospital Cases','Hospital Case Isolation','Hygienic Burial for Hospital Cases'};              
+legendtitle = {'Community Transmission Reduction','','', ...
+               'Hygienic Burial for Hospital Cases','Hygienic Burial for Community Cases','Hospital Contacts Follow-up/Isolation'};              
         
 strategies = 4:9;
 for i = 1:s
@@ -63,7 +65,7 @@ for i = strategies
     subplot(6,3,subplotorder(i-3))    
     for j=2:n
         hold on;
-        plot(t,B{i}(:,j), 'Color', cmap(j-1,:), 'LineWidth', 1.2);
+        plot(t,B{i}(:,j), 'Color', cmap1(j-1,:), 'LineWidth', 1.2);
     end
     xlabel('Months After Intervention', 'FontSize', 14)
     set(gca, 'FontSize',labelsize)
@@ -90,24 +92,26 @@ Boutputsums = cellfun(@(a,times)a(times,:), Bsums, repmat({outputtimes},1,9), 'U
 
 subplotorder = [4,5,6,13,14,15];
 
-colormap(cmap)
+colormap(cmap1)
 for i = strategies
     subplot(6,3,subplotorder(i-3))
     bar(Boutputsums{i}(:,2:end))
-    ylim([0 2.8e3])
-    %set(gca,'XTickLabel',xlabstr, 'FontSize', labelsize);
+    ylim([0 3.4e3])
+    set(gca,'XTickLabel',{'','',''}, 'FontSize', labelsize);
+    set(gca, 'YTick', [0, 1000, 2000,3000])
     box off;
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%% plotting PROBS OF EXTINCTION  %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+colormap(cmap2);
 subplotorder = [7,8,9,16,17,18];
 load('ExtinctionProbs');
 for i = 1:6
     subplot(6,3,subplotorder(i))
     bar(B{i}');
-    set(gca,'XTickLabel',xlabstr, 'FontSize', labelsize);
+    set(gca,'XTickLabel',xlabstr, 'FontSize', labelsize)
     ylim([0,1.05])
     box off;
 end

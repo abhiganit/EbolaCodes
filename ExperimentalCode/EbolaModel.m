@@ -1,4 +1,4 @@
-function modelout = EbolaModel(model, x, timepoints, MaxTime, initial)
+function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalVisitors, MaxIt,y)
 % model = 0 runs stochastic model where as model = 1 runs the difference
 % equation.
     
@@ -8,35 +8,36 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial)
     betaI = x(1);      % Transmission coefficient in community
     betaW = x(2);      % Transmission coefficient between patients-HCWs
     theta = x(3);      % Percentage of infectious cases are hospitaized
-    gammaDH = x(4);    % 1/Time between hospitalization and death
+    gammaH = y(5);    % 1/Time between hospitalization and death
     %Ig0 = x(5);  
     
     %disease progression parameters
-    alpha = 1/7;        % 1/alpha: mean duration of the incubation period 
-    gammaI = 1/10;      % 1/gammaI: mean duration of the infectious period for survivors
-    gammaD = 1/7;       % 1/gammaD: mean duration from onset to death
+    alpha = y(2);        % 1/alpha: mean duration of the incubation period 
+    gammaI = y(4); %10;      % 1/gammaI: mean duration of the infectious period for survivors
+    gammaD = y(3);       % 1/gammaD: mean duration from onset to death
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
-    epsilon = 100/100;       % percentage Symptomatic illness 
-    omega = 3.0;        % odds ratio of funeral risk relative to general population
+    epsilon = y(11);       % percentage Symptomatic illness 
+    omega = y(10);        % overall funeral risk relative to general population
     
     % population parameters
     KikwitGeneralPrev = 6.4e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     KikwitNonhospPrev = 5.6e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     N0 = 4.09e6;          % Initial population size
-    M =  5;            % average family size
+    M =  y(8);            % average family size
     MF = M - 1;         %number of chances to be at a funeral
-    MH = 1;             % additional family members visiting hospital
+    MH = y(9);             % additional family members visiting hospital
     E = 62*365;          % average life expectancy in Liberia 
     
     %funeral/hospitalization parameters
     fFG = 1/2;          % 1/average time spent at close quarters with body at funeral
-    fGH = 62131 / (N0 * 365);  % rate of hospitalization per person per day (DRC 2012 estimates)
-    fHG = 1/7;          % 1/average time spent at in hospital with non-ebola disease
+    fGH = y(6) / (N0 * 365);  % rate of hospitalization per person per day (DRC 2012 estimates)
+    fHG = y(7);          % 1/average time spent at in hospital with non-ebola disease
     
     % dervied parameters
-    gammaH = 1/(1/gammaD - 1/gammaDH);
+    gammaDH = 1/(1/gammaD - 1/gammaH);
     gammaIH = 1/(1/gammaI - 1/gammaH);     % 1/gammaIH: mean duration from hospitalization to end of infectiousness
     betaH = betaI;      % Transmission coefficient between patients or between HCWs
+
 
 %     % Initial conditions
 %     Ig0 = x(5);  
@@ -52,7 +53,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial)
     
     % Algorithm parameters
     tau=1;
-    MaxIt = 100;
+    %MaxIt = 100;
 %     initial = [Sg0,Sf0,Sh0,Sw0,...  (1-4)
 %                 Eg0,Eh0,Ew0,... (5-7)
 %                 Ig0,Ih0,Iw0,...  (8-10)
@@ -67,11 +68,11 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial)
     if model== 0
         clear output;
         %initialize output
-        output = nan(27,MaxTime+1,MaxIt);
+        output = nan(28,MaxTime+1,MaxIt);
         parfor i = 1:MaxIt
             %display(i)
             % The main iteration 
-            [T, pop]=Stoch_Iteration([0 MaxTime],initial,params);
+            [T, pop]=Stoch_Iteration([0 MaxTime],initial,params, HospitalVisitors);
             output(:,:,i)=pop';
 
         end
@@ -81,15 +82,15 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial)
             CumulativeHealthworkerIncidence = output(22,timepoints{3}+1,:);
             CumulativeHospitalAdmissions = output(26,timepoints{4}+1,:);
             
-            CumulativeCases = reshape(CumulativeCases, 65, MaxIt);
-            CumulativeDeaths = reshape(CumulativeDeaths, 65, MaxIt);
-            CumulativeHealthworkerIncidence = reshape(CumulativeHealthworkerIncidence, 65, MaxIt);
-            CumulativeHospitalAdmissions = reshape(CumulativeHospitalAdmissions, 65, MaxIt);
+            CumulativeCases = reshape(CumulativeCases, MaxTime+1, MaxIt);
+            CumulativeDeaths = reshape(CumulativeDeaths, MaxTime+1, MaxIt);
+            CumulativeHealthworkerIncidence = reshape(CumulativeHealthworkerIncidence, MaxTime+1, MaxIt);
+            CumulativeHospitalAdmissions = reshape(CumulativeHospitalAdmissions, MaxTime+1, MaxIt);
             
     else
             % The main iteration (note as it is difference equation, we
             % only run it once)
-            [T, pop]=Diffeqn_Iteration([0 MaxTime],initial,params);
+            [T, pop]=Diffeqn_Iteration([0 MaxTime],initial,params, HospitalVisitors);
             output=pop';
 %             output.Sg=pop(:,1); output.Sf = pop(:,2); output.Sh = pop(:,3); output.Sw = pop(:,4); 
 %             output.Eg=pop(:,5); output.Eh = pop(:,6); output.Ew = pop(:,7); 

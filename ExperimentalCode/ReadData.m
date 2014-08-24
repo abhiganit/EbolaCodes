@@ -29,8 +29,9 @@ function [data, weights] = ReadData
     for i = 1:size(datafields,1)
         nanfield = datafields{i};
         timefield = timefields{i};
-        data.(nanfield) = data.(nanfield)(~isnan(data.(nanfield)));
-        data.(timefield) = data.(timefield)(~isnan(data.(nanfield)));
+        notnans = ~isnan(data.(nanfield));
+        data.(nanfield) = data.(nanfield)(notnans);
+        data.(timefield) = data.(timefield)(notnans);
     end
     
     % read in data and headers   

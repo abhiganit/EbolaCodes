@@ -1,14 +1,14 @@
 % estimated 18th August 8.51 pm EST
-    betaI = 0.10260; 
-    betaW = 0.21548;
-    theta=0.43483;
-    gammaDH=0.21986;
-    Sg0=14.71689; 
+    betaI = 0.11384; 
+    betaW = 0.22076;
+    theta=0.13253;
+    gammaDH=0.15072;
+    Ig0=22.19796; 
 
 %disease progression parameters
-    alpha = 1/7;        % 1/alpha: mean duration of the incubation period 
-    gammaI = 1/10;      % 1/gammaI: mean duration of the infectious period for survivors
-    gammaD = 1/7;       % 1/gammaD: mean duration from onset to death
+    alpha = 1/8;        % 1/alpha: mean duration of the incubation period 
+    gammaI = 1/9;      % 1/gammaI: mean duration of the infectious period for survivors
+    gammaD = 1/7.5;       % 1/gammaD: mean duration from onset to death
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
     epsilon = 100/100;       % percentage Symptomatic illness 
     omega = 3.0;        % odds ratio of funeral risk relative to general population

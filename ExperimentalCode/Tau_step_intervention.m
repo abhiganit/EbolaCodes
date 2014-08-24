@@ -1,4 +1,4 @@
-function [new_value]=Tau_step_intervention(old, Parameters, t)
+function [new_value]=Tau_step_intervention(old, Parameters, t, HospitalVisitors)
 
 % Parameters
 betaI = Parameters(1); betaH = Parameters(2); betaW = Parameters(3); omega = Parameters(4);
@@ -9,8 +9,8 @@ MF = Parameters(13);  MH = Parameters(14);
 fFG = Parameters(15); fGH = Parameters(16); fHG = Parameters(17);
 epsilon = Parameters(18); KikwitGeneralPrev = Parameters(19); KikwitNonhospPrev = Parameters(20); E = Parameters(21);
 % intervention parameters
-iG = Parameters(22); iH = Parameters(23); C = Parameters(24); phiG = Parameters(25); phiW = Parameters(26);
-phiC = Parameters(27); pG = Parameters(28); pH = Parameters(29);  tau = Parameters(30);
+iH = Parameters(22);  phiG = Parameters(23); phiW = Parameters(24);
+phiC = Parameters(25); pG = Parameters(26); pH = Parameters(27);  C = Parameters(28); tau = Parameters(29);
 
 
 % Compartments
@@ -31,25 +31,29 @@ Ng = Sg+Sf+Eg+Ig+Rg;
 Nh = Sh+Eh+Ih+Iht+Rh;
 Nw = Sw+Ew+Iw+Iwt+Rw;
 Nd = Ng + Nh + Nw;
-
+F = Fg + Fh + Fw;
+NF = Nd/(gammaF*E);
 % initialize arrays
 Change = zeros(43,size(old,1)); 
 Rate = zeros(43,1);
 
 %prob ebola funeral
- newebolafunerals = (1-pG)*((1-theta)*gammaD*(Ig)) +(1-pH)*gammaDH*(Ih+Iw); 
- newnonebolafunerals = Nd/E;
+% newebolafunerals = (1-pG)*((1-theta)*gammaD*(Ig)) +(1-pH)*gammaDH*(Ih+Iw); 
+% newnonebolafunerals = Nd/E;
 
 %% Transitions
 % General: susc -> exposed
-Rate(1) = phiG*betaI*Sg*(Ig/Ng);                         Change(1,1) = -1; Change(1,5) = +1;
+Rate(1) = (1-phiG)*betaI*Sg*(Ig/Ng);                         Change(1,1) = -1; Change(1,5) = +1;
 % Funeral: susc -> exposed
-Rate(2) = (omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
-                betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;               Change(2,2) = -1; Change(2,5) = +1;
+%Rate(2) = gammaF*(omega-1)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
+%                 betaI*(newebolafunerals/(newebolafunerals+newnonebolafunerals))*Sf;               Change(2,2) = -1; Change(2,5) = +1;
+
+Rate(2) = ((21*omega-19)/2)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
+               betaI*(F/(F+NF))*Sf;               Change(2,2) = -1; Change(2,5) = +1; 
 % Hosp: susc -> exposed
-Rate(3) = betaH*Sh*(Ih+Iht+Iw+Iwt)/(Nh+Nw);      					Change(3,3) = -1; Change(3,6) = +1; 
+Rate(3) = betaH*Sh*((1-iH)*Ih+Iht+(1-iH)*Iw+Iwt)/(Nh+Nw);      					Change(3,3) = -1; Change(3,6) = +1; 
 % Worker: susc -> exposed
-Rate(4) = phiW*betaW*Sw*(Ih+Iht+Iw+Iwt)/(Nh+Nw);      				Change(4,4) = -1; Change(4,7) = +1;
+Rate(4) = (1-phiW)*betaW*Sw*((1-iH)*Ih+Iht+(1-iH)*Iw+Iwt)/(Nh+Nw);      				Change(4,4) = -1; Change(4,7) = +1;
 
 
 % General: exposed -> inf
@@ -62,9 +66,9 @@ Rate(7) = epsilon*alpha*Ew;                                      Change(7,7) = -
 % General: inf -> funeral
 Rate(8) = (1-pG)*(1-theta)*gammaD*Ig;                    		Change(8,8) = -1; Change(8,11) = +1;  
 % Hosp: inf -> funeral
-Rate(9) = (1-pH)*gammaDH*Ih;                            		Change(9,9) = -1; Change(9,12) = +1;  
+Rate(9) = (1-iH)*(1-pH)*gammaDH*Ih;                            		Change(9,9) = -1; Change(9,12) = +1;  
 % Worker: inf -> funeral
-Rate(10) = (1-pH)*gammaDH*Iw;                            		Change(10,10) = -1; Change(10,13) = +1;
+Rate(10) = (1-iH)*(1-pH)*gammaDH*Iw;                            		Change(10,10) = -1; Change(10,13) = +1;
 
 % General: inf -> recovered
 Rate(11) = gammaI*(1-theta)*Ig;               					Change(11,8) = -1; Change(11,14) = +1;  
@@ -81,11 +85,13 @@ Rate(15) = gammaF*Fh;                                    		Change(15,12) = -1; C
 Rate(16) = gammaF*Fw;                                    		Change(16,13) = -1; Change(16,19) = +1;
 
 % General:susc -> Funeral:susc
-Rate(17) = MF*(Nd/E +  (1-pG)*(1-theta)*gammaD*Ig+(1-pH)*gammaDH*(Ih+Iw))*Sg/(Ng-Sf);           Change(17,1) = -1; Change(17,2) = +1;     
+Rate(17) = MF*(Nd/E +  (1-pG)*(1-theta)*gammaD*Ig+(1-iH)*(1-pH)*gammaDH*(Ih+Iw))*Sg/(Ng-Sf);           Change(17,1) = -1; Change(17,2) = +1;     
 % Funeral:susc -> General:susc
 Rate(18) = fFG*Sf;                                       		Change(18,2) = -1; Change(18,1) = +1;
 % General:susc -> Hosp:susc
-Rate(19) = (MH+1)*fGH*Sg + MH*gammaH*theta*Ig*Sg/Ng;            Change(19,1) = -1; Change(19,3) = +1;    
+Rate(19) = HospitalVisitors*((MH+1)*fGH*Sg + MH*gammaH*theta*Ig*Sg/Ng);            Change(19,1) = -1; Change(19,3) = +1;    
+%Rate(19) = 0;                                                    Change(19,1) = -1; Change(19,3) = +1;    
+
 % Hosp:susc -> General:susc
 Rate(20) = fHG*Sh;                                       		Change(20,3) = -1; Change(20,1) = +1;
 % General:inf -> Hosp:inf
@@ -126,16 +132,20 @@ Rate(33) = gammaH*Iwt;                               Change(33,28) = -1;    Chan
 
 
 %% Intervention Rates
-Rate(34) = iG*Ig;                                  Change(34,8) = -1;   Change(34,29) = +1;
-Rate(35) = iH*Iht;                                 Change(35,27) = -1;  Change(35,29) = +1;
-Rate(36) = iH*Iwt;                                 Change(36,28) = -1;  Change(36,29) = +1;
-Rate(37) = iH*Ih;                                  Change(37,9) = -1;   Change(37,29) = +1;
-Rate(38) = iH*Iw;                                  Change(38,10) = -1;   Change(38,29) = +1;
-Rate(39) = C*phiC*epsilon*alpha*(Eg+Eh+Ew)*Eg/(Sg+Eg);   Change(39,5) = -1;   Change(39,30) = +1;
+%Rate(34) = iG*Ig;                                  Change(34,8) = -1;   Change(34,29) = +1;
+%Rate(35) = iH*Iht;                                 Change(35,27) = -1;  Change(35,29) = +1;
+%Rate(36) = iH*Iwt;                                 Change(36,28) = -1;  Change(36,29) = +1;
+Rate(34) = 0;                                  Change(34,8) = -1;   Change(34,29) = +1;
+Rate(35) = 0;                                 Change(35,27) = -1;  Change(35,29) = +1;
+Rate(36) = 0;                                 Change(36,28) = -1;  Change(36,29) = +1;
+Rate(37) = 0;                                  Change(37,9) = -1;   Change(37,29) = +1;
+Rate(38) = 0;                                  Change(38,10) = -1;   Change(38,29) = +1;
+% Rate(39) = (C*epsilon*alpha*Eg/(Sg+Eg))*(phiCG*Eg + phiCH*(Eh+Ew));   Change(39,5) = -1;   Change(39,30) = +1;
+Rate(39) = (C*(1-(1-betaI/C)^(1/gammaH)))*phiC*gammaH*(Iht+Iwt+theta*Ig);   Change(39,5) = -1;   Change(39,30) = +1;
 Rate(40) = alpha*epsilon*A;                        Change(40,30) = -1;  Change(40,29) = +1;
 Rate(41) = pG*(1-theta)*gammaD*Ig;                 Change(41,8) = -1;   Change(41,17) = +1;
-Rate(42) = pH*gammaDH*Ih;                          Change(42,9) = -1;   Change(42,18) = +1;
-Rate(43) = pH*gammaDH*Iw;                          Change(43,10) = -1;  Change(43,19) = +1;
+Rate(42) = ((1-iH)*pH+iH)*gammaDH*Ih;                          Change(42,9) = -1;   Change(42,18) = +1;
+Rate(43) = ((1-iH)*pH+iH)*gammaDH*Iw;                          Change(43,10) = -1;  Change(43,19) = +1;
 
 
 

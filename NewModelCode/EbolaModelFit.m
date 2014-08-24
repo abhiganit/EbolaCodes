@@ -8,7 +8,9 @@ function EbolaModelFit
     % fit model
     startingconditions = [0.07849 0.29095 0.53542 22.42888];
     HospitalVisitors = 1;
-    MaxIt = 4;
+
+    MaxIt = 2;%2^11;
+
     [x, fval] = fminsearch( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights, Initial(x), HospitalVisitors) , startingconditions); % , [0, 0, 0, 1], [10, 10, 1.00, 20]); 
     % plot model fit
     plotModelFit(x, timesets, datasets, maxtime, Initial(x), HospitalVisitors, MaxIt);

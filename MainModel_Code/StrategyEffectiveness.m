@@ -179,10 +179,6 @@ for i = strategies
       x = (1:numgroups) - groupwidth/2 + (2*j-1) * groupwidth / (2*numbars);  % Aligning error bar with individual bar
       errorbar(x, Boutputsumsdet{i}(:,j+1), lowerdifference{index}(:,j), upperdifference{index}(:,j), 'k', 'linestyle', 'none');
     end
-    set(gca, ...
-        'YColor',[0.6 0.6 0.6], ...
-    'XTickLabel',[], 'YTickLabel',[]);
-    
     ylim([0.1 5.0e3])
     set(gca,'XTickLabel',{'','',''}, 'FontSize', labelsize);
     set(gca, 'YTick', [0, 1000, 2000,3000, 4000, 5000])
@@ -213,7 +209,7 @@ for i = 1:6
     set(gca,'XTickLabel',xlabstr, 'FontSize', ticksize)
     ylim([0,0.6])
     if i==1 || i==4
-        text(0.005,0.3, {'Probability', '< 1 Case` Daily'}, ...
+        text(0.005,0.3, {'Probability', '< 1 Case Daily'}, ...
             'Rotation', 90, 'FontName', 'Palatino', 'FontSize', labelsize,...
             'HorizontalAlignment', 'Center');  
     end

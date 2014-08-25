@@ -8,8 +8,9 @@ gammaH = Parameters(7); gammaI = Parameters(8); gammaD = Parameters(9); gammaDH 
 %delta1 = Parameters(13); delta2 = Parameters(14);
 MF = Parameters(13);  MH = Parameters(14);
 fFG = Parameters(15); fGH = Parameters(16); fHG = Parameters(17);
-epsilon = Parameters(18); KikwitGeneralPrev = Parameters(19); KikwitNonhospPrev = Parameters(20); E = Parameters(21); reportingrate = Parameters(22);
-tau = Parameters(23);
+epsilon = Parameters(18); KikwitGeneralPrev = Parameters(19); KikwitNonhospPrev = Parameters(20); E = Parameters(21); 
+reportingrateGeneral = Parameters(22); reportingrateHospital = Parameters(23);
+tau = Parameters(24);
 
 
 % Compartments
@@ -101,25 +102,25 @@ Rate(23) = (1-epsilon)*alpha*Eh;           Change(23,6) = -1; Change(23,15) = +1
 % Worker:susc -> Worker:recovered
 Rate(24) = (1-epsilon)*alpha*Ew;           Change(24,7) = -1; Change(24,16) = +1;
 
-%% Cumulative Incidences (no reductions, only additions) -- reporting rate applied to all cases equally
+%% Cumulative Incidences (no reductions, only additions) 
 % General: susc -> exposed
-Rate(25) = reportingrate*(epsilon*alpha*Eg);                        Change(25,20) = +1;
+Rate(25) = reportingrateGeneral*(epsilon*alpha*Eg);                        Change(25,20) = +1;
 % Hosp: susc -> exposed 
-Rate(26) = reportingrate*(epsilon*alpha*Eh);       					Change(26,21) = +1;  
+Rate(26) = reportingrateHospital*(epsilon*alpha*Eh);       					Change(26,21) = +1;  
 % Worker: susc -> exposed
-Rate(27) = reportingrate*(epsilon*alpha*Ew);      					Change(27,22) = +1;
+Rate(27) = reportingrateHospital*(epsilon*alpha*Ew);      					Change(27,22) = +1;
 
-%% Cumulative Deaths (no reductions, only additions) -- reporting rate applied to all deaths equally
+%% Cumulative Deaths (no reductions, only additions) 
 % General: inf -> funeral
-Rate(28) = reportingrate*((1-theta)*gammaD*Ig);                   Change(28,23) = +1; 
+Rate(28) = reportingrateGeneral*((1-theta)*gammaD*Ig);                   Change(28,23) = +1; 
 % Hosp: inf -> funeral
-Rate(29) = reportingrate*(gammaDH*Ih);                            Change(29,24) = +1; 
+Rate(29) = reportingrateHospital*(gammaDH*Ih);                            Change(29,24) = +1; 
 % Worker: inf -> funeral
-Rate(30) = reportingrate*(gammaDH*Iw);                            Change(30,25) = +1; 
+Rate(30) = reportingrateHospital*(gammaDH*Iw);                            Change(30,25) = +1; 
 
 
 %% Cumulative Hospitalizations (including HCW)
-Rate(31) = gammaH*theta*Ig + alpha*(Eh+Ew);             Change(31,26) = +1; 
+Rate(31) = reportingrateHospital*(gammaH*theta*Ig + epsilon*alpha*(Eh+Ew));             Change(31,26) = +1; 
    
 
 %% Delay for infections at hospital

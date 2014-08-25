@@ -71,7 +71,7 @@ t = 1:m-1;
 
 
 % figure properties
-labelsize = 14;
+
 c = [0 0 1; 0 0.5 0; 1 0 0; 0 0.75 0.75];
 h = rgb2hsv(c);
 h2 = h; h3 = h;
@@ -139,7 +139,7 @@ for i = strategies
     box off;
     
     if i==4 || i==7
-        text(-35,15, {'Daily', 'Ebola Cases'}, ...
+        text(-61,15, {'Daily', 'Ebola Cases'}, ...
             'Rotation', 90, 'FontName', 'Palatino', 'FontSize', labelsize,...
             'HorizontalAlignment', 'Center'); 
     end
@@ -179,10 +179,14 @@ for i = strategies
       x = (1:numgroups) - groupwidth/2 + (2*j-1) * groupwidth / (2*numbars);  % Aligning error bar with individual bar
       errorbar(x, Boutputsumsdet{i}(:,j+1), lowerdifference{index}(:,j), upperdifference{index}(:,j), 'k', 'linestyle', 'none');
     end
+    set(gca, ...
+        'YColor',[0.6 0.6 0.6], ...
+    'XTickLabel',[], 'YTickLabel',[]);
+    
     ylim([0.1 5.0e3])
     set(gca,'XTickLabel',{'','',''}, 'FontSize', labelsize);
     set(gca, 'YTick', [0, 1000, 2000,3000, 4000, 5000])
-    set(gca, 'FontSize',ticksize)
+    set(gca, 'FontSize', ticksize, 'TickLength', [0 0])
     box off;
     
     if i==4 || i==7
@@ -209,7 +213,7 @@ for i = 1:6
     set(gca,'XTickLabel',xlabstr, 'FontSize', ticksize)
     ylim([0,0.6])
     if i==1 || i==4
-        text(0.02,0.3, {'Probability', '<2 Cases Daily'}, ...
+        text(0.005,0.3, {'Probability', '< 1 Case` Daily'}, ...
             'Rotation', 90, 'FontName', 'Palatino', 'FontSize', labelsize,...
             'HorizontalAlignment', 'Center');  
     end

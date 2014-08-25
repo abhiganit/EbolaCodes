@@ -18,7 +18,7 @@ function EbolaModelFit
     h = toc;
     
 %     save('paramest','x');
-    save('e90','x');
+    save('paramest','x');
     sprintf('%.5f ', x)
     sprintf('Fval: %.3f', fval)
     sprintf('Run time: %f mins', h/60)

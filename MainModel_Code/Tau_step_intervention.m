@@ -104,7 +104,7 @@ Rate(23) = (1-epsilon)*alpha*Eh;           					   Change(23,6) = -1; Change(23,
 % Worker:susc -> Worker:recovered
 Rate(24) = (1-epsilon)*alpha*Ew;           					   Change(24,7) = -1; Change(24,16) = +1;
 
-%% Cumulative Incidences (no reductions, only additions)
+%% Cumulative Incidences (no reductions, only additions) 
 % General: susc -> exposed
 Rate(25) = epsilon*alpha*Eg;                          			Change(25,20) = +1;
 % Hosp: susc -> exposed  
@@ -113,7 +113,7 @@ Rate(26) = epsilon*alpha*Eh;      								Change(26,21) = +1;
 Rate(27) = epsilon*alpha*Ew; 								    Change(27,22) = +1;
 
 
-%% Cumulative Deaths (no reductions, only additions)
+%% Cumulative Deaths (no reductions, only additions) 
 % General: inf -> funeral
 Rate(28) = (1-theta)*gammaD*Ig;                   Change(28,23) = +1;  
 % Hosp: inf -> funeral

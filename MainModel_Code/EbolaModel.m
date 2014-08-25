@@ -17,6 +17,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
     epsilon = 100/100;       % percentage Symptomatic illness 
     omega = 1.2;        % overall funeral risk relative to general population
+    reportingrate = 1.00;  %reporting rate of cases and deaths
     
     % population parameters
     KikwitGeneralPrev = 6.4e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
@@ -63,7 +64,8 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
 %                 Cincg0,Cincf0,Cinch0,Cincw0, ... (20-23)
 %                 Cdiedg0,Cdiedh0,Cdiedw0,... (24-26)
 %                 CHosp0];            %27
-    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, MF,MH,fFG,fGH,fHG,epsilon,KikwitGeneralPrev,KikwitNonhospPrev, E, tau]; 
+    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF,...
+                MF,MH,fFG,fGH,fHG,epsilon,KikwitGeneralPrev,KikwitNonhospPrev, E, reportingrate,tau]; 
     
     if model== 0
         clear output;

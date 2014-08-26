@@ -1,4 +1,4 @@
-function[sixmonthcumsum] = EbolaModelRunIntervention(x,y);
+function[sixmonthcumsum] = EbolaModelRunIntervention(x,y,controlparams);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%% NO INTERVENTION %%%%%%%%%%%

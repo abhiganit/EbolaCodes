@@ -123,7 +123,7 @@ Rate(30) = gammaDH*Iw;                            Change(30,25) = +1;
 
 
 %% Cumulative Hospitalizations (including HCW)
-Rate(31) = gammaH*theta*Ig + alpha*(Eh+Ew);             Change(31,26) = +1;  
+Rate(31) = gammaH*theta*Ig + epsilon*alpha*(Eh+Ew);             Change(31,26) = +1;  
 
 
 %% Delay for infections at hospital

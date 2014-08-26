@@ -1,12 +1,12 @@
 function EbolaModelFit
- 
+    
     tic;
     
     
     % get data and clean it
     [timesets, datasets, maxtime, weights] = CleanData();
     % fit model
-    startingconditions = [0.07849 0.29095 0.53542 22.42888];
+    startingconditions = [0.08982 2.33370 0.44045 12.58290];
     HospitalVisitors = 1;
 
     MaxIt = 2;%2^11;
@@ -27,7 +27,9 @@ end
 function ic = Initial(x)
     
 % Initial conditions
-    N0 = 4.09e6;          % Initial population size    Ig0 = x(5);  
+    N0 = 4.09e6;           % Initial population size    
+    %N0 = 1.14e6;          % Montserrado Co.
+    %N0 = 0.27e6;          % Lofa Co.
     Eg0 = 0;    Eh0 = 0; Ew0 = 0;         % exposed
     Ig0 = x(4); Ih0 = 0; Iw0 = 0;         % infected
     Fg0 = 0;    Fh0 = 0; Fw0 = 0;         % died:funeral

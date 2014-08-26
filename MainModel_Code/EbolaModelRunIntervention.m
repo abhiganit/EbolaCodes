@@ -109,6 +109,8 @@ function ic = InitializeNoIntervention(x)
     
 % Initial conditions
     N0 = 4.09e6;          % Initial population size    Ig0 = x(5);  
+    %N0 = 1.14e6;
+    %N0 = 0.27e6;          % Lofa Co.
     Eg0 = 0;    Eh0 = 0; Ew0 = 0;         % exposed
     Ig0 = x(4); Ih0 = 0; Iw0 = 0;         % infected
     Fg0 = 0;    Fh0 = 0; Fw0 = 0;         % died:funeral

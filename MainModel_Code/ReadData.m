@@ -1,7 +1,9 @@
 function [data, weights] = ReadData
     
     % read in data and headers   
+    %filename = 'EbolaData';
     filename = 'EbolaData';
+    %filename = 'EbolaData_LofaCounty_asreported';
     dataformat = '%f %f %f %f %f %f %f %f';
     headerformat = '%s %s %s %s %s %s %s %s';
 %     dataformat = '%f %f %f %f %f %f %f %f';
@@ -35,7 +37,9 @@ function [data, weights] = ReadData
     end
     
     % read in data and headers   
+    %filename = 'weights';
     filename = 'weights';
+    %filename = 'weights_LofaCounty_asreported';
     dataformat = '%f %f %f %f';
     fid = fopen(filename);
     weights = textscan(fid, dataformat, 'Delimiter', '\t');

@@ -3,7 +3,7 @@
 
 function plotAllInterventions(model_pre, model_post, times)
 
-close all;
+%close all;
 %subplotorder_plots = [1,7,2,8,3,9];
 % subplotorder_plots = [1,2,3];
 % subplotorder_hists = [4,5,6];

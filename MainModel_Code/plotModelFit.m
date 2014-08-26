@@ -1,5 +1,5 @@
 function plotModelFit(estimatedvalues, timepoints, datapoints, maxtime, initial,HospitalVisitors, MaxIt)
-close all;
+%close all;
 fig = figure;
 set(fig, 'Position', [500, 100, 900, 500])
 

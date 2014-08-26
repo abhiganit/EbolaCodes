@@ -34,7 +34,6 @@ initializemat = zeros(interventionduration+1, frequency);
 intervention_cases = repmat({initializemat}, 1, numberofstrategies);
 allruns = model_nointervention{2};
 InitialSetUpForEveryIntervention = InitializeIntervention(allruns(:,maxtime+1));
-controlparams = [0, 0, 0.9, 0, 0, 0.7];
 model_intervention = EbolaModel_intervention(1, x, timesets_intervention, interventionduration, InitialSetUpForEveryIntervention', controlparams, 0,10,y);
 model_total = cumsum(diff(model_intervention{1}{1}));
 sixmonthcumsum = model_total(183);

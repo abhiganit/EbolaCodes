@@ -117,7 +117,7 @@ Rate(30) = gammaDH*Iw;                            Change(30,25) = +1;
 
 
 %% Cumulative Hospitalizations (including HCW)
-Rate(31) = gammaH*theta*Ig + alpha*(Eh+Ew);             Change(31,26) = +1; 
+Rate(31) = gammaH*theta*Ig + epsilon*alpha*(Eh+Ew);             Change(31,26) = +1; 
    
 
 %% Delay for infections at hospital
@@ -130,7 +130,7 @@ for i=1:size(Rate,1)
     Num=Rate(i)*tau; 
     %% Make sure things don't go negative
     Use=min([Num new_value(find(Change(i,:)<0))]);
-    new_value=new_value+Change(i,:)*Use;
+   new_value=new_value+Change(i,:)*Use;
 end
 
 

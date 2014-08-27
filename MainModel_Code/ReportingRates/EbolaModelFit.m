@@ -6,7 +6,7 @@ function EbolaModelFit(rG, rH)
     % get data and clean it
     [timesets, datasets, maxtime, weights] = CleanData();
     % fit model
-    startingconditions = [0.08982 2.33370 0.44045 12.58290];
+    startingconditions = [0.07849 0.29095 0.53542 22.42885];
     HospitalVisitors = 1;
 
     MaxIt = 2;%2^11;

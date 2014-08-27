@@ -32,37 +32,16 @@ intervention_cases = repmat({initializemat}, 1, numberofstrategies);
 allruns = model_nointervention{2};
 InitialSetUpForEveryIntervention = InitializeIntervention(allruns(:,maxtime+1));
 
-% loop around the interventions
-% for intervention_type = 1:numberofstrategies
-%     for intervention_level = 1:frequency
-%         if intervention_type == 2
-%             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
-%             controlparams(1) = 0.95;
-%         elseif intervention_type == 4
-%             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
-%             controlparams(3) = 0.95;
-%         elseif intervention_type == 7
-%             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
-%             controlparams(6) = 0.95;
-%         else
-%             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
-%         end
-%         model_intervention = EbolaModel_intervention(0, EstimatedParameters(), timesets_intervention, interventionduration, InitialSetUpForEveryIntervention', controlparams, 0,MaxIt);
-%         A{intervention_type}{intervention_level} = model_intervention{1}{1};
-%         
-%     end
-%     
-% end
-% 
+
 
 for intervention_type = 4:numberofstrategies
     for intervention_level = 1:frequency
         % phiW and phiG
         if intervention_type == 4 %5
             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
-            controlparams(3) = 1.0;    %phiW
+            controlparams(3) = 0.8;    %phiW
             %startingpoint = 0.7;  %phiG
-            variables = [0.95 0.97 0.99 1];
+            variables = [0.5 0.65 0.8 0.95];
             controlparams(2) = variables(intervention_level); %min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %phiG
         % pH and phG
         elseif intervention_type == 5 %6
@@ -111,20 +90,21 @@ end
 
 
 B = ProbabilityOfExtinction(A);
-%save('ExtinctionProbs', 'A','B');
-save('StochasticRunsData','A','B');
+%save('StochasticRunsData','A','B');
+save('StochasticRunsData_MontserradoCounty','A','B')
 end
 
 function eps = EstimatedParameters()
 
-    load('paramest');
+    load('paramest_MontserradoCounty');
     eps = x;
 end
 
 function ic = InitializeNoIntervention(x)
     
 % Initial conditions
-    N0 = 4.09e6;          % Initial population size    Ig0 = x(5);  
+%     N0 = 4.09e6;          % Initial population size    Ig0 = x(5); 
+    N0 = 1.14e6; % Montserrado County 
     Eg0 = 0;    Eh0 = 0; Ew0 = 0;         % exposed
     Ig0 = x(4); Ih0 = 0; Iw0 = 0;         % infected
     Fg0 = 0;    Fh0 = 0; Fw0 = 0;         % died:funeral

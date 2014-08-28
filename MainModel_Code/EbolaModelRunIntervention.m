@@ -44,7 +44,7 @@ for intervention_type = 1:numberofstrategies
             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
             controlparams(3) = 0.8; %1.0;    %phiW
             %startingpoint = 0.7;  %phiG
-            variables = [0.50, 0.65, 0.80, 0.95]; %[0.95 0.97 0.99 1];
+            variables = [0.5 0.65 0.8 0.95];%[0.95 0.97 0.99 1];
             controlparams(2) = variables(intervention_level); %min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %phiG
         % pH and phG
         elseif intervention_type == 5 %6
@@ -84,7 +84,7 @@ for intervention_type = 1:numberofstrategies
         else
             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
         end
-        model_intervention = EbolaModel_intervention(1, EstimatedParameters(), timesets_intervention, interventionduration, InitialSetUpForEveryIntervention', controlparams, 0);
+        model_intervention = EbolaModel_intervention(1, EstimatedParameters(), timesets_intervention, interventionduration, InitialSetUpForEveryIntervention', controlparams, 0, 1);
         intervention_cases{intervention_type}(:,intervention_level) = model_intervention{1}{1};
     end
     
@@ -103,6 +103,7 @@ function eps = EstimatedParameters()
 
     load('paramest_MontserradoCounty');
     eps = x;
+
 end
 
 function ic = InitializeNoIntervention(x)

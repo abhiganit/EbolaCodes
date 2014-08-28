@@ -43,7 +43,7 @@ for intervention_type = 1:numberofstrategies
             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
             controlparams(3) = 0.9;    %phiW
             controlparams(2) = 0;     %phiG
-            controlparams(6) = 0.7; %variables(intervention_level); %pH
+            controlparams(6) = 0.9; %variables(intervention_level); %pH
         elseif intervention_type == 2 
             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
             controlparams(6) = 0.8;    %pH

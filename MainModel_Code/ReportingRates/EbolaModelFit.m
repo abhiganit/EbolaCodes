@@ -1,6 +1,6 @@
 function EbolaModelFit(rG, rH)
     
-    tic;
+    
     
     
     % get data and clean it
@@ -15,13 +15,13 @@ function EbolaModelFit(rG, rH)
     % plot model fit
     %plotModelFit(x, timesets, datasets, maxtime, Initial(x), HospitalVisitors, MaxIt, rG, rH);
    
-    h = toc;
+    
     
 %     save('paramest','x');
     save('paramest','x');
     sprintf('%.5f ', x)
     sprintf('Fval: %.3f', fval)
-    sprintf('Run time: %f mins', h/60)
+    %sprintf('Run time: %f mins', h/60)
 end
 
 function ic = Initial(x)

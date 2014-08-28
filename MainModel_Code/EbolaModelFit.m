@@ -11,10 +11,11 @@ function EbolaModelFit
 
     MaxIt = 2;%2^11;
 
-    [x, fval, ~, ~, ~, Hessian] = fminunc( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights, Initial(x), HospitalVisitors) , startingconditions); % , [0, 0, 0, 1], [10, 10, 1.00, 20]); 
+    %[x, fval, ~, ~, ~, Hessian] = fminunc( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights, Initial(x), HospitalVisitors) , startingconditions); % , [0, 0, 0, 1], [10, 10, 1.00, 20]); 
+    [x, fval] = fminsearch( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights, Initial(x), HospitalVisitors) , startingconditions); % , [0, 0, 0, 1], [10, 10, 1.00, 20]); 
+    
     % plot model fit
     plotModelFit(x, timesets, datasets, maxtime, Initial(x), HospitalVisitors, MaxIt);
-    std = sqrt(diag(inv(Hessian)));
     h = toc;
     
 %     save('paramest','x');

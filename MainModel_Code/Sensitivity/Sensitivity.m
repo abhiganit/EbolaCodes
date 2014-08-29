@@ -28,7 +28,7 @@ strategies = [Strat1;Strat2;Strat3]; % Passing control strategies for
 for j = 1:3
     controlparams = strategies(j,:);
     output0 = EbolaModelRunIntervention(x0,y,controlparams)
-    for i = 1:length(y)+1;
+    for i = 1:length(y);
         if i ==12
             old = x0(i-10);
             x0(i-10) = x0(i-10)+0.01*x0(i-10);
@@ -57,10 +57,11 @@ for j = 1:3
 end
 
 % % Figures
-names = {'$S_{W}(0)$';'$1/\alpha$';'$1/{\gamma_{DG}}$';'$1/{\gamma_{RG}}$';'$1/{\gamma_H}$';'$h$';'$1/f_{HG}$';'$M_F$';'$M_H$';'$\omega$';'$\epsilon$';'$\beta_W$'};
-StratNames = {'Hospital Transmission Reduction (90 %) and Hygienic Burial of Hospital Cases (70 %)';
-    'Hygienic Burial of Hospital Cases (70 %) and Community Cases (30 %)';
-    'Hospital Cases Isolation (80 %) and Hospital Contacts Follow-up/Isolation (50 %)'};
+names = {'$S_{W}(0)$';'$1/\alpha$';'$1/{\gamma_{DG}}$';'$1/{\gamma_{RG}}$';'$1/{\gamma_H}$';'$h$';'$1/f_{HG}$';'$M_F$';'$M_H$';'$\omega$';'$1-\epsilon$'};
+titlenames = {'a) HCW Transmission Reduction (90%) and Hygienic Burial of Hospital Deaths (70%)';
+               'b) Hygienic Burial of Hospital Deaths (80%) and Community Deaths (30%)';
+               'c) Hospital Cases Isolation (80%) and Hospital Contacts Follow-up/Isolation (50%)'}
+               
 %Textnames = {'Sensitivities';'Elasticities'};
 S = sensitivity;
 E = elasticity;
@@ -95,12 +96,15 @@ for i = 1:3
     box('off')
     xmin = min(Sd(:,i));
     xmax = max(Sd(:,i));
-    xlim([1.15*xmin,1.025*xmax]);
+    xlim([-2500,600]);
+    set(gca,'XTick',[-2000,-1000,0,500]);
+    ylim([0,12]);
    [hx,hy] = format_ticks(gca,[],NS(:,i),[],[],[],[],[],'FontSize',14,'FontName','Palatino');
    if i == 1; 
-       yls = ylabel('Sensitivities','FontSize',14); 
+       yls = ylabel('Sensitivities','FontSize',18,'FontName', 'Palatino'); 
        set(yls,'Units','Normalized','Position',[-0.2,0.5]); % get(yls,'position')-[1,0,0]); 
    end
+  % title(titlenames(i),'FontSize',16,'HorizontalAlignment','center');
    % Sensitivity plots
     subplot(2,3,i+3)
     bar1 = barh(Ed(:,i),'FaceColor',[0.8 0.8 0.8],'LineStyle','None');
@@ -109,10 +113,13 @@ for i = 1:3
     box('off')
     xmin = min(Ed(:,i));
     xmax = max(Ed(:,i));
-    xlim([1.15*xmin,1.025*xmax]);
+   % xlim([1.15*xmin,1.025*xmax]);
+    xlim([-1.5, 2.5]);
+    ylim([0,12]);
     [hx,hy] = format_ticks(gca,[],NE(:,i),[],[],[],[],[],'FontSize',14,'FontName','Palatino');   
+    
     if i == 1; 
-        yle = ylabel('Elasticities','FontSize',14); 
+        yle = ylabel('Elasticities','FontSize',18,'FontName', 'Palatino'); 
         set(yle,'Units','Normalized','Position',[-0.2,0.5]);
     end
  end
@@ -123,28 +130,17 @@ for i = 1:3
 % Titles
 annotation(fig,'textbox',...
     [0.13 0.93 0.22 0.05],...
-    'String',{'a) Hospital Transmission Reduction (90 %) and Hygienic Burial of Hospital Cases (70 %)'},...
-    'FontSize',16,'LineStyle','none');
+    'String',{'a) HCW Transmission Reduction (90%) and Hygienic Burial of Hospital Deaths (70%)'},...
+    'FontSize',16,'LineStyle','none','HorizontalAlignment','center');
 
 annotation(fig,'textbox',...
     [0.41 0.93 0.22 0.05],...
-    'String',{'b) Hygienic Burial of Hospital Cases (70 %) and Community Cases (30 %)'},...
-    'FontSize',16,'LineStyle','none');
+    'String',{'b) Hygienic Burial of Hospital Deaths (80%) and Community Deaths (30%)'},...
+    'FontSize',16,'LineStyle','none','HorizontalAlignment','center');
 
 annotation(fig,'textbox',...
     [0.69 0.93 0.22 0.05],...
-    'String',{'c) Hospital Cases Isolation (80 %) and Hospital Contacts Follow-up/Isolation (50 %)'},...
-    'FontSize',16,'LineStyle','none');
+    'String',{'c) Hospital Cases Isolation (80%) and Hospital Contacts Follow-up/Isolation (50%)'},...
+    'FontSize',16,'LineStyle','none','HorizontalAlignment','center');
 
-% annotation(fig,'textbox',...
-%     [0.042 0.75 0.06 0.035],...
-%     'String',{'Sensitivities'},...
-%     'FontSize',14,...
-%     'LineStyle','none')
-% 
-% annotation(fig,'textbox',...
-%     [0.042 0.27 0.06 0.035],...
-%     'String',{'Elasticities'},...
-%     'FontSize',14,...
-%     'LineStyle','none')
-%     
+

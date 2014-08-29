@@ -1,4 +1,4 @@
-function incout = EbolaModelRunIntervention(repG, repH)
+function incout = EbolaModelRunIntervention
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%% NO INTERVENTION %%%%%%%%%%%
@@ -20,7 +20,7 @@ timesets_intervention = repmat({0:interventionduration},1,4);
 %%%%%%% run model with no intervention  %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 initial_conditions = InitializeNoIntervention(EstimatedParameters());
-model_nointervention = EbolaModel(1, EstimatedParameters(), timesets_intervention0, preinterventiontime+interventionduration, initial_conditions, 1, MaxIt,repG, repH);
+model_nointervention = EbolaModel(1, EstimatedParameters(), timesets_intervention0, preinterventiontime+interventionduration, initial_conditions, 1, MaxIt,1, 1);
 nointervention_cases = repmat({model_nointervention{1}{1}}, 1, numberofstrategies);
 preintervention_cases = cellfun( @(a)a(1:(maxtime+1),:), nointervention_cases, 'UniformOutput', false);
 postintervention_cases = cellfun( @(a)a((maxtime+1):(maxtime+interventionduration+1),:), nointervention_cases, 'UniformOutput', false);
@@ -30,7 +30,7 @@ postintervention_cases = cellfun( @(a)a((maxtime+1):(maxtime+interventionduratio
 %%%%%%%%%%%%%%%% INTERVENTION %%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % initialize intervention runs
-initializemat = zeros(interventionduration+1, frequency);
+initializemat = zeros(interventionduration+1, 1);
 intervention_cases = repmat({initializemat}, 1, numberofstrategies);
 allruns = model_nointervention{2};
 InitialSetUpForEveryIntervention = InitializeIntervention(allruns(:,maxtime+1));
@@ -38,44 +38,20 @@ InitialSetUpForEveryIntervention = InitializeIntervention(allruns(:,maxtime+1));
 % loop around the interventions
 for intervention_type = 1:numberofstrategies
     
-    for intervention_level = 1:frequency
-        % phiW and phiG
-%         if intervention_type == 4 %5
-%             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
-%             controlparams(3) = 1.0;    %phiW
-%             %startingpoint = 0.7;  %phiG
-%             variables = [0.95 0.97 0.99 1];
-%             controlparams(2) = variables(intervention_level); %min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %phiG
-%         % pH and phG
-%         elseif intervention_type == 5 %6
-%             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
-%             %controlparams(6) = 0.9;    %pH
-%             %startingpoint = 0.0;        %pG
-%             variables = [0.8, 0.85, 0.90, 0.95];
-%             controlparams(6) = variables(intervention_level); %min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %pH
-%         % iH 
-%         elseif intervention_type == 6 %4
-%             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
-%             %controlparams(1) = 0.9;  %iH
-%             %startingpoint = 0.5;    %phiC
-%             variables = [0.8 0.85 0.90 0.95];
-%             controlparams(1) = variables(intervention_level); %min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %iH
-        if intervention_type == 7 
+    for intervention_level = 1:1
+        if intervention_type == 1 
             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
             controlparams(3) = 0.9;    %phiW
             controlparams(2) = 0;     %phiG
-            variables = [0.7 0.8 0.9 0.95]; %pH
-            controlparams(6) = variables(intervention_level); 
-        elseif intervention_type == 8 
+            controlparams(6) = 0.9; %variables(intervention_level); %pH
+        elseif intervention_type == 2 
             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
             controlparams(6) = 0.8;    %pH
-            variables = [0.3, 0.5, 0.7, 0.95]; %pG
-            controlparams(5) = variables(intervention_level);   
-        elseif intervention_type == 9 
+            controlparams(5) = 0.3;   %pG
+        elseif intervention_type == 3 
             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
             controlparams(1) = 0.8;  %iH
-            variables = [0.5 0.65 0.8 0.95]; %phiC  
-            controlparams(4) = variables(intervention_level);    
+            controlparams(4) = 0.5; %phiC   
         else
             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
         end

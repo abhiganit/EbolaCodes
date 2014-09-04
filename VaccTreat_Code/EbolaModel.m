@@ -50,8 +50,8 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     if model== 0
         clear output;
         %initialize output
-        output = nan(28,MaxTime+1,MaxIt);
-        parfor i = 1:MaxIt
+        %output = nan(28,MaxTime+1,MaxIt);
+        for i = 1:MaxIt
             % The main iteration 
             [T, pop]=Stoch_Iteration([0 MaxTime],initial,params, HospitalVisitors, interventiondelay, immunitydelay, VE, VCov, TE, TCov);
             output(:,:,i)=pop';

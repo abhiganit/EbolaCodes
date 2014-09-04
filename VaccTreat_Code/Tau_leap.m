@@ -25,23 +25,35 @@ Cincg = old(20); Cinch = old(21); Cincw = old(22);
 Cdiedg = old(23); Cdiedh = old(24); Cdiedw = old(25);
 CHosp = old(26); 
 Iht = old(27);  Iwt = old(28);
+% vacc/treatment classes
+V = old(29); 
+T = old(30); Tf = old(31); Tr = old(32); Td = old(33);
 
-Ng = Sg+Sf+Eg+Ig+Rg;
-Nh = Sh+Eh+Ih+Iht+Rh;
-Nw = Sw+Ew+Iw+Iwt+Rw;
-Nd = Ng + Nh + Nw;
-F = Fg + Fh + Fw;
-NF = Nd/(gammaF*E);
+
 
 %% Move vaccination workers into holding-vaccinated compartment instantaneously%%
-if(round(t)==round(interventiondelay+immunitydelay))
-   % do something with densities 
+if(round(t)==round(interventiondelay))
+    % do something with densities
+   V = VCov*Sw;  % count number of vaccine doses
+elseif(round(t)==round(interventiondelay+immunitydelay))
+   Sw = Sw - VE*VCov*Sw;  %move a proportion of successfully vaccinated people from the Sw class
 end
 
+Ng = Sg+Sf+Eg+Ig+Rg;
+Nh = Sh+Eh+Ih+Iht+Rh + T+Tr;
+F = Fg + Fh + Fw + Tf;
+% account fornumber of vaccinated people in total alive people
+if(round(t)>=round(interventiondelay+immunitydelay))
+    Nw = Sw+Ew+Iw+Iwt+Rw + (VE*VCov*Sw);
+else
+    Nw = Sw+Ew+Iw+Iwt+Rw;
+end
+Nd = Ng + Nh + Nw;
+NF = Nd/(gammaF*E);
 
 % initialize arrays
-Change = zeros(33,size(old,1)); %33 rates, X states
-Rate = zeros(33,1);
+Change = zeros(39,size(old,2)); %33 rates, X states
+Rate = zeros(39,1);
 
 
 %% Transitions
@@ -95,7 +107,7 @@ Rate(19) = HospitalVisitors*((MH+1)*fGH*Sg + MH*gammaH*theta*Ig*Sg/Ng);         
 % Hosp:susc -> General:susc
 Rate(20) = fHG*Sh;                                       Change(20,3) = -1; Change(20,1) = +1;
 % General:inf -> Hosp:inf
-Rate(21) = gammaH*theta*Ig;                              Change(21,8) = -1; Change(21,9) = +1;
+Rate(21) = (1-TCov)*gammaH*theta*Ig;                              Change(21,8) = -1; Change(21,9) = +1;
 
 % General:exposed -> General:recovered
 Rate(22) =(1-epsilon)*alpha*Eg;            Change(22,5) = -1; Change(22,14) = +1;
@@ -126,8 +138,17 @@ Rate(31) = reportingrateHospital*(gammaH*theta*Ig + epsilon*alpha*(Eh+Ew));     
    
 
 %% Delay for infections at hospital
-Rate(32) = gammaH*Iht;                               Change(32,27) = -1;    Change(32,9) = +1;
-Rate(33) = gammaH*Iwt;                               Change(33,28) = -1;    Change(33,10) = +1;
+Rate(32) = (1-TCov)*gammaH*Iht;                               Change(32,27) = -1;    Change(32,9) = +1;
+Rate(33) = (1-TCov)*gammaH*Iwt;                               Change(33,28) = -1;    Change(33,10) = +1;
+
+%% Treatment Rates
+Rate(34) = TCov*gammaH*theta*Ig;                     Change(34,8) = -1; Change(34,30) = +1;
+Rate(35) = TCov*gammaH*Iht;                          Change(35,27) = -1;  Change(35,30) = +1;
+Rate(36) = TCov*gammaH*Iwt;                          Change(36,28) = -1;  Change(36,30) = +1;
+Rate(37) = (1-TE)*delta*gammaDH*T;                      Change(37,30) = -1; Change(37,31) = +1;
+Rate(38) = (1-(1-TE)*delta)*gammaIH*T;                  Change(38,30) = -1; Change(38,32) = +1;
+Rate(39) = gammaF*Tf;                                   Change(39,31) = -1; Change(39,33) = +1;
+
 
 %% run algorithm
 new_value=old;

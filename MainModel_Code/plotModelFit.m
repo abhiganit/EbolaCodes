@@ -11,7 +11,7 @@ output = EbolaModel(1, estimatedvalues, alltimepoints, maxtime, initial, Hospita
 fittingoutput = output{1};
 strings = {'a) Cumulative Cases', 'b) Cumulative Deaths', 'c) Cumulative HCW Cases', 'd) Cumulative Hospital Admissions'};
 
-ci = cellfun(@getCI, fittingoutput, repmat({MaxIt},1,4), 'UniformOutput', false);
+%ci = cellfun(@getCI, fittingoutput, repmat({MaxIt},1,4), 'UniformOutput', false);
 
 for i = 1:size(fittingoutput,2)
     subplot(ceil(size(fittingoutput,2)/2), 2, i)

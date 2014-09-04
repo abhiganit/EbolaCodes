@@ -1,4 +1,4 @@
-function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalVisitors, MaxIt, interventiondelay, immunitydelay, VE, VCov)
+function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalVisitors, MaxIt, interventiondelay, immunitydelay, VE, VCov, TE, TCov)
 % model = 0 runs stochastic model where as model = 1 runs the difference
 % equation.
     
@@ -53,7 +53,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
         output = nan(28,MaxTime+1,MaxIt);
         parfor i = 1:MaxIt
             % The main iteration 
-            [T, pop]=Stoch_Iteration([0 MaxTime],initial,params, HospitalVisitors, interventiondelay, immunitydelay, VE, VCov);
+            [T, pop]=Stoch_Iteration([0 MaxTime],initial,params, HospitalVisitors, interventiondelay, immunitydelay, VE, VCov, TE, TCov);
             output(:,:,i)=pop';
 
         end
@@ -71,7 +71,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     else
             % The main iteration (note as it is difference equation, we
             % only run it once)
-            [T, pop]=Diffeqn_Iteration([0 MaxTime],initial,params, HospitalVisitors, interventiondelay, immunitydelay, VE, VCov);
+            [T, pop]=Diffeqn_Iteration([0 MaxTime],initial,params, HospitalVisitors, interventiondelay, immunitydelay, VE, VCov, TE, TCov);
             output=pop';
 
            

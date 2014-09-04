@@ -1,4 +1,4 @@
-function [new_value]=Tau_step(old, Parameters, t, HospitalVisitors, interventiondelay, immunitydelay, VE, VCov)
+function [new_value]=Tau_step(old, Parameters, t, HospitalVisitors, interventiondelay, immunitydelay, VE, VCov, TE, TCov)
 
 % Parameters
 betaI = Parameters(1); betaH = Parameters(2); betaW = Parameters(3); omega = Parameters(4);

@@ -34,10 +34,7 @@ F = Fg + Fh + Fw;
 NF = Nd/(gammaF*E);
 
 %% Move vaccination workers into holding-vaccinated compartment instantaneously%%
-if(round(t)==round(interventiondelay))
-   % do something with densities 
-%% Move vaccination workers into holding-vaccinated compartment instantaneously%%
-elseif(round(t)==round(interventiondelay+immunitydelay))
+if(round(t)==round(interventiondelay+immunitydelay))
    % do something with densities 
 end
 

@@ -7,10 +7,11 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     betaI = x(1);      % Transmission coefficient in community
     betaW = x(2);      % Transmission coefficient between patients-HCWs
     theta = x(3);      % Percentage of infectious cases are hospitaized
-    gammaH = 1./5;    % 1/Time between hospitalization and death
+    gammaH = 1/3;    % 1/Time between hospitalization and death
     %Ig0 = x(5);  
     
     %disease progression parameters
+    delta = 0.6;    %case fatality
     alpha = 1/8;        % 1/alpha: mean duration of the incubation period 
     gammaI = 1/9; %10;      % 1/gammaI: mean duration of the infectious period for survivors
     gammaD = 1/7.5;       % 1/gammaD: mean duration from onset to death
@@ -21,7 +22,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     reportingrateHospital = repH; %reporting rate of cases and deaths in hospital
     
     % population parameters
-    KikwitGeneralPrev = 6.4e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
+    KikwitGeneralPrev = 0.81*6.4e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     KikwitNonhospPrev = 5.6e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     N0 = 4.09e6;          % Initial population size
     %N0 = 1.14e6;
@@ -67,7 +68,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
 %                 Cincg0,Cincf0,Cinch0,Cincw0, ... (20-23)
 %                 Cdiedg0,Cdiedh0,Cdiedw0,... (24-26)
 %                 CHosp0];            %27
-    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF,...
+    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF,delta,...
                 MF,MH,fFG,fGH,fHG,epsilon,KikwitGeneralPrev,KikwitNonhospPrev, E, reportingrateGeneral, reportingrateHospital,tau]; 
     
     if model== 0

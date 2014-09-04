@@ -1,4 +1,4 @@
-function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalVisitors, MaxIt)
+function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalVisitors, MaxIt, interventiondelay, immunitydelay, VE, VCov)
 % model = 0 runs stochastic model where as model = 1 runs the difference
 % equation.
     
@@ -6,15 +6,12 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
      % Estimated Parameters
     betaI = x(1);      % Transmission coefficient in community
     betaW = x(2);      % Transmission coefficient between patients-HCWs
-    theta = x(3);      % Percentage of infectious cases are hospitaized  
-    %delta = x(4);        %x(4);       % case fatality
-    delta = 0.6; 
-    %gammaDH = x(4); 
+    theta = x(3);      % Percentage of infectious cases are hospitaized      
+    delta = 0.6;        % case fatality
     
     %disease progression parameters
     gammaD = 1/7.5;       % 1/gammaD: mean duration from onset to death
     gammaH = 1/3;    % 1/Time between hospitalization and death
-    %gammaH = 1/(1/gammaD - 1/gammaDH);
     alpha = 1/8;        % 1/alpha: mean duration of the incubation period 
     gammaI = 1/9; %10;      % 1/gammaI: mean duration of the infectious period for survivors
     
@@ -56,7 +53,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
         output = nan(28,MaxTime+1,MaxIt);
         parfor i = 1:MaxIt
             % The main iteration 
-            [T, pop]=Stoch_Iteration([0 MaxTime],initial,params, HospitalVisitors);
+            [T, pop]=Stoch_Iteration([0 MaxTime],initial,params, HospitalVisitors, interventiondelay, immunitydelay, VE, VCov);
             output(:,:,i)=pop';
 
         end
@@ -74,7 +71,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     else
             % The main iteration (note as it is difference equation, we
             % only run it once)
-            [T, pop]=Diffeqn_Iteration([0 MaxTime],initial,params, HospitalVisitors);
+            [T, pop]=Diffeqn_Iteration([0 MaxTime],initial,params, HospitalVisitors, interventiondelay, immunitydelay, VE, VCov);
             output=pop';
 
            

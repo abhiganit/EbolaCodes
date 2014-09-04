@@ -1,4 +1,4 @@
-function [new_value]=Tau_step(old, Parameters, t, HospitalVisitors)
+function [new_value]=Tau_step(old, Parameters, t, HospitalVisitors, interventiondelay, immunitydelay, VE, VCov)
 
 % Parameters
 betaI = Parameters(1); betaH = Parameters(2); betaW = Parameters(3); omega = Parameters(4);
@@ -32,6 +32,16 @@ Nw = Sw+Ew+Iw+Iwt+Rw;
 Nd = Ng + Nh + Nw;
 F = Fg + Fh + Fw;
 NF = Nd/(gammaF*E);
+
+%% Move vaccination workers into holding-vaccinated compartment instantaneously%%
+if(round(t)==round(interventiondelay))
+   % do something with densities 
+%% Move vaccination workers into holding-vaccinated compartment instantaneously%%
+elseif(round(t)==round(interventiondelay+immunitydelay))
+   % do something with densities 
+end
+
+
 % initialize arrays
 Change = zeros(33,size(old,1)); %33 rates, X states
 Rate = zeros(33,1);

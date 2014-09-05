@@ -11,7 +11,7 @@ function[ProbCell] = ProbabilityOfExtinction(input)
 % each elecment of outpul is a cell of size q x r where q is the variation 
 % in the efficacy and r is the variation in coverage.
 % each element of the q x r cells is a matrix of size 1 x 2 whose elements
-% probabilities of < 1 daily cases after 3 and 6 months repectively.
+% are probabilities of < 1 daily cases after 3 and 6 months repectively.
 A = input;
 p = length(A); % Number of delays
 q = length(A{1}(:,1)); % Number of variations in efficacy between 0 and 1

@@ -54,6 +54,8 @@ function EbolaModelRunVaccTx
                 cumulativehospadmissionVACC{i}{indexVE, indexVCov} = modelout{1}{4};
                 currenthcwVACC{i}{indexVE, indexVCov} = modelout{1}{5};
                 totalvaccinedosesVACC{i}{indexVE, indexVCov} = modelout{1}{6};
+                currenthospitalizationsVACC{i}{indexVE, indexVCov} = modelout{1}{8};
+                currentebolahospitalizationsVACC{i}{indexVE, indexVCov} = modelout{1}{9};
                
             end
         end
@@ -65,8 +67,8 @@ function EbolaModelRunVaccTx
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     allTE = 0:0.1:1;
 %     allTCov = 0:0.1:1;
-    allTE = linspace(0,1,5);
-    allTCov = linspace(0,1,5);
+    allTE = linspace(0,1,6);
+    allTCov = linspace(0,1,6);
 
     %cumulativecasesTX = cell(size(allTE, 2), size(allTCov, 2));
    
@@ -87,6 +89,9 @@ function EbolaModelRunVaccTx
                 cumulativehospadmissionTX{i-1}{indexTE, indexTCov} = modelout{1}{4};
                 currenthcwTX{i-1}{indexTE, indexTCov} = modelout{1}{5};
                 totaltreatmentdosesTX{i-1}{indexTE, indexTCov} = modelout{1}{7};
+                currenthospitalizationsTX{i-1}{indexTE, indexTCov} = modelout{1}{8};
+                currentebolahospitalizationsTX{i-1}{indexTE, indexTCov} = modelout{1}{9};
+               
             end
         end
     end
@@ -95,7 +100,8 @@ function EbolaModelRunVaccTx
     save('VaccTreatmentStochResults', 'cumulativecasesVACC','cumulativecasesTX',...
         'cumulativedeathsVACC','cumulativedeathsTX','cumulativehcwincidenceVACC','cumulativehcwincidenceTX'...
         ,'cumulativehospadmissionVACC','cumulativehospadmissionTX','currenthcwVACC','currenthcwTX',...
-        'totalvaccinedosesVACC','totaltreatmentdosesTX')
+        'totalvaccinedosesVACC','totaltreatmentdosesTX','currenthospitalizationsVACC',...
+        'currenthospitalizationsTX','currentebolahospitalizationsVACC','currentebolahospitalizationsTX')
     h= toc;
     sprintf('Run time: %f mins', h/60)
 end

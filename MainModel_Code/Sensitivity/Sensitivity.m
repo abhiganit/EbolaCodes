@@ -1,11 +1,11 @@
 N0 = 4.09e6;  
-KikwitGeneralPrev = 6.4e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
+KikwitGeneralPrev = 0.81*6.4e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
 KikwitNonhospPrev = 5.6e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
 Sw0 = (2.8/10000)*N0;
 alpha = 8;        % 1/alpha: mean duration of the incubation period 
 gammaD = 7.5;       % 1/gammaD: mean duration from onset to death
 gammaI = 9; %10;      % 1/gammaI: mean duration of the infectious period for survivors
-gammaH = 5;    % 1/Time between hospitalization and death
+gammaH = 3;    % 1/Time between hospitalization and death
 fGHN = 62131;
 fHG = 7;          % 1/average time spent at in hospital with non-ebola disease
 M =  5;            % average family size

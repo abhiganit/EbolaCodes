@@ -5,11 +5,10 @@ betaI = Parameters(1); betaH = Parameters(2); betaW = Parameters(3); omega = Par
 alpha = Parameters(5);
 theta= Parameters(6);
 gammaH = Parameters(7); gammaI = Parameters(8); gammaD = Parameters(9); gammaDH = Parameters(10); gammaIH = Parameters(11); gammaF = Parameters(12);
-%delta1 = Parameters(13); delta2 = Parameters(14);
-MF = Parameters(13);  MH = Parameters(14);
-fFG = Parameters(15); fGH = Parameters(16); fHG = Parameters(17);
-epsilon = Parameters(18); KikwitGeneralPrev = Parameters(19); KikwitNonhospPrev = Parameters(20); E = Parameters(21); tau = Parameters(22);
-
+delta = Parameters(13); MF = Parameters(14);  MH = Parameters(15);
+fFG = Parameters(16); fGH = Parameters(17); fHG = Parameters(18);
+epsilon = Parameters(19); KikwitGeneralPrev = Parameters(20); KikwitNonhospPrev = Parameters(21); E = Parameters(22);
+tau = Parameters(23);
 
 % Compartments
 Sg = old(1);  Sf = old(2);   Sh = old(3);  Sw = old(4);
@@ -59,19 +58,19 @@ Rate(6) = epsilon*alpha*Eh;                                      Change(6,6) = -
 Rate(7) = epsilon*alpha*Ew;                                      Change(7,7) = -1; Change(7,28) = +1;
 
 % General: inf -> funeral
-Rate(8) = (1-theta)*gammaD*Ig;                    Change(8,8) = -1; Change(8,11) = +1;  %delta1*
+Rate(8) = delta*(1-theta)*gammaD*Ig;                    Change(8,8) = -1; Change(8,11) = +1;  %delta1*
 
 % Hosp: inf -> funeral
-Rate(9) = gammaDH*Ih;                            Change(9,9) = -1; Change(9,12) = +1;  %delta2*
+Rate(9) = delta*gammaDH*Ih;                            Change(9,9) = -1; Change(9,12) = +1;  %delta2*
 % Worker: inf -> funeral
-Rate(10) = gammaDH*Iw;                            Change(10,10) = -1; Change(10,13) = +1;  %delta2*
+Rate(10) = delta*gammaDH*Iw;                            Change(10,10) = -1; Change(10,13) = +1;  %delta2*
 
 % General: inf -> recovered
-Rate(11) = gammaI*(1-theta)*Ig;               Change(11,8) = -1; Change(11,14) = +1;  %*(1-delta1)
+Rate(11) = (1-delta)*gammaI*(1-theta)*Ig;               Change(11,8) = -1; Change(11,14) = +1;  %*(1-delta1)
 % Hosp: inf -> recovered
-Rate(12) = gammaIH*Ih;                        Change(12,9) = -1; Change(12,15) = +1;  %*(1-delta2)
+Rate(12) = (1-delta)*gammaIH*Ih;                        Change(12,9) = -1; Change(12,15) = +1;  %*(1-delta2)
 % Worker: inf -> recovered
-Rate(13) = gammaIH*Iw;                        Change(13,10) = -1; Change(13,16) = +1;  %*(1-delta2)
+Rate(13) = (1-delta)*gammaIH*Iw;                        Change(13,10) = -1; Change(13,16) = +1;  %*(1-delta2)
 
 % General: funeral -> dead
 Rate(14) = gammaF*Fg;                                    Change(14,11) = -1; Change(14,17) = +1;
@@ -109,11 +108,11 @@ Rate(27) = epsilon*alpha*Ew;      					Change(27,22) = +1;
 
 %% Cumulative Deaths (no reductions, only additions)
 % General: inf -> funeral
-Rate(28) = (1-theta)*gammaD*Ig;                   Change(28,23) = +1; 
+Rate(28) = delta*(1-theta)*gammaD*Ig;                   Change(28,23) = +1; 
 % Hosp: inf -> funeral
-Rate(29) = gammaDH*Ih;                            Change(29,24) = +1; 
+Rate(29) = delta*gammaDH*Ih;                            Change(29,24) = +1; 
 % Worker: inf -> funeral
-Rate(30) = gammaDH*Iw;                            Change(30,25) = +1; 
+Rate(30) = delta*gammaDH*Iw;                            Change(30,25) = +1; 
 
 
 %% Cumulative Hospitalizations (including HCW)

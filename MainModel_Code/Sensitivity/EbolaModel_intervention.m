@@ -18,7 +18,7 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
     epsilon = y(11);       % percentage Symptomatic illness 
     omega = y(10);        % overall funeral risk relative to general population
-    
+    delta = 0.6 ;          % case-fatality
     % population parameters
     KikwitGeneralPrev = 6.4e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     KikwitNonhospPrev = 5.6e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
@@ -29,7 +29,7 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
     E = 62*365;          % average life expectancy in Liberia 
     
     %funeral/hospitalization parameters
-    fFG = 1/2;          % 1/average time spent at close quarters with body at funeral
+    fFG = 1/2;          % 1/average tiame spent at close quarters with body at funeral
     fGH = y(6) / (N0 * 365);  % rate of hospitalization per person per day (DRC 2012 estimates)
     fHG = 1/y(7);          % 1/average time spent at in hospital with non-ebola disease
     
@@ -64,7 +64,7 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
 %                 CHosp0];            %27
     params = [betaI,betaH,betaW, ... (1-3)
             omega, alpha, theta, ...   (4-6)
-            gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, ... (7-12)
+            gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF,delta ... (7-12)
             MF,MH,fFG,fGH,fHG,...       (13-17)
             epsilon,KikwitGeneralPrev,KikwitNonhospPrev, E,... (18-21)
                     ControlParams, C,... (22-30)

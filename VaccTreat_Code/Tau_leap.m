@@ -28,7 +28,7 @@ Iht = old(27);  Iwt = old(28);
 % vacc/treatment classes
 V = old(29); 
 T = old(30); Tf = old(31); Tr = old(32); Td = old(33);
-
+CT = old(34);
 
 
 %% Move vaccination workers into holding-vaccinated compartment instantaneously%%
@@ -45,15 +45,22 @@ F = Fg + Fh + Fw + Tf;
 % account fornumber of vaccinated people in total alive people
 if(round(t)>=round(interventiondelay+immunitydelay))
     Nw = Sw+Ew+Iw+Iwt+Rw + (VE*VCov*Sw);
+    
 else
     Nw = Sw+Ew+Iw+Iwt+Rw;
 end
 Nd = Ng + Nh + Nw;
 NF = Nd/(gammaF*E);
 
+% Starting intervention after a delay
+if(round(t) < round(interventiondelay))
+    TE = 0; 
+    TCov = 0;
+end
+
 % initialize arrays
-Change = zeros(39,size(old,2)); %33 rates, X states
-Rate = zeros(39,1);
+Change = zeros(40,size(old,2)); %33 rates, X states
+Rate = zeros(40,1);
 
 
 %% Transitions
@@ -148,6 +155,10 @@ Rate(36) = TCov*gammaH*Iwt;                          Change(36,28) = -1;  Change
 Rate(37) = (1-TE)*delta*gammaDH*T;                      Change(37,30) = -1; Change(37,31) = +1;
 Rate(38) = (1-(1-TE)*delta)*gammaIH*T;                  Change(38,30) = -1; Change(38,32) = +1;
 Rate(39) = gammaF*Tf;                                   Change(39,31) = -1; Change(39,33) = +1;
+
+%% Total cumulative treatment doses
+Rate(40) = TCov*gammaH*theta*Ig+TCov*gammaH*Iht+TCov*gammaH*Iwt;  Change(40,34) = +1; 
+
 
 
 %% run algorithm

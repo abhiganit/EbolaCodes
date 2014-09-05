@@ -7,7 +7,7 @@ function EbolaModelRunVaccTx
     [~, ~, ~, ~] = CleanData();
 
     % set up parameters
-    MaxIt = 1;
+    MaxIt = 32;
     duration = 365;
     timeset = 0:duration;
     timesets = repmat({timeset},1,4);
@@ -25,12 +25,15 @@ function EbolaModelRunVaccTx
     %%%%%%%%%%% run model for 1 year  %%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    
+   
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%% VACCINATION LOOP %%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    allVE = 0:0.1:1;
-    allVCov = 0:0.1:1;
+%     allVE = 0:0.1:1;
+%     allVCov = 0:0.1:1;
+    allVE = linspace(0,1,6);
+    allVCov = linspace(0,1,6);
+
    % cumulativecasesVACC = cell(size(allVE, 2), size(allVCov, 2));
     
 
@@ -46,6 +49,12 @@ function EbolaModelRunVaccTx
                 modelout = EbolaModel(0, EstimatedParameters(), timesets, duration, Initial(), 1, MaxIt, delayuntilintervention, delayuntilimmunity, VE, VCov, 0, 0);
                 %save outcomes
                 cumulativecasesVACC{i}{indexVE, indexVCov} = modelout{1}{1};
+                cumulativedeathsVACC{i}{indexVE, indexVCov} = modelout{1}{2};
+                cumulativehcwincidenceVACC{i}{indexVE, indexVCov} = modelout{1}{3};
+                cumulativehospadmissionVACC{i}{indexVE, indexVCov} = modelout{1}{4};
+                currenthcwVACC{i}{indexVE, indexVCov} = modelout{1}{5};
+                totalvaccinedosesVACC{i}{indexVE, indexVCov} = modelout{1}{6};
+               
             end
         end
     end
@@ -54,8 +63,11 @@ function EbolaModelRunVaccTx
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%% TREATMENT LOOP %%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    allTE = 0:0.1:1;
-    allTCov = 0:0.1:1;
+%     allTE = 0:0.1:1;
+%     allTCov = 0:0.1:1;
+    allTE = linspace(0,1,5);
+    allTCov = linspace(0,1,5);
+
     %cumulativecasesTX = cell(size(allTE, 2), size(allTCov, 2));
    
     for i = 2:size(delays,1)
@@ -70,12 +82,20 @@ function EbolaModelRunVaccTx
                 modelout = EbolaModel(0, EstimatedParameters(), timesets, duration, Initial(), 1, MaxIt, delayuntilintervention, delayuntilimmunity, 0, 0, TE, TCov);
                 %save outcomes
                 cumulativecasesTX{i-1}{indexTE, indexTCov} = modelout{1}{1};
+                cumulativedeathsTX{i-1}{indexTE, indexTCov} = modelout{1}{2};
+                cumulativehcwincidenceTX{i-1}{indexTE, indexTCov} = modelout{1}{3};
+                cumulativehospadmissionTX{i-1}{indexTE, indexTCov} = modelout{1}{4};
+                currenthcwTX{i-1}{indexTE, indexTCov} = modelout{1}{5};
+                totaltreatmentdosesTX{i-1}{indexTE, indexTCov} = modelout{1}{7};
             end
         end
     end
     
     
-    save('VaccTreatmentStochResults', 'cumulativecasesVACC','cumulativecasesTX')
+    save('VaccTreatmentStochResults', 'cumulativecasesVACC','cumulativecasesTX',...
+        'cumulativedeathsVACC','cumulativedeathsTX','cumulativehcwincidenceVACC','cumulativehcwincidenceTX'...
+        ,'cumulativehospadmissionVACC','cumulativehospadmissionTX','currenthcwVACC','currenthcwTX',...
+        'totalvaccinedosesVACC','totaltreatmentdosesTX')
     h= toc;
     sprintf('Run time: %f mins', h/60)
 end
@@ -104,7 +124,7 @@ function ic = Initial
     V0 = 0;
     T0 = 0; Tf0 = 0; Tr0 = 0; Td0 = 0;
     Sh0 = 5*(2.8/10000)*N0;   Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %susceptible
-    
+    CT0 = 0;
     ic =  [Sg0,Sf0,Sh0,Sw0,...  (1-4)
                 Eg0,Eh0,Ew0,... (5-7)
                 Ig0,Ih0,Iw0,...  (8-10)
@@ -114,5 +134,6 @@ function ic = Initial
                 Cincg0,Cinch0,Cincw0, ... (20-22)
                 Cdiedg0,Cdiedh0,Cdiedw0,... (23-25)
                 CHosp0, Iht0, Iwt0,...%26-28
-                V0, T0, Tf0, Tr0, Td0];            %29-33
+                V0, T0, Tf0, Tr0, Td0,...%29-33
+                CT0];            %34
 end

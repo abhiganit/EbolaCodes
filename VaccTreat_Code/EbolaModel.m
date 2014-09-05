@@ -51,7 +51,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
         clear output;
         %initialize output
         %output = nan(28,MaxTime+1,MaxIt);
-        for i = 1:MaxIt
+        parfor i = 1:MaxIt
             % The main iteration 
             [T, pop]=Stoch_Iteration([0 MaxTime],initial,params, HospitalVisitors, interventiondelay, immunitydelay, VE, VCov, TE, TCov);
             output(:,:,i)=pop';
@@ -63,11 +63,19 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
             CumulativeHealthworkerIncidence = output(22,timepoints{3}+1,:);
             CumulativeHospitalAdmissions = output(26,timepoints{4}+1,:);
             
+            CurrentHospitalWorkers = output(4,(timepoints{1}+1),:)+output(7,(timepoints{1}+1),:)+VE*output(29,(timepoints{1}+1),:);
+            TotalVaccineDoses = output(29,(timepoints{1}+1),:);
+            TotalTreatmentDoses = output(34,(timepoints{1}+1),:);
+            
             CumulativeCases = reshape(CumulativeCases, MaxTime+1, MaxIt);
             CumulativeDeaths = reshape(CumulativeDeaths, MaxTime+1, MaxIt);
             CumulativeHealthworkerIncidence = reshape(CumulativeHealthworkerIncidence, MaxTime+1, MaxIt);
             CumulativeHospitalAdmissions = reshape(CumulativeHospitalAdmissions, MaxTime+1, MaxIt);
             
+            CurrentHospitalWorkers = reshape(CurrentHospitalWorkers, MaxTime+1, MaxIt);
+            
+            TotalVaccineDoses = reshape(TotalVaccineDoses, MaxTime+1, MaxIt);
+            TotalTreatmentDoses = reshape(TotalTreatmentDoses,MaxTime+1, MaxIt);
     else
             % The main iteration (note as it is difference equation, we
             % only run it once)
@@ -82,8 +90,11 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
             CumulativeDeaths = output(23,(timepoints{1}+1)) + output(24,(timepoints{1}+1)) + output(25,(timepoints{1}+1));
             CumulativeHealthworkerIncidence = output(22,timepoints{3}+1);
             CumulativeHospitalAdmissions = output(26,timepoints{4}+1);
-
             
+            CurrentHospitalWorkers = output(4,(timepoints{1}+1))+output(7,(timepoints{1}+1))+ VE*output(29,(timepoints{1}+1));
+
+            TotalVaccineDoses = output(29,(timepoints{1}+1));
+            TotalTreatmentDoses = output(34,(timepoints{1}+1));
     end
         
     % get model output ready to passing
@@ -91,7 +102,9 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     FittingOut{2} = CumulativeDeaths';
     FittingOut{3} = CumulativeHealthworkerIncidence';
     FittingOut{4} = CumulativeHospitalAdmissions';
-    
+    FittingOut{5} = CurrentHospitalWorkers';
+    FittingOut{6} = TotalVaccineDoses';
+    FittingOut{7} = TotalTreatmentDoses';
     modelout{1} = FittingOut;
     modelout{2} = output;
 

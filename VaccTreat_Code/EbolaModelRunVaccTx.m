@@ -68,7 +68,7 @@ function EbolaModelRunVaccTx
 %     allTE = 0:0.1:1;
 %     allTCov = 0:0.1:1;
     allTE = linspace(0,1,6);
-    allTCov = linspace(0,1,6);
+   allTCov = linspace(0,1,6);
 
     %cumulativecasesTX = cell(size(allTE, 2), size(allTCov, 2));
    

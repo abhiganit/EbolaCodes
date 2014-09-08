@@ -1,4 +1,4 @@
-function[ProbCell,EffandCov3,EffandCov6] = ProbabilityOfExtinction(input)
+function[ProbCell,ThresholdEffandCov3months,ThesholdEffandCov6months] = ProbabilityOfExtinction(input, sliceprob)
 %INPUT:
 % input is a cell of size 1 x p where p is number of delays
 % each element of input is a cell of side q x r where q is the variation
@@ -39,12 +39,12 @@ cov = linspace(0,1,r);
 for i = 1:p
     for j = 1:q % Varying over efficacies to find optimal coverage
         X = vertcat(ProbCell{i}{j,:});
-        Y = X>=0.9;
+        Y = X>=sliceprob;
         ind3 = find(Y(:,1),1,'first');
         ind6 = find(Y(:,2),1,'first');
         EC3(j,:) = [eff(j),cov(ind3)];
         EC6(j,:) = [eff(j),cov(ind6)];
     end
-    EffandCov3{i} = EC3;
-    EffandCov6{i} = EC6;
+    ThresholdEffandCov3months{i} = EC3;
+    ThresholdEffandCov6months{i} = EC6;
 end

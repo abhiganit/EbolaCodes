@@ -1,4 +1,4 @@
-function EbolaModelRunVaccTx
+function EbolaModelRunVaccTx_delay7
     tic;  
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%% NO INTERVENTION %%%%%%%%%%%
@@ -7,18 +7,17 @@ function EbolaModelRunVaccTx
     [~, ~, ~, ~] = CleanData();
 
     % set up parameters
-    MaxIt = 32;
+    MaxIt = 2^10;
     duration = 365;
     timeset = 0:duration;
     timesets = repmat({timeset},1,4);
 
-    delayuntilintervention = 0;
-    delayuntilimmunity = 0;
+    Delay1 = 7;
     
-    %intervention immunity
-    delays = [7 14;
-              30 14;
-              91 14];
+    delayuntilintervention = Delay1; %intervention delay
+    delayuntilimmunity = 14; %immunity delay
+    
+   
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%% run model for 1 year  %%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -29,7 +28,7 @@ function EbolaModelRunVaccTx
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     % no intervention
-    modelout = EbolaModel(1, EstimatedParameters(), timesets, duration, Initial(EstimatedParameters()), 1, MaxIt, delayuntilintervention, delayuntilimmunity, 0, 0, 0, 0);
+    modelout = EbolaModel(0, EstimatedParameters(), timesets, duration, Initial(EstimatedParameters()), 1, MaxIt, delayuntilintervention, delayuntilimmunity, 0, 0, 0, 0);
     %save outcomes
     cumulativecasesVACC_ni = modelout{1}{1};
     cumulativedeathsVACC_ni = modelout{1}{2};
@@ -42,40 +41,29 @@ function EbolaModelRunVaccTx
     
     
     allVSuccess = linspace(0,1,11);
-    %allVCov = linspace(0,1,6);
-
-   % cumulativecasesVACC = cell(size(allVE, 2), size(allVCov, 2));
-    
-
-    for i = 1:size(delays,1)
-        delayuntilintervention = delays(i,1);
-        delayuntilimmunity = delays(i,2);
-        indexVESuccess = 0;
-        for VESuccess = allVSuccess
-            indexVESuccess = indexVESuccess+1;
-                modelout = EbolaModel(1, EstimatedParameters(), timesets, duration, Initial(EstimatedParameters()), 1, MaxIt, delayuntilintervention, delayuntilimmunity, VESuccess, 1, 0, 0);
-                %save outcomes
-                cumulativecasesVACC{i}{indexVESuccess} = modelout{1}{1};
-                cumulativedeathsVACC{i}{indexVESuccess} = modelout{1}{2};
-                cumulativehcwincidenceVACC{i}{indexVESuccess} = modelout{1}{3};
-                cumulativehospadmissionVACC{i}{indexVESuccess} = modelout{1}{4};
-                currenthcwVACC{i}{indexVESuccess} = modelout{1}{5};
-                totalvaccinedosesVACC{i}{indexVESuccess} = modelout{1}{6};
-                currenthospitalizationsVACC{i}{indexVESuccess} = modelout{1}{8};
-                currentebolahospitalizationsVACC{i}{indexVESuccess} = modelout{1}{9};
-        end
+    indexVESuccess = 0;
+    for VESuccess = allVSuccess
+        indexVESuccess = indexVESuccess+1;
+            modelout = EbolaModel(0, EstimatedParameters(), timesets, duration, Initial(EstimatedParameters()), 1, MaxIt, delayuntilintervention, delayuntilimmunity, VESuccess, 1, 0, 0);
+            %save outcomes
+            cumulativecasesVACC{indexVESuccess} = modelout{1}{1};
+            cumulativedeathsVACC{indexVESuccess} = modelout{1}{2};
+            cumulativehcwincidenceVACC{indexVESuccess} = modelout{1}{3};
+            cumulativehospadmissionVACC{indexVESuccess} = modelout{1}{4};
+            currenthcwVACC{indexVESuccess} = modelout{1}{5};
+            totalvaccinedosesVACC{indexVESuccess} = modelout{1}{6};
+            currenthospitalizationsVACC{indexVESuccess} = modelout{1}{8};
+            currentebolahospitalizationsVACC{indexVESuccess} = modelout{1}{9};
     end
+
     
    
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%% TREATMENT LOOP %%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-   
-
-    %cumulativecasesTX = cell(size(allTE, 2), size(allTCov, 2));
-   
+  
     %%%% No Intervention
-    modelout = EbolaModel(1, EstimatedParameters(), timesets, duration, Initial(EstimatedParameters()), 1, MaxIt, delayuntilintervention, delayuntilimmunity, 0, 0, 0, 0);
+    modelout = EbolaModel(0, EstimatedParameters(), timesets, duration, Initial(EstimatedParameters()), 1, MaxIt, delayuntilintervention, delayuntilimmunity, 0, 0, 0, 0);
     %save outcomes
     cumulativecasesTX_ni = modelout{1}{1};
     cumulativedeathsTX_ni = modelout{1}{2};
@@ -89,8 +77,8 @@ function EbolaModelRunVaccTx
     allTE = linspace(0.1,1,10);
     allTCov = linspace(0.2,1,5);
                 
-    for i = 1:size(delays,1)
-        delayuntilintervention = delays(i,1);
+
+        delayuntilintervention = Delay1;
         delayuntilimmunity = 0;
         indexTE = 0;
         for TE = allTE
@@ -98,23 +86,22 @@ function EbolaModelRunVaccTx
             indexTCov = 0;
             for TCov = allTCov 
                 indexTCov = indexTCov+1;
-                modelout = EbolaModel(1, EstimatedParameters(), timesets, duration, Initial(EstimatedParameters()), 1, MaxIt, delayuntilintervention, delayuntilimmunity, 0, 0, TE, TCov);
+                modelout = EbolaModel(0, EstimatedParameters(), timesets, duration, Initial(EstimatedParameters()), 1, MaxIt, delayuntilintervention, delayuntilimmunity, 0, 0, TE, TCov);
                 %save outcomes
-                cumulativecasesTX{i}{indexTE, indexTCov} = modelout{1}{1};
-                cumulativedeathsTX{i}{indexTE, indexTCov} = modelout{1}{2};
-                cumulativehcwincidenceTX{i}{indexTE, indexTCov} = modelout{1}{3};
-                cumulativehospadmissionTX{i}{indexTE, indexTCov} = modelout{1}{4};
-                currenthcwTX{i}{indexTE, indexTCov} = modelout{1}{5};
-                totaltreatmentdosesTX{i}{indexTE, indexTCov} = modelout{1}{7};
-                currenthospitalizationsTX{i}{indexTE, indexTCov} = modelout{1}{8};
-                currentebolahospitalizationsTX{i}{indexTE, indexTCov} = modelout{1}{9};
+                cumulativecasesTX{indexTE, indexTCov} = modelout{1}{1};
+                cumulativedeathsTX{indexTE, indexTCov} = modelout{1}{2};
+                cumulativehcwincidenceTX{indexTE, indexTCov} = modelout{1}{3};
+                cumulativehospadmissionTX{indexTE, indexTCov} = modelout{1}{4};
+                currenthcwTX{indexTE, indexTCov} = modelout{1}{5};
+                totaltreatmentdosesTX{indexTE, indexTCov} = modelout{1}{7};
+                currenthospitalizationsTX{indexTE, indexTCov} = modelout{1}{8};
+                currentebolahospitalizationsTX{indexTE, indexTCov} = modelout{1}{9};
                
             end
         end
-    end
     
     
-    save('VaccTreatmentStochResults',... 
+    save('VaccTreatmentStochResults_delay7',... 
         'cumulativecasesVACC','cumulativecasesTX',...
         'cumulativedeathsVACC','cumulativedeathsTX',...
         'cumulativehcwincidenceVACC','cumulativehcwincidenceTX',...
@@ -130,7 +117,7 @@ function EbolaModelRunVaccTx
         'currenthcwVACC_ni','currenthcwTX_ni',...
         'totalvaccinedosesVACC_ni','totaltreatmentdosesTX_ni',...
         'currenthospitalizationsVACC_ni','currenthospitalizationsTX_ni',...
-        'currentebolahospitalizationsVACC_ni','currentebolahospitalizationsTX_ni')
+        'currentebolahospitalizationsVACC_ni','currentebolahospitalizationsTX_ni');
 
     h= toc;
     sprintf('Run time: %f mins', h/60)

@@ -70,9 +70,9 @@ Rate(1) = betaI*Sg*(Ig/Ng);                         Change(1,1) = -1; Change(1,5
 Rate(2) = ((21*omega-19)/2)*(KikwitNonhospPrev/KikwitGeneralPrev)*...
                  betaI*(F/(F+NF))*Sf;               Change(2,2) = -1; Change(2,5) = +1; 
 % Hosp: susc -> exposed
-Rate(3) = betaH*Sh*(Ih+Iht+Iw+Iwt)/(Nh+Nw);      Change(3,3) = -1; Change(3,6) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
+Rate(3) = betaH*Sh*(Ih+Iht+Iw+Iwt+T)/(Nh+Nw);      Change(3,3) = -1; Change(3,6) = +1;  %could we have transmissibility between hospitalized patients be same as in general popn?
 % Worker: susc -> exposed
-Rate(4) = betaW*Sw*(Ih+Iht+Iw+Iwt)/(Nh+Nw);      Change(4,4) = -1; Change(4,7) = +1;
+Rate(4) = betaW*Sw*(Ih+Iht+Iw+Iwt+T)/(Nh+Nw);      Change(4,4) = -1; Change(4,7) = +1;
 
 
 % General: exposed -> inf

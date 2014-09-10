@@ -7,7 +7,7 @@ function EbolaModelRunVaccTx_delay91
     [~, ~, ~, ~] = CleanData();
 
     % set up parameters
-    MaxIt = 2^10;
+    MaxIt = 2; %2^10;
     duration = 365;
     timeset = 0:duration;
     timesets = repmat({timeset},1,4);

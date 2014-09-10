@@ -1,5 +1,5 @@
-function EbolaModelRunVaccTx_delay30
-    tic;  
+function EbolaModelRunVaccTx_delay30   
+tic;  
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%% NO INTERVENTION %%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -7,7 +7,7 @@ function EbolaModelRunVaccTx_delay30
     [~, ~, ~, ~] = CleanData();
 
     % set up parameters
-    MaxIt = 2^10;
+    MaxIt = 2; %2^10;
     duration = 365;
     timeset = 0:duration;
     timesets = repmat({timeset},1,4);
@@ -121,6 +121,7 @@ function EbolaModelRunVaccTx_delay30
 
     h= toc;
     sprintf('Run time: %f mins', h/60)
+    
 end
 
 function eps = EstimatedParameters()

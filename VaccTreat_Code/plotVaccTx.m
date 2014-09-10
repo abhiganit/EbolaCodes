@@ -80,13 +80,13 @@ for index = 1:size(delays,2)
     
     %% 2nd ROW
     h2 = subplot(4,3,1*size(delays,2) + index);
-    plot(h2, xaxis, relativeDeaths_mean);
+   % plot(h2, xaxis, relativeDeaths_mean);
     set(h2, 'XLim', xlimits, 'Box', 'off')
     hold on;
     for i=1:5
         ha = errorbar(xaxis, relativeDeaths_mean(:,i), ...
                 relativeDeaths_mean(:,i)-relativeDeaths_low(:,i), relativeDeaths_high(:,i)-relativeDeaths_mean(:,i),...
-                'Color', colors{i});
+                'x','Color', colors{i});
         hb = get(ha,'children');  
         Xdata = get(hb(2),'Xdata');
         temp = 4:3:length(Xdata);
@@ -105,7 +105,7 @@ for index = 1:size(delays,2)
     for i=1:5
         ha = errorbar(xaxis, interventiontxdoses_mean(:,i), ...
                 interventiontxdoses_mean(:,i)-interventiontxdoses_low(:,i), interventiontxdoses_high(:,i)-interventiontxdoses_mean(:,i),...
-                'Color', colors{i});
+               'x','Color', colors{i});
         hb = get(ha,'children');  
         Xdata = get(hb(2),'Xdata');
         temp = 4:3:length(Xdata);
@@ -119,13 +119,13 @@ for index = 1:size(delays,2)
     
     %% 4th ROW
     h4 = subplot(4,3,3*size(delays,2) + index);
-    plot(h4, xaxis, interventionmaxhcwratio_mean);
+   % plot(h4, xaxis, interventionmaxhcwratio_mean);
     set(h4, 'XLim', xlimits, 'Box', 'off')
      hold on;
     for i=1:5
         ha = errorbar(xaxis, interventionmaxhcwratio_mean(:,i), ...
                 interventionmaxhcwratio_mean(:,i)-interventionmaxhcwratio_low(:,i), interventionmaxhcwratio_high(:,i)-interventionmaxhcwratio_mean(:,i),...
-                'Color', colors{i});
+                'x','Color', colors{i});
         hb = get(ha,'children');  
         Xdata = get(hb(2),'Xdata');
         temp = 4:3:length(Xdata);

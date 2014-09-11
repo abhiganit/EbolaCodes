@@ -1,4 +1,4 @@
-function EbolaModelRunVaccTx_delay91
+function EbolaModelRunVaccTx_delay183
     tic; 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%% NO INTERVENTION %%%%%%%%%%%
@@ -16,7 +16,7 @@ function EbolaModelRunVaccTx_delay91
 %     delayuntilimmunity = 0;
     
     %intervention immunity
-    delays = [91 14];
+    delays = [183 14];
 %               91 14;
 %               183 14];
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -137,7 +137,7 @@ function EbolaModelRunVaccTx_delay91
     %end
     
     
-    save('VaccTreatmentStochResults_delay91',... 
+    save('VaccTreatmentStochResults_delay183',... 
         'cumulativecasesTX',...
         'cumulativedeathsTX',...
         'cumulativehcwincidenceTX',...
@@ -171,7 +171,7 @@ end
 
 function eps = EstimatedParameters()
 
-    load('../MainModel_Code/paramest.mat');
+    load('paramest.mat');
     eps = x;
 
 end

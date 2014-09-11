@@ -1,4 +1,4 @@
-function plotTx_det()
+function plotTxandVacc_det()
 
 xaxis = 0.1:0.1:1.0;
 delays = [30, 91, 183];
@@ -46,10 +46,11 @@ ax(12) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+0
 
 
 
-
-filename = sprintf('VaccTreatmentDetResults');
+vacc = [1,6,11];
+filename = sprintf('VaccTreatmentDetResultsTogether');
 load(filename);
-for index = 1:size(delays,2)
+for ind = 1:3
+    index = vacc(ind);
 %     clear nointerventioncases nointerventiondeaths nointerventionmaxhcwratio ...
 %            interventioncases interventiondeaths interventiontxdoses interventionmaxhcwratio;
     %filename = sprintf('VaccTreatmentStochResults_delay%g', delays(index));
@@ -57,14 +58,14 @@ for index = 1:size(delays,2)
     
     
     % means of no interventions
-    nointerventioncases = cumulativecasesTX_ni(end); %at the end of year
-    nointerventiondeaths =  cumulativedeathsTX_ni(end); %at the end of year
-    nointerventionmaxhcwratio = max((currentebolahospitalizationsTX_ni./currenthcwTX_ni)')'; 
+    nointerventioncases = cumulativecasesTXVACC_ni(end); %at the end of year
+    nointerventiondeaths =  cumulativedeathsTXVACC_ni(end); %at the end of year
+    nointerventionmaxhcwratio = max((currentebolahospitalizationsTXVACC_ni./currenthcwTXVACC_ni)')'; 
 
-    interventioncases = cell2mat( cellfun( @(a) a(end), cumulativecasesTX{index}, 'UniformOutput', false));
-    interventiondeaths =  cell2mat(cellfun( @(a) a(end), cumulativedeathsTX{index}, 'UniformOutput', false));
-    interventiontxdoses =  cell2mat(cellfun( @(a) a(end), totaltreatmentdosesTX{index}, 'UniformOutput', false));
-    interventionmaxhcwratio =  cell2mat(cellfun( @(a,b) max((a./b)')', currentebolahospitalizationsTX{index}, currenthcwTX{index}, 'UniformOutput', false));
+    interventioncases = cell2mat( cellfun( @(a) a(end), cumulativecasesTXVACC{3}{index}, 'UniformOutput', false));
+    interventiondeaths =  cell2mat(cellfun( @(a) a(end), cumulativedeathsTXVACC{3}{index}, 'UniformOutput', false));
+    interventiontxdoses =  cell2mat(cellfun( @(a) a(end), totaltreatmentdosesTXVACC{3}{index}, 'UniformOutput', false));
+    interventionmaxhcwratio =  cell2mat(cellfun( @(a,b) max((a./b)')', currentebolahospitalizationsTXVACC{3}{index}, currenthcwTXVACC{3}{index}, 'UniformOutput', false));
     relativeIncidence =  interventioncases./ repmat(nointerventioncases, size(interventioncases,1), size(interventioncases,2));
     relativeDeaths =  interventiondeaths./ repmat(nointerventiondeaths, size(interventiondeaths,1), size(interventiondeaths,2));
     livesSaved =  repmat(nointerventiondeaths, size(interventiondeaths,1), size(interventiondeaths,2)) - interventiondeaths;
@@ -90,7 +91,7 @@ for index = 1:size(delays,2)
     
        
     %% 1st ROW
-    axes(ax(0*size(delays,2) + index));
+    axes(ax(0*size(delays,2) + ind));
     %h1 = subplot(4,3,0*size(delays,2) + index);
     set(gca, 'XLim', xlimits, 'YLim', [0 1], 'Box', 'off')
     set(gca, 'FontSize', 14, 'FontName', 'Palatino')
@@ -110,7 +111,7 @@ for index = 1:size(delays,2)
 %         Xdata(xright) = 0; %Xdata(xright) + .1;
 %         set(hb(2),'Xdata',Xdata)
     %end
-    if index==1 
+    if ind==1 
         text(-0.05,0.5, {'Relative', 'incidence'}, ...
             'Rotation', 90, 'FontName', 'Palatino', 'FontSize', titlesize,...
             'HorizontalAlignment', 'Center'); 
@@ -121,18 +122,18 @@ for index = 1:size(delays,2)
         set(leg, 'EdgeColor', 'white')
     end
     
-    switch index
+    switch ind
         case 1
-            title('1 Month delay', 'FontSize', titlesize, 'FontName', 'Palatino')
+            title('0% Vaccination Success', 'FontSize', titlesize, 'FontName', 'Palatino')
         case 2
-            title('3 Month delay', 'FontSize', titlesize, 'FontName', 'Palatino')
+            title('50% Vaccination Success', 'FontSize', titlesize, 'FontName', 'Palatino')
         case 3
-            title('6 Month delay', 'FontSize', titlesize, 'FontName', 'Palatino')
+            title('100% Vaccination Success', 'FontSize', titlesize, 'FontName', 'Palatino')
     end
     
     
     %% 2nd ROW
-    axes(ax(1*size(delays,2) + index));
+    axes(ax(1*size(delays,2) + ind));
     xlabel('Treatment efficacy, \epsilon_T', 'FontSize', labelsize, 'FontName', 'Palatino')
     %h2 = subplot(4,3,1*size(delays,2) + index);
    % plot(h2, xaxis, relativeDeaths_mean);
@@ -141,7 +142,7 @@ for index = 1:size(delays,2)
     set(gca, 'FontSize', 14, 'FontName', 'Palatino')
     hold on;
     %for i=1:5
-        plot(xaxis, relativeDeaths)
+        plot(xaxis, livesSaved)
 %         ha = errorbar(xaxis, relativeDeaths_mean(:,i), ...
 %                 relativeDeaths_mean(:,i)-relativeDeaths_low(:,i), relativeDeaths_high(:,i)-relativeDeaths_mean(:,i),...
 %                 'o','Color', colors{i}, 'MarkerFaceColor', colors{i});
@@ -154,14 +155,14 @@ for index = 1:size(delays,2)
 %         Xdata(xright) = 0; %Xdata(xright) + .1;
 %         set(hb(2),'Xdata',Xdata)
     %end
-    if index==1 
+    if ind==1 
         text(-0.05,0.5, {'Relative', 'mortality'}, ...
             'Rotation', 90, 'FontName', 'Palatino', 'FontSize', titlesize,...
             'HorizontalAlignment', 'Center'); 
     end
     
     %% 3rd ROW
-    axes(ax(2*size(delays,2) + index));
+    axes(ax(2*size(delays,2) + ind));
     xlabel('Treatment efficacy, \epsilon_T', 'FontSize', labelsize, 'FontName', 'Palatino')
     %h3 = subplot(4,3,2*size(delays,2) + index);
     set(gca, 'XLim', xlimits, 'Box', 'off')
@@ -181,21 +182,21 @@ for index = 1:size(delays,2)
 %         Xdata(xright) = 0; %Xdata(xright) + .1;
 %         set(hb(2),'Xdata',Xdata)
     %end
-    if index==1 
+    if ind==1 
         text(-0.05,1.5e4, {'Treatment', 'doses'}, ...
             'Rotation', 90, 'FontName', 'Palatino', 'FontSize', titlesize,...
             'HorizontalAlignment', 'Center'); 
     end
     
     %% 4th ROW
-    axes(ax(3*size(delays,2) + index));
+    axes(ax(3*size(delays,2) + ind));
     xlabel('Treatment efficacy, \epsilon_T', 'FontSize', labelsize, 'FontName', 'Palatino')
     %h4 = subplot(4,3,3*size(delays,2) + index);
    % plot(h4, xaxis, interventionmaxhcwratio_mean);
     set(gca, 'XLim', xlimits, 'Box', 'off')
     set(gca, 'FontSize', 14, 'FontName', 'Palatino')
      hold on;
-     %ylim([0 80])
+     ylim([0 150])
     %for i=1:5
         plot(xaxis, interventionmaxhcwratio);
 %         ha = errorbar(xaxis, interventionmaxhcwratio_mean(:,i), ...
@@ -210,7 +211,7 @@ for index = 1:size(delays,2)
 %         Xdata(xright) = 0; %Xdata(xright) + .1;
 %         set(hb(2),'Xdata',Xdata)
     %end
-    if index==1 
+    if ind==1 
         text(-0.05,30, {'Maximum Ebola', 'patients per HCW'}, ...
             'Rotation', 90, 'FontName', 'Palatino', 'FontSize', titlesize,...
             'HorizontalAlignment', 'Center'); 

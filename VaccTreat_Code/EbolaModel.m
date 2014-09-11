@@ -86,11 +86,13 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
         end
             %% SAVE OUTPUT
             CumulativeCases = output(20,(timepoints{1}+1),:) + output(21,(timepoints{1}+1),:) + output(22,(timepoints{1}+1),:);
-            
             CumulativeDeaths = output(23,(timepoints{1}+1),:) + output(24,(timepoints{1}+1),:) + output(25,(timepoints{1}+1),:);
-            
+            CumulativeGeneralIncidence = output(20,(timepoints{1}+1),:);
+            CumulativeHospitalIncidence = output(21,(timepoints{1}+1),:);
             CumulativeHealthworkerIncidence = output(22,timepoints{3}+1,:);
-            
+            CumulativeGeneralDeaths = output(23,(timepoints{1}+1),:);
+            CumulativeHospitalDeaths = output(24,(timepoints{1}+1),:);
+            CumulativeHealthworkerDeaths = output(25,(timepoints{1}+1),:);
             CumulativeHospitalAdmissions = output(26,timepoints{4}+1,:);
             
             CurrentHospitalWorkers = output(4,(timepoints{1}+1),:)+output(7,(timepoints{1}+1),:) + output(29,(timepoints{1}+1),:);
@@ -108,7 +110,13 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
             
             CumulativeCases = reshape(CumulativeCases, MaxTime+1, MaxIt);
             CumulativeDeaths = reshape(CumulativeDeaths, MaxTime+1, MaxIt);
+            CumulativeGeneralIncidence = reshape(CumulativeGeneralIncidence, MaxTime+1, MaxIt);
+            CumulativeHospitalIncidence = reshape(CumulativeHospitalIncidence, MaxTime+1, MaxIt);
             CumulativeHealthworkerIncidence = reshape(CumulativeHealthworkerIncidence, MaxTime+1, MaxIt);  
+            CumulativeGeneralDeaths = reshape(CumulativeGeneralDeaths, MaxTime+1, MaxIt);
+            CumulativeHospitalDeaths = reshape(CumulativeHospitalDeaths, MaxTime+1, MaxIt);
+            CumulativeHealthworkerDeaths = reshape(CumulativeHealthworkerDeaths, MaxTime+1, MaxIt); 
+            
             CumulativeHospitalAdmissions = reshape(CumulativeHospitalAdmissions, MaxTime+1, MaxIt);
             CurrentHospitalWorkers = reshape(CurrentHospitalWorkers, MaxTime+1, MaxIt);
             TotalVaccineDoses = reshape(TotalVaccineDoses, MaxTime+1, MaxIt);
@@ -127,7 +135,13 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
             %% SAVE OUTPUT
             CumulativeCases = output(20,(timepoints{1}+1)) + output(21,(timepoints{1}+1)) + output(22,(timepoints{1}+1));
             CumulativeDeaths = output(23,(timepoints{1}+1)) + output(24,(timepoints{1}+1)) + output(25,(timepoints{1}+1));
+            CumulativeGeneralIncidence = output(20,timepoints{3}+1);
+            CumulativeHospitalIncidence = output(21,timepoints{3}+1);
             CumulativeHealthworkerIncidence = output(22,timepoints{3}+1);
+            CumulativeGeneralDeaths = output(23,(timepoints{1}+1));
+            CumulativeHospitalDeaths = output(24,(timepoints{1}+1));
+            CumulativeHealthworkerDeaths = output(25,(timepoints{1}+1));
+            
             CumulativeHospitalAdmissions = output(26,timepoints{4}+1);
             
             CurrentHospitalWorkers = output(4,(timepoints{1}+1))+output(7,(timepoints{1}+1)) + output(29,(timepoints{1}+1));
@@ -154,6 +168,13 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     FittingOut{7} = TotalTreatmentDoses';
     FittingOut{8} = CurrentHospitalizations';
     FittingOut{9} = CurrentEbolaHospitalizations';
+    
+    FittingOut{10} = CumulativeGeneralIncidence';
+    FittingOut{11} = CumulativeHospitalIncidence';
+    FittingOut{12} = CumulativeGeneralDeaths';
+    FittingOut{13} = CumulativeHospitalDeaths';
+    FittingOut{14} = CumulativeHealthworkerDeaths';
+    
     modelout{1} = FittingOut;
     modelout{2} = output;
 

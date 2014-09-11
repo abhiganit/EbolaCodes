@@ -44,7 +44,6 @@ function RunVaccandTx
     allTCov = linspace(0.2,1,5);
                 
     for i = 1:size(delays,1)
-        i
         delayuntilintervention = delays(i,1);
         delayuntilimmunity = delays(i,2);
         indexVESuccess = 0;
@@ -74,7 +73,7 @@ function RunVaccandTx
     end
     
     
-    save('VaccTreatmentStochResultsTogether',... 
+    save('VaccTreatmentDetResultsTogether',... 
         'cumulativecasesTXVACC',...
         'cumulativedeathsTXVACC',...
         'cumulativehcwincidenceTXVACC',...

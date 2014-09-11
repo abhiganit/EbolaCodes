@@ -1,5 +1,5 @@
 function plotVacc_det()
-close all
+%close all
 
 xaxis = 0.1:0.1:1.0;
 delays = [7, 30, 91];

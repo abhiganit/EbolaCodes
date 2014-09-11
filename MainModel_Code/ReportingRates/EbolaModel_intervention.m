@@ -9,7 +9,7 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
     betaW = x(2);      % Transmission coefficient between patients-HCWs
     theta = x(3);      % Percentage of infectious cases are hospitaized
     gammaH = 1/3;    % 1/Time between hospitalization and death
-    %Ig0 = x(5);  
+    
     
     %disease progression parameters
     delta = 0.6;
@@ -24,7 +24,7 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
     KikwitGeneralPrev = 0.81*6.4e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     KikwitNonhospPrev = 5.6e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     N0 = 4.09e6;          % Initial population size
-    %N0 = 1.14e6;
+  %  N0 = 1.14e6;            % Montserrado County 
     %N0 = 0.27e6;          % Lofa Co.
     M =  5;            % average family size
     MF = M - 1;         %number of chances to be at a funeral
@@ -41,7 +41,12 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
     gammaIH = 1/(1/gammaI - 1/gammaH);     % 1/gammaIH: mean duration from hospitalization to end of infectiousness
     betaH = betaI;      % Transmission coefficient between patients or between HCWs
 
-
+    deltaG = delta*gammaI / ...
+                ((1-delta)*gammaD  + delta*gammaI); 
+    
+    deltaH = delta*gammaIH /...
+                ( (1-delta)*gammaDH + delta*gammaIH );
+   
     % intervention parameters
 %     iH = ControlParams(1);
 %     phiG = ControlParams(2);
@@ -67,11 +72,11 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
 %                 CHosp0];            %27
     params = [betaI,betaH,betaW, ... (1-3)
             omega, alpha, theta, ...   (4-6)
-            gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF,delta, ... (7-13)
-            MF,MH,fFG,fGH,fHG,...       (14-18)
-            epsilon,KikwitGeneralPrev,KikwitNonhospPrev, E,... (19-22)
-                    ControlParams, C,... (23-31)
-                    tau];  %(32)
+            gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF, deltaG, deltaH,... (7-14)
+            MF,MH,fFG,fGH,fHG,...       (15-19)
+            epsilon,KikwitGeneralPrev,KikwitNonhospPrev, E,... (20-23)
+                    ControlParams, C,... (24-32)
+                    tau];  %(33)
     
     if model== 0
         clear output;

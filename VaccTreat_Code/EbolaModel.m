@@ -6,15 +6,14 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
      % Estimated Parameters
     betaI = x(1);      % Transmission coefficient in community
     betaW = x(2);      % Transmission coefficient between patients-HCWs
-    theta = x(3);      % Percentage of infectious cases are hospitaized      
-    delta = 0.6;        % case fatality
-    
-    %disease progression parameters
-    gammaD = 1/7.5;       % 1/gammaD: mean duration from onset to death
+    theta = x(3);      % Percentage of infectious cases are hospitaized
     gammaH = 1/3;    % 1/Time between hospitalization and death
+     
+    %disease progression parameters
+    delta = 0.6;    %case fatality
     alpha = 1/8;        % 1/alpha: mean duration of the incubation period 
     gammaI = 1/9; %10;      % 1/gammaI: mean duration of the infectious period for survivors
-    
+    gammaD = 1/7.5;       % 1/gammaD: mean duration from onset to death
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
     epsilon = 100/100;       % percentage Symptomatic illness 
     omega = 1.2;        % overall funeral risk relative to general population
@@ -24,7 +23,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     % population parameters
     KikwitGeneralPrev = 0.81*6.4e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     KikwitNonhospPrev = 5.6e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
-    N0 = 4.09e6;          % Initial population size -- Liberia
+    N0 = 4.09e6;          % Initial population size
     %N0 = 1.14e6;   % Montserrado County 
     %N0 = 0.27e6;
     M =  5;            % average family size
@@ -41,10 +40,38 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     gammaDH = 1/(1/gammaD - 1/gammaH);
     gammaIH = 1/(1/gammaI - 1/gammaH);     % 1/gammaIH: mean duration from hospitalization to end of infectiousness
     betaH = betaI;      % Transmission coefficient between patients or between HCWs
-        
+    
+    deltaG = delta*gammaI / ...
+                ((1-delta)*gammaD  + delta*gammaI); 
+    
+    deltaH = delta*gammaIH /...
+                ( (1-delta)*gammaDH + delta*gammaIH );
+   
+%     % Initial conditions
+%     Ig0 = x(5);  
+%     Eg0 = 0;  Eh0 = 0; Ew0 = 0;         % exposed
+%               Ih0 = 0; Iw0 = 0;         % infected
+%     Fg0 = 0;  Fh0 = 0; Fw0 = 0;         % died:funeral
+%     Rg0 = 0;  Rh0 = 0; Rw0 = 0;         % recovered
+%     Dg0 = 0;  Dh0 = 0; Dw0 = 0;         % died:buried
+%     Cincg0 = Ig0; Cincf0 = 0; Cinch0 = 0; Cincw0 = 0;       % cumulative incidence
+%     Cdiedg0 = 0;  Cdiedh0 = 0; Cdiedw0 = 0;       % cumulative died
+%     CHosp0 = 0;
+%     Sh0 = 20*(2.8/10000)*N0;   Sf0 = 0; Sw0 = (2.8/10000)*N0;  Sg0 = N0 - Sh0 - Sw0 - Ig0;   %susceptible
+    
     % Algorithm parameters
     tau=1;
-    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF,delta,...
+    %MaxIt = 100;
+%     initial = [Sg0,Sf0,Sh0,Sw0,...  (1-4)
+%                 Eg0,Eh0,Ew0,... (5-7)
+%                 Ig0,Ih0,Iw0,...  (8-10)
+%                 Fg0,Fh0, Fw0,...  (11-13)
+%                 Rg0,Rh0,Rw0,...   (14-16)
+%                 Dg0,Dh0,Dw0, ...   (17-19)
+%                 Cincg0,Cincf0,Cinch0,Cincw0, ... (20-23)
+%                 Cdiedg0,Cdiedh0,Cdiedw0,... (24-26)
+%                 CHosp0];            %27
+    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF,deltaG, deltaH,...
                 MF,MH,fFG,fGH,fHG,epsilon,KikwitGeneralPrev,KikwitNonhospPrev, E, reportingrateGeneral, reportingrateHospital,tau]; 
     
     if model== 0

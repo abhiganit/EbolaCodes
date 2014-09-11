@@ -8,8 +8,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     betaW = x(2);      % Transmission coefficient between patients-HCWs
     theta = x(3);      % Percentage of infectious cases are hospitaized
     gammaH = 1/3;    % 1/Time between hospitalization and death
-    %Ig0 = x(5);  
-    
+     
     %disease progression parameters
     delta = 0.6;    %case fatality
     alpha = 1/8;        % 1/alpha: mean duration of the incubation period 
@@ -18,14 +17,14 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
     epsilon = 100/100;       % percentage Symptomatic illness 
     omega = 1.2;        % overall funeral risk relative to general population
-    reportingrateGeneral = repG;  %reporting rate of cases and deaths in community
-    reportingrateHospital = repH; %reporting rate of cases and deaths in hospital
+    reportingrateGeneral = 1.0;  %reporting rate of cases and deaths in community
+    reportingrateHospital = 1.0; %reporting rate of cases and deaths in hospital
     
     % population parameters
     KikwitGeneralPrev = 0.81*6.4e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     KikwitNonhospPrev = 5.6e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     N0 = 4.09e6;          % Initial population size
-    %N0 = 1.14e6;
+    %N0 = 1.14e6;   % Montserrado County 
     %N0 = 0.27e6;
     M =  5;            % average family size
     MF = M - 1;         %number of chances to be at a funeral
@@ -42,7 +41,11 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     gammaIH = 1/(1/gammaI - 1/gammaH);     % 1/gammaIH: mean duration from hospitalization to end of infectiousness
     betaH = betaI;      % Transmission coefficient between patients or between HCWs
     
+    deltaG = delta*gammaI / ...
+                ((1-delta)*gammaD  + delta*gammaI); 
     
+    deltaH = delta*gammaIH /...
+                ( (1-delta)*gammaDH + delta*gammaIH );
    
 %     % Initial conditions
 %     Ig0 = x(5);  
@@ -68,7 +71,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
 %                 Cincg0,Cincf0,Cinch0,Cincw0, ... (20-23)
 %                 Cdiedg0,Cdiedh0,Cdiedw0,... (24-26)
 %                 CHosp0];            %27
-    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF,delta,...
+    params = [betaI,betaH,betaW, omega, alpha, theta, gammaH, gammaI, gammaD,gammaDH, gammaIH,gammaF,deltaG, deltaH,...
                 MF,MH,fFG,fGH,fHG,epsilon,KikwitGeneralPrev,KikwitNonhospPrev, E, reportingrateGeneral, reportingrateHospital,tau]; 
     
     if model== 0

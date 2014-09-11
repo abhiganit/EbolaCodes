@@ -32,23 +32,36 @@ CT = old(34);
 
 
 %% Move vaccination workers into holding-vaccinated compartment instantaneously%%
-if(round(t)==round(interventiondelay))
+if(round(t)>round(interventiondelay+immunitydelay))
+    Nw = Sw+Ew+Iw+Iwt+Rw + (VE*VCov*Sw);
+    %Nw = Sw+Ew+Iw+Iwt+Rw + (VE*V);
+else
+    Nw = Sw+Ew+Iw+Iwt+Rw;
+end
+
+% if(round(t)==round(interventiondelay))
+%     % do something with densities
+%    V = VCov*Sw;  % count number of vaccine doses
+%    old(29) = V; %set an immediate number of vaccinated individuals
+% elseif(round(t)==round(interventiondelay+immunitydelay))
+%    Sw = Sw - VE*VCov*Sw;  %move a proportion of successfully vaccinated people from the Sw class
+%    old(4) = Sw;
+% end
+if(round(t)==round(interventiondelay+immunitydelay))
     % do something with densities
    V = VCov*Sw;  % count number of vaccine doses
-elseif(round(t)==round(interventiondelay+immunitydelay))
+   old(29) = V; %set an immediate number of vaccinated individuals
    Sw = Sw - VE*VCov*Sw;  %move a proportion of successfully vaccinated people from the Sw class
+   old(4) = Sw;
 end
+
 
 Ng = Sg+Sf+Eg+Ig+Rg;
 Nh = Sh+Eh+Ih+Iht+Rh + T+Tr;
 F = Fg + Fh + Fw + Tf;
 % account fornumber of vaccinated people in total alive people
-if(round(t)>=round(interventiondelay+immunitydelay))
-    Nw = Sw+Ew+Iw+Iwt+Rw + (VE*VCov*Sw);
-    
-else
-    Nw = Sw+Ew+Iw+Iwt+Rw;
-end
+
+
 Nd = Ng + Nh + Nw;
 NF = Nd/(gammaF*E);
 
@@ -59,7 +72,7 @@ if(round(t) < round(interventiondelay))
 end
 
 % initialize arrays
-Change = zeros(40,size(old,2)); %33 rates, X states
+Change = zeros(40,size(old,2)); %40 rates, X states
 Rate = zeros(40,1);
 
 

@@ -86,30 +86,33 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
         end
             %% SAVE OUTPUT
             CumulativeCases = output(20,(timepoints{1}+1),:) + output(21,(timepoints{1}+1),:) + output(22,(timepoints{1}+1),:);
+            
             CumulativeDeaths = output(23,(timepoints{1}+1),:) + output(24,(timepoints{1}+1),:) + output(25,(timepoints{1}+1),:);
+            
             CumulativeHealthworkerIncidence = output(22,timepoints{3}+1,:);
+            
             CumulativeHospitalAdmissions = output(26,timepoints{4}+1,:);
             
-            CurrentHospitalWorkers = output(4,(timepoints{1}+1),:)+output(7,(timepoints{1}+1),:)+VE*output(29,(timepoints{1}+1),:);
+            CurrentHospitalWorkers = output(4,(timepoints{1}+1),:)+output(7,(timepoints{1}+1),:) + output(29,(timepoints{1}+1),:);
+            
             TotalVaccineDoses = output(29,(timepoints{1}+1),:);
+            
             TotalTreatmentDoses = output(34,(timepoints{1}+1),:);
+            
             CurrentHospitalizations = output(3,(timepoints{1}+1),:)+output(6,(timepoints{1}+1),:)+...
                 output(9,(timepoints{1}+1),:)+output(10,(timepoints{1}+1),:)+output(27,(timepoints{1}+1),:)+...
                 output(28,(timepoints{1}+1),:)+output(30,(timepoints{1}+1),:);
-            CurrentEbolaHospitalizations = output(6,(timepoints{1}+1),:)+...
-                output(9,(timepoints{1}+1),:)+output(10,(timepoints{1}+1),:)+output(27,(timepoints{1}+1),:)+...
+            
+            CurrentEbolaHospitalizations = output(9,(timepoints{1}+1),:)+output(10,(timepoints{1}+1),:)+output(27,(timepoints{1}+1),:)+...
                 output(28,(timepoints{1}+1),:)+output(30,(timepoints{1}+1),:);
             
             CumulativeCases = reshape(CumulativeCases, MaxTime+1, MaxIt);
             CumulativeDeaths = reshape(CumulativeDeaths, MaxTime+1, MaxIt);
-            CumulativeHealthworkerIncidence = reshape(CumulativeHealthworkerIncidence, MaxTime+1, MaxIt);
+            CumulativeHealthworkerIncidence = reshape(CumulativeHealthworkerIncidence, MaxTime+1, MaxIt);  
             CumulativeHospitalAdmissions = reshape(CumulativeHospitalAdmissions, MaxTime+1, MaxIt);
-            
             CurrentHospitalWorkers = reshape(CurrentHospitalWorkers, MaxTime+1, MaxIt);
-            
             TotalVaccineDoses = reshape(TotalVaccineDoses, MaxTime+1, MaxIt);
             TotalTreatmentDoses = reshape(TotalTreatmentDoses,MaxTime+1, MaxIt);
-            
             CurrentHospitalizations = reshape(CurrentHospitalizations,MaxTime+1, MaxIt);
             CurrentEbolaHospitalizations = reshape(CurrentEbolaHospitalizations,MaxTime+1, MaxIt);
     else
@@ -127,15 +130,14 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
             CumulativeHealthworkerIncidence = output(22,timepoints{3}+1);
             CumulativeHospitalAdmissions = output(26,timepoints{4}+1);
             
-            CurrentHospitalWorkers = output(4,(timepoints{1}+1))+output(7,(timepoints{1}+1))+ VE*output(29,(timepoints{1}+1));
+            CurrentHospitalWorkers = output(4,(timepoints{1}+1))+output(7,(timepoints{1}+1)) + output(29,(timepoints{1}+1));
 
             TotalVaccineDoses = output(29,(timepoints{1}+1));
             TotalTreatmentDoses = output(34,(timepoints{1}+1));
             CurrentHospitalizations = output(3,(timepoints{1}+1))+output(6,(timepoints{1}+1))+...
                 output(9,(timepoints{1}+1))+output(10,(timepoints{1}+1))+output(27,(timepoints{1}+1))+...
                 output(28,(timepoints{1}+1))+output(30,(timepoints{1}+1));
-            CurrentEbolaHospitalizations = output(6,(timepoints{1}+1))+...
-                output(9,(timepoints{1}+1))+output(10,(timepoints{1}+1))+output(27,(timepoints{1}+1))+...
+            CurrentEbolaHospitalizations =  output(9,(timepoints{1}+1))+output(10,(timepoints{1}+1))+output(27,(timepoints{1}+1))+...
                 output(28,(timepoints{1}+1))+output(30,(timepoints{1}+1));
             
             

@@ -7,7 +7,7 @@ function EbolaModelRunVaccTx
     [~, ~, ~, ~] = CleanData();
 
     % set up parameters
-    MaxIt = 32;
+    MaxIt = 1;
     duration = 365;
     timeset = 0:duration;
     timesets = repmat({timeset},1,4);
@@ -16,9 +16,9 @@ function EbolaModelRunVaccTx
     delayuntilimmunity = 0;
     
     %intervention immunity
-    delays = [7 14;
-              30 14;
-              91 14];
+    delays = [30 14;
+              91 14;
+              183 14];
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%% run model for 1 year  %%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -114,7 +114,7 @@ function EbolaModelRunVaccTx
     end
     
     
-    save('VaccTreatmentStochResults',... 
+    save('VaccTreatmentDetResults',... 
         'cumulativecasesVACC','cumulativecasesTX',...
         'cumulativedeathsVACC','cumulativedeathsTX',...
         'cumulativehcwincidenceVACC','cumulativehcwincidenceTX',...
@@ -138,7 +138,7 @@ end
 
 function eps = EstimatedParameters()
 
-    load('paramest');
+    load('../MainModel_Code/paramest.mat');
     eps = x;
 
 end

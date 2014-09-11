@@ -16,9 +16,9 @@ function RunVaccandTx
     delayuntilimmunity = 0;
     
     %intervention immunity
-    delays = [7 14;
-              30 14;
-              91 14];
+    delays = [30 14;
+              91 14;
+              183 14];
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%% run model for 1 year  %%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -39,11 +39,12 @@ function RunVaccandTx
     currenthospitalizationsTXVACC_ni = modelout{1}{8};
     currentebolahospitalizationsTXVACC_ni = modelout{1}{9};
     
-    allVSuccess = linspace(0,1,11);
+    allVESuccess = linspace(0,1,11);
     allTE = linspace(0.1,1,10);
     allTCov = linspace(0.2,1,5);
                 
     for i = 1:size(delays,1)
+        i
         delayuntilintervention = delays(i,1);
         delayuntilimmunity = delays(i,2);
         indexVESuccess = 0;

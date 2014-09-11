@@ -121,8 +121,8 @@ Rate(30) = deltaH*reportingrateHospital*(gammaDH*Iw);                           
 
 
 %% Cumulative Hospitalizations (including HCW)
-%Rate(31) = reportingrateHospital*(gammaH*theta*Ig + epsilon*alpha*(Eh+Ew));             Change(31,26) = +1; 
-Rate(31) = reportingrateHospital*(gammaH*theta*Ig + gammaH*Iht + gammaH*Iwt);             Change(31,26) = +1;    
+Rate(31) = reportingrateHospital*(gammaH*theta*Ig + epsilon*alpha*(Eh+Ew));             Change(31,26) = +1; 
+%Rate(31) = reportingrateHospital*(gammaH*theta*Ig + gammaH*Iht + gammaH*Iwt);             Change(31,26) = +1;    
 
 %% Delay for infections at hospital
 Rate(32) = gammaH*Iht;                               Change(32,27) = -1;    Change(32,9) = +1;

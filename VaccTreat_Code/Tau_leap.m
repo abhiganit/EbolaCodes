@@ -39,17 +39,9 @@ else
     Nw = Sw+Ew+Iw+Iwt+Rw;
 end
 
-% if(round(t)==round(interventiondelay))
-%     % do something with densities
-%    V = VCov*Sw;  % count number of vaccine doses
-%    old(29) = V; %set an immediate number of vaccinated individuals
-% elseif(round(t)==round(interventiondelay+immunitydelay))
-%    Sw = Sw - VE*VCov*Sw;  %move a proportion of successfully vaccinated people from the Sw class
-%    old(4) = Sw;
-% end
 if(round(t)==round(interventiondelay+immunitydelay))
     % do something with densities
-   V = VCov*Sw;  % count number of vaccine doses
+   V = VE*VCov*Sw;  % count number of vaccine doses
    old(29) = V; %set an immediate number of vaccinated individuals
    Sw = Sw - VE*VCov*Sw;  %move a proportion of successfully vaccinated people from the Sw class
    old(4) = Sw;
@@ -119,7 +111,7 @@ Rate(15) = gammaF*Fh;                                    Change(15,12) = -1; Cha
 Rate(16) = gammaF*Fw;                                    Change(16,13) = -1; Change(16,19) = +1;
 
 % General:susc -> Funeral:susc
-Rate(17) = MF*(Nd/E +  (1-theta)*deltaG*gammaD*Ig + deltaH*gammaDH*(Ih+Iw))*Sg/(Ng-Sf);           Change(17,1) = -1; Change(17,2) = +1;  %delta1* delta2*    
+Rate(17) = MF*(Nd/E +  (1-theta)*deltaG*gammaD*Ig + deltaH*gammaDH*(Ih+Iw) + (1-TE)*deltaH*gammaDH*T)*Sg/(Ng-Sf);           Change(17,1) = -1; Change(17,2) = +1;  %delta1* delta2*    
 % Funeral:susc -> General:susc
 Rate(18) = fFG*Sf;                                       Change(18,2) = -1; Change(18,1) = +1;
 % General:susc -> Hosp:susc
@@ -148,14 +140,14 @@ Rate(27) = reportingrateHospital*(epsilon*alpha*Ew);      					Change(27,22) = +
 % General: inf -> funeral
 Rate(28) = deltaG*reportingrateGeneral*((1-theta)*gammaD*Ig);                   Change(28,23) = +1; 
 % Hosp: inf -> funeral
-Rate(29) = deltaH*reportingrateHospital*(gammaDH*Ih);                            Change(29,24) = +1; 
+Rate(29) = reportingrateHospital*(deltaH*(gammaDH*Ih) + (1-TE)*deltaH*gammaDH*T);       Change(29,24) = +1; 
 % Worker: inf -> funeral
 Rate(30) = deltaH*reportingrateHospital*(gammaDH*Iw);                            Change(30,25) = +1; 
 
 
 %% Cumulative Hospitalizations (including HCW)
-%Rate(31) = reportingrateHospital*(gammaH*theta*Ig + epsilon*alpha*(Eh+Ew));             Change(31,26) = +1; 
-Rate(31) = reportingrateHospital*(gammaH*theta*Ig + gammaH*Iht + gammaH*Iwt);             Change(31,26) = +1; 
+Rate(31) = reportingrateHospital*(gammaH*theta*Ig + epsilon*alpha*(Eh+Ew));             Change(31,26) = +1; 
+%Rate(31) = reportingrateHospital*(gammaH*theta*Ig + gammaH*Iht + gammaH*Iwt);             Change(31,26) = +1; 
    
 
 %% Delay for infections at hospital
@@ -171,7 +163,7 @@ Rate(38) = (1-(1-TE)*deltaH)*gammaIH*T;                  Change(38,30) = -1; Cha
 Rate(39) = gammaF*Tf;                                   Change(39,31) = -1; Change(39,33) = +1;
 
 %% Total cumulative treatment doses
-Rate(40) = TCov*gammaH*theta*Ig+TCov*gammaH*Iht+TCov*gammaH*Iwt;  Change(40,34) = +1; 
+Rate(40) = TCov*gammaH*theta*Ig  +   TCov*gammaH*Iht  +   TCov*gammaH*Iwt;  Change(40,34) = +1; 
 
 
 %% run algorithm

@@ -16,9 +16,9 @@ function RunVaccandTx
     delayuntilimmunity = 0;
     
     %intervention immunity
-    delays = [30 14;
-              91 14;
-              183 14];
+    delays = [183 14];
+%               91 14;
+%               183 14];
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%% run model for 1 year  %%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -27,7 +27,7 @@ function RunVaccandTx
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     %%%% No Intervention
-    modelout = EbolaModel(1, EstimatedParameters(), timesets, duration, Initial(EstimatedParameters()), 1, MaxIt, delayuntilintervention, delayuntilimmunity, 0, 0, 0, 0);
+    modelout = EbolaModel(0, EstimatedParameters(), timesets, duration, Initial(EstimatedParameters()), 1, MaxIt, delayuntilintervention, delayuntilimmunity, 0, 0, 0, 0);
     %save outcomes
     cumulativecasesTXVACC_ni = modelout{1}{1};
     cumulativedeathsTXVACC_ni = modelout{1}{2};
@@ -39,41 +39,42 @@ function RunVaccandTx
     currenthospitalizationsTXVACC_ni = modelout{1}{8};
     currentebolahospitalizationsTXVACC_ni = modelout{1}{9};
     
-    allVESuccess = linspace(0,1,11);
+    allVESuccess = [0.45 ,0.90]; %linspace(0,1,11);
     allTE = linspace(0.1,1,10);
     allTCov = linspace(0.2,1,5);
                 
-    for i = 1:size(delays,1)
-        delayuntilintervention = delays(i,1);
-        delayuntilimmunity = delays(i,2);
+    %for i = 1:size(delays,1)
+        delayuntilintervention = delays(1,1);
+        delayuntilimmunity = delays(1,2);
         indexVESuccess = 0;
         for VESuccess = allVESuccess;
             indexVESuccess = indexVESuccess+1;
             indexTE = 0;
             for TE = allTE
+                TE
                 indexTE = indexTE+1;
                 indexTCov = 0;
                 for TCov = allTCov 
                     indexTCov = indexTCov+1;
-                    modelout = EbolaModel(1, EstimatedParameters(), timesets, duration, Initial(EstimatedParameters()), 1, MaxIt, delayuntilintervention, delayuntilimmunity, VESuccess, 1, TE, TCov);
+                    modelout = EbolaModel(0, EstimatedParameters(), timesets, duration, Initial(EstimatedParameters()), 1, MaxIt, delayuntilintervention, delayuntilimmunity, VESuccess, 1, TE, TCov);
                     %save outcomes
-                    cumulativecasesTXVACC{i}{indexVESuccess}{indexTE, indexTCov} = modelout{1}{1};
-                    cumulativedeathsTXVACC{i}{indexVESuccess}{indexTE, indexTCov} = modelout{1}{2};
-                    cumulativehcwincidenceTXVACC{i}{indexVESuccess}{indexTE, indexTCov} = modelout{1}{3};
-                    cumulativehospadmissionTXVACC{i}{indexVESuccess}{indexTE, indexTCov} = modelout{1}{4};
-                    currenthcwTXVACC{i}{indexVESuccess}{indexTE, indexTCov} = modelout{1}{5};
-                    totalvaccinedosesTXVACC{i}{indexVESuccess}{indexTE, indexTCov} = modelout{1}{6};
-                    totaltreatmentdosesTXVACC{i}{indexVESuccess}{indexTE, indexTCov} = modelout{1}{7};
-                    currenthospitalizationsTXVACC{i}{indexVESuccess}{indexTE, indexTCov} = modelout{1}{8};
-                    currentebolahospitalizationsTXVACC{i}{indexVESuccess}{indexTE, indexTCov} = modelout{1}{9};
+                    cumulativecasesTXVACC{indexVESuccess}{indexTE, indexTCov} = modelout{1}{1};
+                    cumulativedeathsTXVACC{indexVESuccess}{indexTE, indexTCov} = modelout{1}{2};
+                    cumulativehcwincidenceTXVACC{indexVESuccess}{indexTE, indexTCov} = modelout{1}{3};
+                    cumulativehospadmissionTXVACC{indexVESuccess}{indexTE, indexTCov} = modelout{1}{4};
+                    currenthcwTXVACC{indexVESuccess}{indexTE, indexTCov} = modelout{1}{5};
+                    totalvaccinedosesTXVACC{indexVESuccess}{indexTE, indexTCov} = modelout{1}{6};
+                    totaltreatmentdosesTXVACC{indexVESuccess}{indexTE, indexTCov} = modelout{1}{7};
+                    currenthospitalizationsTXVACC{indexVESuccess}{indexTE, indexTCov} = modelout{1}{8};
+                    currentebolahospitalizationsTXVACC{indexVESuccess}{indexTE, indexTCov} = modelout{1}{9};
 
                 end
             end
         end
-    end
+   % end
     
     
-    save('VaccTreatmentDetResultsTogether',... 
+    save('VaccTreatmentStochResultsTogether_delay183',... 
         'cumulativecasesTXVACC',...
         'cumulativedeathsTXVACC',...
         'cumulativehcwincidenceTXVACC',...

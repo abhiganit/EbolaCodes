@@ -112,6 +112,7 @@ function EbolaModelRunVaccTx_delay183
         delayuntilimmunity = 0;
         indexTE = 0;
         for TE = allTE
+            TE
             indexTE = indexTE+1;
             indexTCov = 0;
             for TCov = allTCov 

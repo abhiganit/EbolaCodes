@@ -112,6 +112,7 @@ function EbolaModelRunVaccTx_delay30
         delayuntilimmunity = 0;
         indexTE = 0;
         for TE = allTE
+            TE
             indexTE = indexTE+1;
             indexTCov = 0;
             for TCov = allTCov 
@@ -171,7 +172,7 @@ end
 
 function eps = EstimatedParameters()
 
-    load('../MainModel_Code/paramest.mat');
+    load('paramest.mat');
     eps = x;
 
 end

@@ -1,5 +1,5 @@
 function plotTx()
-
+close all
 xaxis = 0.1:0.1:1.0;
 delays = [30, 91, 183];
 colors = {'b','r','g','m','c'};
@@ -7,7 +7,7 @@ colors = {'b','r','g','m','c'};
 
 fig = figure;
 set(fig, 'Position', [100 100 1600 900]);
-xlimits = [0.09,1.01];
+xlimits = [0.07,1.03];
 set(gcf,'position',...
          get(0,'screensize'));
 plotwidth = 0.26;
@@ -55,23 +55,26 @@ for index = 1:size(delays,2)
     load(filename);
     
     % means of no interventions
-    nointerventioncases = cumulativecasesTX_ni(:,end); %at the end of year
-    nointerventiondeaths =  cumulativedeathsTX_ni(:,end); %at the end of year
-    nointerventionmaxhcwratio = max((currentebolahospitalizationsTX_ni./currenthcwTX_ni)')'; 
+    nointerventioncases = sort(cumulativecasesTX_ni(:,end)); %at the end of year
+    nointerventiondeaths =  sort(cumulativedeathsTX_ni(:,end)); %at the end of year
+    %nointerventionmaxhcwratio = max((currentebolahospitalizationsTX_ni./currenthcwTX_ni)')'; 
 
-    interventioncases = cellfun( @(a) a(:,end), cumulativecasesTX, 'UniformOutput', false);
-    interventiondeaths = cellfun( @(a) a(:,end), cumulativedeathsTX, 'UniformOutput', false);
-    interventiontxdoses = cellfun( @(a) a(:,end), totaltreatmentdosesTX, 'UniformOutput', false);
+    interventioncases = cellfun( @(a) sort(a(:,end)), cumulativecasesTX, 'UniformOutput', false);
+    interventiondeaths = cellfun( @(a) sort(a(:,end)), cumulativedeathsTX, 'UniformOutput', false);
+    interventiontxdoses = cellfun( @(a) sort(a(:,end)), totaltreatmentdosesTX, 'UniformOutput', false);
     interventionmaxhcwratio = cellfun( @(a,b) max((a./b)')', currentebolahospitalizationsTX, currenthcwTX, 'UniformOutput', false);
-    relativeIncidence = cellfun( @(a,b) a./b,  interventioncases, repmat({nointerventioncases}, size(interventioncases,1), size(interventioncases,2)), 'UniformOutput', false);
-    relativeDeaths = cellfun( @(a,b) a./b,  interventiondeaths, repmat({nointerventiondeaths}, size(interventiondeaths,1), size(interventiondeaths,2)), 'UniformOutput', false);
+     relativeIncidence = cellfun( @(a,b) a./b,  interventioncases, repmat({nointerventioncases}, size(interventioncases,1), size(interventioncases,2)), 'UniformOutput', false);
+     relativeDeaths = cellfun( @(a,b) a./b,  interventiondeaths, repmat({nointerventiondeaths}, size(interventiondeaths,1), size(interventiondeaths,2)), 'UniformOutput', false);
+    
+    relativeIncidence_mean = cell2mat(cellfun( @(a,b) calculateMEDCI(a)./calculateMEDCI(b),  interventioncases, repmat({nointerventioncases}, size(interventioncases,1), size(interventioncases,2)), 'UniformOutput', false));
+    relativeDeaths_mean = cell2mat(cellfun( @(a,b) calculateMEDCI(a)./calculateMEDCI(b),  interventiondeaths, repmat({nointerventiondeaths}, size(interventiondeaths,1), size(interventiondeaths,2)), 'UniformOutput', false));
     
 
     %% find means %%
-    relativeIncidence_mean = cell2mat( cellfun( @(a) mean(a), relativeIncidence, 'UniformOutput', false));
-    relativeDeaths_mean = cell2mat( cellfun( @(a) mean(a), relativeDeaths, 'UniformOutput', false));
-    interventiontxdoses_mean = cell2mat( cellfun( @(a) mean(a), interventiontxdoses, 'UniformOutput', false));
-    interventionmaxhcwratio_mean = cell2mat( cellfun( @(a) mean(a), interventionmaxhcwratio, 'UniformOutput', false));
+%     relativeIncidence_mean = cell2mat( cellfun( @calculateMEDCI, relativeIncidence, 'UniformOutput', false));
+%     relativeDeaths_mean = cell2mat( cellfun( @calculateMEDCI, relativeDeaths, 'UniformOutput', false));
+    interventiontxdoses_mean = cell2mat( cellfun( @calculateMEDCI, interventiontxdoses, 'UniformOutput', false));
+    interventionmaxhcwratio_mean = cell2mat( cellfun( @calculateMEDCI, interventionmaxhcwratio, 'UniformOutput', false));
     
     %% find lowCI %%
     relativeIncidence_low = cell2mat( cellfun( @calculateLOWCI, relativeIncidence, 'UniformOutput', false));
@@ -89,9 +92,9 @@ for index = 1:size(delays,2)
     %% 1st ROW
     axes(ax(0*size(delays,2) + index));
     %h1 = subplot(4,3,0*size(delays,2) + index);
-    set(gca, 'XLim', xlimits, 'YLim', [0 1], 'Box', 'off')
+    set(gca, 'XLim', xlimits, 'YLim', [0 1.01], 'Box', 'off')
     set(gca, 'FontSize', 14, 'FontName', 'Palatino')
-    xlabel('Treatment efficacy, \epsilon_T', 'FontSize', labelsize, 'FontName', 'Palatino')
+    %xlabel('Treatment efficacy', 'FontSize', labelsize, 'FontName', 'Palatino')
     hold on;
     for i=1:5
         ha = errorbar(xaxis, relativeIncidence_mean(:,i), ...
@@ -107,32 +110,27 @@ for index = 1:size(delays,2)
         set(hb(2),'Xdata',Xdata)
     end
     if index==1 
-        text(-0.05,0.5, {'Relative', 'incidence'}, ...
+        text(-0.05,1/2, {'Relative', 'incidence'}, ...
             'Rotation', 90, 'FontName', 'Palatino', 'FontSize', titlesize,...
             'HorizontalAlignment', 'Center'); 
-        leg = legend('20%', '40%', '60%', '80%', '100%');
-        set(leg, 'FontSize', legendsize, 'FontName', 'Palatino')
-        v = get(leg,'title');
-        set(v,'string','Treatment coverage', 'FontName', 'Palatino', 'FontSize', legendsize);
-        set(leg, 'EdgeColor', 'white')
     end
     
     switch index
         case 1
-            title('1 Month delay', 'FontSize', titlesize, 'FontName', 'Palatino')
+            title('One month delay', 'FontSize', titlesize, 'FontName', 'Palatino')
         case 2
-            title('3 Month delay', 'FontSize', titlesize, 'FontName', 'Palatino')
+            title('Three month delay', 'FontSize', titlesize, 'FontName', 'Palatino')
         case 3
-            title('6 Month delay', 'FontSize', titlesize, 'FontName', 'Palatino')
+            title('Six month delay', 'FontSize', titlesize, 'FontName', 'Palatino')
     end
     
     
     %% 2nd ROW
     axes(ax(1*size(delays,2) + index));
-    xlabel('Treatment efficacy, \epsilon_T', 'FontSize', labelsize, 'FontName', 'Palatino')
+    %xlabel('Treatment efficacy', 'FontSize', labelsize, 'FontName', 'Palatino')
     %h2 = subplot(4,3,1*size(delays,2) + index);
    % plot(h2, xaxis, relativeDeaths_mean);
-    set(gca, 'XLim', xlimits, 'YLim', [0 1], 'Box', 'off')
+    set(gca, 'XLim', xlimits, 'YLim', [0 1.01], 'Box', 'off')
     set(gca, 'FontSize', 14, 'FontName', 'Palatino')
     hold on;
     for i=1:5
@@ -149,16 +147,16 @@ for index = 1:size(delays,2)
         set(hb(2),'Xdata',Xdata)
     end
     if index==1 
-        text(-0.05,0.5, {'Relative', 'mortality'}, ...
+        text(-0.05,1.01/2, {'Relative', 'mortality'}, ...
             'Rotation', 90, 'FontName', 'Palatino', 'FontSize', titlesize,...
             'HorizontalAlignment', 'Center'); 
     end
     
     %% 3rd ROW
     axes(ax(2*size(delays,2) + index));
-    xlabel('Treatment efficacy, \epsilon_T', 'FontSize', labelsize, 'FontName', 'Palatino')
+    %xlabel('Treatment efficacy', 'FontSize', labelsize, 'FontName', 'Palatino')
     %h3 = subplot(4,3,2*size(delays,2) + index);
-    set(gca, 'XLim', xlimits, 'Box', 'off')
+    set(gca, 'XLim', xlimits, 'Ylim', [0 8.3e4], 'Box', 'off')
     set(gca, 'FontSize', 14, 'FontName', 'Palatino')
     hold on;
     for i=1:5
@@ -175,17 +173,17 @@ for index = 1:size(delays,2)
         set(hb(2),'Xdata',Xdata)
     end
     if index==1 
-        text(-0.05,7.5e4, {'Treatment', 'doses'}, ...
+        text(-0.05,4e4, {'Treatment', 'doses'}, ...
             'Rotation', 90, 'FontName', 'Palatino', 'FontSize', titlesize,...
             'HorizontalAlignment', 'Center'); 
     end
     
     %% 4th ROW
     axes(ax(3*size(delays,2) + index));
-    xlabel('Treatment efficacy, \epsilon_T', 'FontSize', labelsize, 'FontName', 'Palatino')
+    xlabel('Treatment efficacy', 'FontSize', labelsize, 'FontName', 'Palatino')
     %h4 = subplot(4,3,3*size(delays,2) + index);
    % plot(h4, xaxis, interventionmaxhcwratio_mean);
-    set(gca, 'XLim', xlimits, 'Box', 'off')
+    set(gca, 'XLim', xlimits, 'Ylim', [0 250], 'Box', 'off')
     set(gca, 'FontSize', 14, 'FontName', 'Palatino')
      hold on;
     for i=1:5
@@ -202,10 +200,16 @@ for index = 1:size(delays,2)
         set(hb(2),'Xdata',Xdata)
     end
     if index==1 
-        text(-0.05,3000, {'Maximum Ebola', 'patients per HCW'}, ...
+        text(-0.05,100, {'Maximum Ebola', 'patients per HCW'}, ...
             'Rotation', 90, 'FontName', 'Palatino', 'FontSize', titlesize,...
             'HorizontalAlignment', 'Center'); 
+        leg = legend('20%', '40%', '60%', '80%', '100%');
+        set(leg, 'FontSize', legendsize, 'FontName', 'Palatino')
+        v = get(leg,'title');
+        set(v,'string','Treatment coverage', 'FontName', 'Palatino', 'FontSize', legendsize);
+        set(leg, 'EdgeColor', 'white')
     end
+    
     
 %     if index==1
 %        set( get(h1, 'YLabel'), 'String', 'Relative incidence', 'FontSize', 16, 'FontName', 'Palatino')
@@ -219,10 +223,16 @@ end
 
 function out = calculateLOWCI(a)
     B = sort(a);
-    out =  B(ceil(0.10*size(a,1)));
+    out =  B(ceil(0.025*size(a,1)));
 end
+
+function out = calculateMEDCI(a)
+    B = sort(a);
+    out =  B(ceil(0.50*size(a,1)));
+end
+
 
 function out = calculateHIGHCI(a)
     B = sort(a);
-    out =  B(ceil(0.90*size(a,1)));
+    out =  B(ceil(0.975*size(a,1)));
 end

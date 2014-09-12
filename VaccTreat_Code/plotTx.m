@@ -63,8 +63,8 @@ for index = 1:size(delays,2)
     interventiondeaths = cellfun( @(a) sort(a(:,end)), cumulativedeathsTX, 'UniformOutput', false);
     interventiontxdoses = cellfun( @(a) sort(a(:,end)), totaltreatmentdosesTX, 'UniformOutput', false);
     interventionmaxhcwratio = cellfun( @(a,b) max((a./b)')', currentebolahospitalizationsTX, currenthcwTX, 'UniformOutput', false);
-     relativeIncidence = cellfun( @(a,b) a./b,  interventioncases, repmat({nointerventioncases}, size(interventioncases,1), size(interventioncases,2)), 'UniformOutput', false);
-     relativeDeaths = cellfun( @(a,b) a./b,  interventiondeaths, repmat({nointerventiondeaths}, size(interventiondeaths,1), size(interventiondeaths,2)), 'UniformOutput', false);
+    relativeIncidence = cellfun( @(a,b) a./b,  interventioncases, repmat({nointerventioncases}, size(interventioncases,1), size(interventioncases,2)), 'UniformOutput', false);
+    relativeDeaths = cellfun( @(a,b) a./b,  interventiondeaths, repmat({nointerventiondeaths}, size(interventiondeaths,1), size(interventiondeaths,2)), 'UniformOutput', false);
     
     relativeIncidence_mean = cell2mat(cellfun( @(a,b) calculateMEDCI(a)./calculateMEDCI(b),  interventioncases, repmat({nointerventioncases}, size(interventioncases,1), size(interventioncases,2)), 'UniformOutput', false));
     relativeDeaths_mean = cell2mat(cellfun( @(a,b) calculateMEDCI(a)./calculateMEDCI(b),  interventiondeaths, repmat({nointerventiondeaths}, size(interventiondeaths,1), size(interventiondeaths,2)), 'UniformOutput', false));
@@ -200,7 +200,7 @@ for index = 1:size(delays,2)
         set(hb(2),'Xdata',Xdata)
     end
     if index==1 
-        text(-0.05,100, {'Maximum Ebola', 'patients per HCW'}, ...
+        text(-0.05,250/2, {'Maximum Ebola', 'patients per HCW'}, ...
             'Rotation', 90, 'FontName', 'Palatino', 'FontSize', titlesize,...
             'HorizontalAlignment', 'Center'); 
         leg = legend('20%', '40%', '60%', '80%', '100%');

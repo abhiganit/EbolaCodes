@@ -1,0 +1,39 @@
+% Created 2014-09-19 Fri 14:44
+\documentclass[11pt]{article}
+
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{amsmath}
+
+
+\begin{document}
+
+
+The force of infections are
+\begin{align}
+\lambda_G &  = (1-\phi_G)\beta_I S_G \frac{I_G}{N_G} \\
+\lambda_F & = \omega \beta_I S_F \frac{F_T}{F_T+N_F} \\
+\lambda_W & = (1-\phi_W)\beta_W S_W \frac{I_W+I_{WE}+I_{GE}}{N_W+I_{GE}}
+\end{align}
+
+
+The other rates are
+\begin{align}
+\gamma_{FG} &  = (1-\theta)(1-p_G)\delta_G \gamma_D  \\
+\gamma_{DG} & = (1-\theta)p_G\delta_G \gamma_D \\
+\gamma_{RG} & = (1-\theta)(1-\delta_G) \gamma_R \\
+\gamma_{FH} & = (1-p_H)\delta_H \gamma_{DH} \\
+\bar{\gamma}_{DH} & = p_H \delta_H \gamma_{DH} \\
+\bar{\gamma}_{RH} & = (1-\delta_H) \gamma_{RH}
+\end{align}
+
+and general community attends funeral with a rate of 
+\begin{eqnarray}
+\begin{split}
+f_{GF} & = M_F  \Bigg[\frac{N_D}{E} + (1-\theta)(1-p_G)\delta_G
+  \gamma_DI_G  \\
+& + (1-p_H)\delta_H \gamma_{DH}(I_{GE}+I_{WE}) \Bigg] \frac{S_G}{N_G-S_F}
+\end{split}
+\end{eqnarray}
+\end{document}

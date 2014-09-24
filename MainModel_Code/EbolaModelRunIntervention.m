@@ -47,7 +47,7 @@ for intervention_type = 1:numberofstrategies
             %controlparams(3) = 0.8;   %phiW
             controlparams(3) = 1.0;    %phiW
             %startingpoint = 0.7;  %phiG
-            %variables = [0.5 0.65 0.8 0.95];
+%             variables = [0.5 0.65 0.8 0.95];
             variables = [0.95 0.97 0.99 1];
             controlparams(2) = variables(intervention_level); %min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %phiG
         % pH and phG
@@ -104,8 +104,8 @@ plotAllInterventions(preintervention_cases, model_total, timeset);
 end
 
 function eps = EstimatedParameters()
-
     load('paramest');
+%     load('paramest_MonsterradoCounty');
     eps = x;
 
 end

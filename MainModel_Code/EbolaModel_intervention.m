@@ -26,7 +26,7 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
 
     KikwitNonhospPrev = 5.6e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     N0 = 4.09e6;          % Initial population size
-  %  N0 = 1.14e6;            % Montserrado County 
+    %N0 = 1.14e6;            % Montserrado County 
     %N0 = 0.27e6;          % Lofa Co.
     M =  5;            % average family size
     MF = M - 1;         %number of chances to be at a funeral

@@ -11,7 +11,7 @@ alltimepoints = repmat(onetimeset, size(timepoints,1), 1);
 output = EbolaModel(0, estimatedvalues, alltimepoints, fittingplusvalidationtime, initial, HospitalVisitors, MaxIt)';
 
 % validation data
-%validationdata = ReadDataValidation();
+validationdata = ReadDataValidation();
 
 
 fittingoutput = output{1};
@@ -26,7 +26,7 @@ for i = 1:size(fittingoutput,2)
        
     fill([alltimepoints{i},fliplr(alltimepoints{i})], [ci{i}(1,:),fliplr(ci{i}(2,:))], [0.8 0.8 0.8], 'EdgeColor', [0.8 0.8 0.8])
     plot(timepoints{i}, datapoints{i}, '.r', 'MarkerSize', 14)
- %   plot(validationdata(:,1), validationdata(:,i+1), '.b', 'MarkerSize', 14)
+    plot(validationdata(:,1), validationdata(:,i+1), '.b', 'MarkerSize', 14)
     xlabel('Time Since 8th June (days)', 'FontName', 'Palatino', 'FontSize', 14)
     title(strings{i}, 'FontName', 'Palatino', 'FontSize', 16)
     set(gca, 'FontSize', 14)

@@ -29,7 +29,7 @@ function  EbolaModelFit
     %end
     %X
     % plot model fit
-  plotModelFit(x, timesets, datasets, maxtime, Initial(x), HospitalVisitors, MaxIt);
+  %plotModelFit(x, timesets, datasets, maxtime, Initial(x), HospitalVisitors, MaxIt);
     h = toc;
     
     save('paramest_MonsterradoCounty','x');

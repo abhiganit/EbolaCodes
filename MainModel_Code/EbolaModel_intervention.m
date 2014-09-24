@@ -21,7 +21,9 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
     omega = 1.2;        % odds ratio of funeral risk relative to general population
     
     % population parameters
-    KikwitGeneralPrev = 0.81*6.4e-5; %0.81*6.4e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
+    KikwitGeneralPrev = 0.81*6.4e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
+    %KikwitGeneralPrev = 6.4e-5;
+
     KikwitNonhospPrev = 5.6e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     N0 = 4.09e6;          % Initial population size
   %  N0 = 1.14e6;            % Montserrado County 

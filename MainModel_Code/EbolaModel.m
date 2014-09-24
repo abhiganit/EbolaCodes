@@ -23,8 +23,8 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     % population parameters
     KikwitGeneralPrev = 0.81*6.4e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     KikwitNonhospPrev = 5.6e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
-    N0 = 4.09e6;          % Initial population size
-    %N0 = 1.14e6;   % Montserrado County 
+    %N0 = 4.09e6;          % Initial population size
+    N0 = 1.14e6;   % Montserrado County 
     %N0 = 0.27e6;
     M =  5;            % average family size
     MF = M - 1;         %number of chances to be at a funeral
@@ -87,7 +87,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
         end
             %% SAVE OUTPUT
             CumulativeCases = output(20,(timepoints{1}+1),:) + output(21,(timepoints{1}+1),:);
-            %+ output(22,(timepoints{1}+1),:);
+             %+ output(22,(timepoints{1}+1),:);
             CumulativeDeaths = output(23,(timepoints{1}+1),:) + output(24,(timepoints{1}+1),:) + output(25,(timepoints{1}+1),:);
             CumulativeHealthworkerIncidence = output(22,timepoints{3}+1,:);
             CumulativeHospitalAdmissions = output(26,timepoints{4}+1,:);
@@ -116,7 +116,8 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
            %% OUTPUT
            
             %% SAVE OUTPUT
-            CumulativeCases = output(20,(timepoints{1}+1)) + output(21,(timepoints{1}+1));%+ output(22,(timepoints{1}+1));
+%            CumulativeCases = output(20,(timepoints{1}+1)) + output(21,(timepoints{1}+1))+ output(22,(timepoints{1}+1));
+           CumulativeCases = output(20,(timepoints{1}+1)) + output(21,(timepoints{1}+1));
             CumulativeDeaths = output(23,(timepoints{1}+1)) + output(24,(timepoints{1}+1)) + output(25,(timepoints{1}+1));
             CumulativeHealthworkerIncidence = output(22,timepoints{3}+1);
             CumulativeHospitalAdmissions = output(26,timepoints{4}+1);

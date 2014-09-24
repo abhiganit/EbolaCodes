@@ -20,7 +20,7 @@ function  EbolaModelFit
     %[0.06052 0.13838 0.26851 23.51531];
     HospitalVisitors = 1;
 
-    MaxIt = 16;
+    MaxIt = 4;
     %for i = 1:6
 %  [x, fval, ~, ~, ~, Hessian] = fminunc( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights, Initial(x), HospitalVisitors) , startingconditions,optimset('MaxFunEvals',1000)); % , [0, 0, 0, 1], [10, 10, 1.00, 20]); 
 [x, fval] = fminsearch( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights, Initial(x), HospitalVisitors) , startingconditions); % , [0, 0, 0, 1], [10, 10, 1.00, 20]); 
@@ -32,7 +32,7 @@ function  EbolaModelFit
   plotModelFit(x, timesets, datasets, maxtime, Initial(x), HospitalVisitors, MaxIt);
     h = toc;
     
-    save('paramest','x');
+    save('paramest_MonsterradoCounty','x');
 %     save('paramest','x');
 %     sprintf('%.5f ', x)
 %     sprintf('Fval: %.3f', fval)
@@ -44,8 +44,8 @@ end
 function ic = Initial(x)
     
 % Initial conditions
-    N0 = 4.09e6;           % Initial population size    
-    %N0 = 1.14e6;          % Montserrado Co.
+    %N0 = 4.09e6;           % Initial population size    
+    N0 = 1.14e6;          % Montserrado Co.
     %N0 = 0.27e6;          % Lofa Co.
     Eg0 = 0;    Eh0 = 0; Ew0 = 0;         % exposed
     Ig0 = x(4); Ih0 = 0; Iw0 = 0;         % infected

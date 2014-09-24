@@ -33,7 +33,7 @@ for i = 1:MaxIt
 end
 fittingoutput = {combined1,combined2,combined3,combined4};
 %fittingoutput = output{1};
-strings = {'a) Cumulative Cases', 'b) Cumulative Deaths', 'c) Cumulative HCW Cases', 'd) Cumulative Hospital Admissions'};
+strings = {'a) Cumulative Non-HCW Cases', 'b) Cumulative Deaths', 'c) Cumulative HCW Cases', 'd) Cumulative Hospital Admissions'};
 
 ci = cellfun(@getCI, fittingoutput, repmat({MaxIt*MaxIt},1,4), 'UniformOutput', false);
 

@@ -5,14 +5,14 @@ function EbolaModelRunIntervention
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % get data
 [timesets_nointervention, datasets, maxtime, weights] = CleanData();
-maxtime = 94;
+%maxtime = 94;
 % set up parameters
 MaxIt = 10;
 numberofstrategies = 9;
 interventionduration = 365;
 frequency = 4;
-% preinterventiontime = max(timesets_nointervention{1});
-preinterventiontime = 94;
+ preinterventiontime = max(timesets_nointervention{1});
+% preinterventiontime = 94;
 timeset = 0:(preinterventiontime+interventionduration);
 timesets_intervention0 = repmat({timeset},1,4);
 timesets_intervention = repmat({0:interventionduration},1,4);

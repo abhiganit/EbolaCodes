@@ -7,7 +7,7 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, MaxIt,con
     if model== 0
         clear output;
         %initialize output
-        output = nan(22,MaxTime+1,MaxIt);
+        %output = nan(22,MaxTime+1,MaxIt);
         parfor i = 1:MaxIt
             %display(i)
             % The main iteration 
@@ -16,10 +16,10 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, MaxIt,con
 
         end
             %% SAVE OUTPUT
-            CumulativeCases = output(19,(timepoints{1}+1),:);
-            CumulativeDeaths = output(20,(timepoints{1}+1),:);
-            CumulativeHealthworkerIncidence = output(21,timepoints{3}+1,:);
-            CumulativeHospitalAdmissions = output(22,timepoints{4}+1,:);
+            CumulativeCases = output(27,(timepoints{1}+1),:);
+            CumulativeDeaths = output(28,(timepoints{1}+1),:);
+            CumulativeHealthworkerIncidence = output(29,timepoints{3}+1,:);
+            CumulativeHospitalAdmissions = output(30,timepoints{4}+1,:);
             
             CumulativeCases = reshape(CumulativeCases, MaxTime+1, MaxIt);
             CumulativeDeaths = reshape(CumulativeDeaths, MaxTime+1, MaxIt);
@@ -33,10 +33,10 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, MaxIt,con
             output=pop';
 %             
             %% SAVE OUTPUT
-            CumulativeCases = output(19,(timepoints{1}+1));
-            CumulativeDeaths = output(20,(timepoints{1}+1));
-            CumulativeHealthworkerIncidence = output(21,timepoints{3}+1);
-            CumulativeHospitalAdmissions = output(22,timepoints{4}+1);
+            CumulativeCases = output(27,(timepoints{1}+1));
+            CumulativeDeaths = output(28,(timepoints{1}+1));
+            CumulativeHealthworkerIncidence = output(29,timepoints{3}+1);
+            CumulativeHospitalAdmissions = output(30,timepoints{4}+1);
     end
         
     % get model output ready to passing

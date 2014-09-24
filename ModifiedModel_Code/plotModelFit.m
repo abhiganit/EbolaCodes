@@ -5,8 +5,8 @@ set(fig, 'Position', [500, 100, 900, 500])
 
 onetimeset = {0:maxtime};
 alltimepoints = repmat(onetimeset, size(timepoints,1), 1);
-
 output = EbolaModel(1, estimatedvalues, alltimepoints, maxtime, initial, MaxIt,control)';
+% output = EbolaModel_intervention(1, estimatedvalues, alltimepoints, maxtime, initial, MaxIt,control)';
 
 fittingoutput = output{1};
 strings = {'a) Cumulative Cases', 'b) Cumulative Deaths', 'c) Cumulative HCW Cases', 'd) Cumulative Hospital Admissions'};

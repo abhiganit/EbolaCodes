@@ -5,7 +5,7 @@ fig = figure;
 set(gcf,'position',...
          get(0,'screensize'));
 plotwidth = 0.25;
-plotheight = 0.1;
+plotheight = 0.12;
 leftmargin = 0.1;
 rightmargin = 0.05;
 bottommargin = 0.15;
@@ -143,7 +143,7 @@ for i = strategies
     end
     xlabel('Months After Intervention', 'FontSize', labelsize, 'FontName', 'Palatino')
     set(gca, 'FontSize',ticksize, 'FontName', 'Palatino')
-   % ylim([0 30])
+    ylim([0 30])
     xlim([0 366])
     leg = legend(legendtext{i-3}, 'FontName', 'Palatino', 'FontSize', legendsize);
     v = get(leg,'title');

@@ -1,25 +1,41 @@
-function EbolaModelFit
+function  EbolaModelFit
     
     tic;
     
     
     % get data and clean it
     [timesets, datasets, maxtime, weights] = CleanData();
+    datasets{1} = datasets{1}-datasets{3}; % Cumulative Cases - Cumulative HCW cases
     % fit model
-    startingconditions = [0.06052 0.13838 0.26851 23.51531];
+%     startingconditions = [0.07088,0.22752,0.38718,3.1,22.28694;...
+%                           0.34, 0.24,0.4,3,20;...
+%                           0.08, 0.9,0.4,2.8,24;...
+%                           0.08,0.21,0.05,3.4,21;...
+%                           0.078,0.23,0.37,1.2,23.5;
+%                           0.068,0.204,0.39,1.4,10] ;
+    
+    startingconditions = [0.06010 0.21627 0.53350 21.67930] ;
+%[0.07088,0.22752,0.38718,22.28694];
+    %[0.13577 0.19142 0.35854 1.01338 21.42382]; 
+    %[0.06052 0.13838 0.26851 23.51531];
     HospitalVisitors = 1;
 
-    MaxIt = 2^10;
-
-    %[x, fval, ~, ~, ~, Hessian] = fminunc( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights, Initial(x), HospitalVisitors) , startingconditions); % , [0, 0, 0, 1], [10, 10, 1.00, 20]); 
-    [x, fval] = fminsearch( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights, Initial(x), HospitalVisitors) , startingconditions); % , [0, 0, 0, 1], [10, 10, 1.00, 20]); 
-    
+    MaxIt = 24;
+    %for i = 1:6
+ % [x, fval, ~, ~, ~, Hessian] = fminunc( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights, Initial(x), HospitalVisitors) , startingconditions,optimset('MaxFunEvals',1000)); % , [0, 0, 0, 1], [10, 10, 1.00, 20]); 
+[x, fval] = fminsearch( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights, Initial(x), HospitalVisitors) , startingconditions); % , [0, 0, 0, 1], [10, 10, 1.00, 20]); 
+    %X(i,:) = x;
+    %Fval(i) = fval;
+    %end
+    %X
     % plot model fit
-    plotModelFit(x, timesets, datasets, maxtime, Initial(x), HospitalVisitors, MaxIt);
+  plotModelFit(x, timesets, datasets, maxtime, Initial(x), HospitalVisitors, MaxIt);
     h = toc;
     
-%     save('paramest','x');
     save('paramest','x');
+%     save('paramest','x');
+%     sprintf('%.5f ', x)
+%     sprintf('Fval: %.3f', fval)
     sprintf('%.5f ', x)
     sprintf('Fval: %.3f', fval)
     sprintf('Run time: %f mins', h/60)

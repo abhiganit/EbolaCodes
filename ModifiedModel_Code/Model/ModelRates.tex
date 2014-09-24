@@ -12,28 +12,49 @@
 
 The force of infections are
 \begin{align}
-\lambda_G &  = (1-\phi_G)\beta_I S_G \frac{I_G}{N_G} \\
+\lambda_G &  = (1-\phi_G)\beta_I S_G \frac{I_G+I_Q}{N_G} \\
 \lambda_F & = \omega \beta_I S_F \frac{F_T}{F_T+N_F} \\
-\lambda_W & = (1-\phi_W)\beta_W S_W \frac{I_W+I_{WE}+I_{GE}}{N_W+I_{GE}}
+\lambda_W & = (1-\phi_W)\beta_W S_W \frac{I_{WE}+I_{GE}+I_{QE}}{N_W+I_{GE}}
 \end{align}
+where 
+\begin{align*}
+N_G & = S_G+S_F+E_G+E_Q+I_G+I_Q+R_G+R_Q, \\ 
+N_W & = S_W + E_W + I_{WE} + R_{WE}, \\
+N_D & = S_G+S_F+S_W+E_G+E_W+E_Q+R_G+R_{WE}+R_Q+R_{QE} \\ 
+N_F & = \frac{N_D}{\gamma_F E} \\
+F_T & = F_G+F_{GE}+F_{WE}+F_{Q}+F_{QE} \\
+\end{align*}
 
 
-The other rates are
+The rates of death and recovery are
 \begin{align}
 \gamma_{FG} &  = (1-\theta)(1-p_G)\delta_G \gamma_D  \\
+\gamma_{FE} &  =(1-p_H)\delta_H \gamma_{DH}  \\
+\gamma_{FW} &  =(1-p_H)\delta_G \gamma_D  \\
+\gamma_{FQ} &  =(1-\theta)(1-p_Q)\delta_G \gamma_D  \\
 \gamma_{DG} & = (1-\theta)p_G\delta_G \gamma_D \\
+\gamma_{DE} & = p_H\delta_H \gamma_{DH} \\
+\gamma_{DW} & = p_H\delta_G \gamma_D \\
+\gamma_{DQ} & = (1-\theta)p_Q\delta_G \gamma_D \\
 \gamma_{RG} & = (1-\theta)(1-\delta_G) \gamma_R \\
-\gamma_{FH} & = (1-p_H)\delta_H \gamma_{DH} \\
-\bar{\gamma}_{DH} & = p_H \delta_H \gamma_{DH} \\
-\bar{\gamma}_{RH} & = (1-\delta_H) \gamma_{RH}
+\gamma_{RE} & = (1-\delta_H) \gamma_{RH}\\
+\gamma_{RW} & = (1-\delta_G) \gamma_R \\
 \end{align}
 
-and general community attends funeral with a rate of 
+The rate at which general community attends funerals is
 \begin{eqnarray}
 \begin{split}
 f_{GF} & = M_F  \Bigg[\frac{N_D}{E} + (1-\theta)(1-p_G)\delta_G
-  \gamma_DI_G  \\
-& + (1-p_H)\delta_H \gamma_{DH}(I_{GE}+I_{WE}) \Bigg] \frac{S_G}{N_G-S_F}
+  \gamma_DI_G  + (1-p_H)\delta_H \gamma_{DH}I_{GE} \\
+& ~+ (1-p_H)\delta_G\gamma_D(I_{WE}+I_{QE}) + (1-\theta)(1-p_Q)\delta_G
+  \gamma_DI_Q \Bigg] \frac{S_G}{N_G-S_F} 
 \end{split}
 \end{eqnarray}
+and the proportion of exposed contacts that are successfully followed
+is given by
+\begin{align}
+C_r & = \phi_C C\big(\gamma_H \theta(I_G+I_Q )+\alpha(E_W+E_Q)\big)
+\left(1-\left(1-\frac{\beta_I}{C}\right)^{\frac{1}{\gamma_H}}
+   \right) 
+\end{align}
 \end{document}

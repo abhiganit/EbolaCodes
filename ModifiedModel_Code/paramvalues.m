@@ -1,5 +1,6 @@
 function[params] = paramvalues(x,y);
 
+   
    % Model Parameters (Liberia where possible)
     %1 
     betaI = x(1);      % Transmission coefficient in community
@@ -60,6 +61,8 @@ function[params] = paramvalues(x,y);
   
     %16
     E = 62*365;          % average life expectancy in Liberia 
+    
+    C = 5.7;
 
     %17
     reportingrateGeneral = 1.0;  %reporting rate of cases and deaths in community
@@ -73,14 +76,19 @@ function[params] = paramvalues(x,y);
     %20
     phiW = y(2); % reduction in infectiousness of health care workers
     
+    phiC = y(3);
+    
     %21
-    pG  = y(3);  % proportion of hygienic funerals in general community
+    pG  = y(4);  % proportion of hygienic funerals in general community
     
     %22
-    pH = y(4); % proportion of hygienic funerals at Ebola Center
+    pH = y(5); % proportion of hygienic funerals at Ebola Center
     
+    pQ = y(6);
+    
+    HospCapacity = y(7);
     %23 Algorithm parameter
     tau=1;
 
     params = [betaI, betaW, omega, alpha, theta, gammaH, gammaD, gammaR,gammaDH, gammaRH,gammaF,deltaG, deltaH,...
-                fFG,MF, E, reportingrateGeneral, reportingrateHospital, phiG, phiW, pG, pH, tau]; 
+                fFG,MF, E, C,reportingrateGeneral, reportingrateHospital, phiG, phiW,phiC, pG, pH,pQ,HospCapacity, tau]; 

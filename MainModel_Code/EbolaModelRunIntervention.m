@@ -5,14 +5,14 @@ function EbolaModelRunIntervention
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % get data
 [timesets_nointervention, datasets, maxtime, weights] = CleanData();
-maxtime = 94;
+maxtime = 104;
 % set up parameters
 MaxIt = 10;
 numberofstrategies = 9;
 interventionduration = 365;
 frequency = 4;
 % preinterventiontime = max(timesets_nointervention{1});
- preinterventiontime = 94;
+ preinterventiontime = 104;
 timeset = 0:(preinterventiontime+interventionduration);
 timesets_intervention0 = repmat({timeset},1,4);
 timesets_intervention = repmat({0:interventionduration},1,4);
@@ -22,7 +22,9 @@ timesets_intervention = repmat({0:interventionduration},1,4);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 initial_conditions = InitializeNoIntervention(EstimatedParameters());
 model_nointervention = EbolaModel(1, EstimatedParameters(), timesets_intervention0, preinterventiontime+interventionduration, initial_conditions, 1, MaxIt);
-model_nointervention{1}{1} = model_nointervention{1}{1}+model_nointervention{1}{3}; % Adding Non-HCW and HCW cases
+% Adding Non-HCW and HCW cases
+model_nointervention{1}{1} = model_nointervention{1}{1}+model_nointervention{1}{3};
+
 nointervention_cases = repmat({model_nointervention{1}{1}}, 1, numberofstrategies);
 preintervention_cases = cellfun( @(a)a(1:(maxtime+1),:), nointervention_cases, 'UniformOutput', false);
 postintervention_cases = cellfun( @(a)a((maxtime+1):(maxtime+interventionduration+1),:), nointervention_cases, 'UniformOutput', false);

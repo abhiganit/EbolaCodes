@@ -21,7 +21,7 @@ function  EbolaModelFit
     HospitalVisitors = 1;
 
 
-    MaxIt = 100;
+    MaxIt = 32;
 
     %for i = 1:6
 %  [x, fval, ~, ~, ~, Hessian] = fminunc( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights, Initial(x), HospitalVisitors) , startingconditions,optimset('MaxFunEvals',1000)); % , [0, 0, 0, 1], [10, 10, 1.00, 20]); 

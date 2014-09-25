@@ -3,15 +3,15 @@ close all;
 fig = figure;
 set(fig, 'Position', [500, 100, 900, 500])
 
-fittingplusvalidationtime = maxtime + 35;
+fittingplusvalidationtime = 104; %maxtime + 35;
 onetimeset = {0:fittingplusvalidationtime};
 alltimepoints = repmat(onetimeset, size(timepoints,1), 1);
-
+MaxSamp = 32;
 load('covmatrix');
-samples = mvnrnd(estimatedvalues,covariance,MaxIt);
+samples = mvnrnd(estimatedvalues,covariance,MaxSamp);
 
 % run output for longer period of time (fitting + validation)
-for j = 1:MaxIt
+for j = 1:MaxSamp
 output = EbolaModel(0, samples(j,:), alltimepoints, fittingplusvalidationtime, initial, HospitalVisitors, MaxIt)';
 fitdata1{j} = output{1}{1};
 fitdata2{j} = output{1}{2};
@@ -25,7 +25,7 @@ combined1 = [];
 combined2 = [];
 combined3 = [];
 combined4 = [];
-for i = 1:MaxIt
+for i = 1:MaxSamp
     combined1 = vertcat(combined1,fitdata1{i});
     combined2 = vertcat(combined2,fitdata2{i});
     combined3 = vertcat(combined3,fitdata3{i});
@@ -35,7 +35,7 @@ fittingoutput = {combined1,combined2,combined3,combined4};
 %fittingoutput = output{1};
 strings = {'a) Cumulative Non-HCW Cases', 'b) Cumulative Deaths', 'c) Cumulative HCW Cases', 'd) Cumulative Hospital Admissions'};
 
-ci = cellfun(@getCI, fittingoutput, repmat({MaxIt*MaxIt},1,4), 'UniformOutput', false);
+ci = cellfun(@getCI, fittingoutput, repmat({MaxSamp*MaxIt},1,4), 'UniformOutput', false);
 
 for i = 1:size(fittingoutput,2)
     subplot(ceil(size(fittingoutput,2)/2), 2, i)

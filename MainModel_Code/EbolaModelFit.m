@@ -20,7 +20,7 @@ function  EbolaModelFit
     %[0.06052 0.13838 0.26851 23.51531];
     HospitalVisitors = 1;
 
-    MaxIt = 16;
+    MaxIt = 100;
     %for i = 1:6
 %  [x, fval, ~, ~, ~, Hessian] = fminunc( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights, Initial(x), HospitalVisitors) , startingconditions,optimset('MaxFunEvals',1000)); % , [0, 0, 0, 1], [10, 10, 1.00, 20]); 
 [x, fval] = fminsearch( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights, Initial(x), HospitalVisitors) , startingconditions); % , [0, 0, 0, 1], [10, 10, 1.00, 20]); 
@@ -29,7 +29,7 @@ function  EbolaModelFit
     %end
     %X
     % plot model fit
-  %plotModelFit(x, timesets, datasets, maxtime, Initial(x), HospitalVisitors, MaxIt);
+  plotModelFit(x, timesets, datasets, maxtime, Initial(x), HospitalVisitors, MaxIt);
     h = toc;
     
     save('paramest','x');

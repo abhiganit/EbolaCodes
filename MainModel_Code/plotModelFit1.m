@@ -3,7 +3,7 @@ close all;
 fig = figure;
 set(fig, 'Position', [500, 100, 900, 500])
 
-fittingplusvalidationtime = maxtime;% + 35;
+fittingplusvalidationtime = maxtime + 35;
 onetimeset = {0:fittingplusvalidationtime};
 alltimepoints = repmat(onetimeset, size(timepoints,1), 1);
 

@@ -5,14 +5,14 @@ function EbolaModelRunIntervention
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % get data
 [timesets_nointervention, datasets, maxtime, weights] = CleanData();
-%maxtime = 94;
+maxtime = 94;
 % set up parameters
 MaxIt = 10;
 numberofstrategies = 9;
 interventionduration = 365;
 frequency = 4;
- preinterventiontime = max(timesets_nointervention{1});
-% preinterventiontime = 94;
+% preinterventiontime = max(timesets_nointervention{1});
+ preinterventiontime = 94;
 timeset = 0:(preinterventiontime+interventionduration);
 timesets_intervention0 = repmat({timeset},1,4);
 timesets_intervention = repmat({0:interventionduration},1,4);
@@ -22,6 +22,7 @@ timesets_intervention = repmat({0:interventionduration},1,4);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 initial_conditions = InitializeNoIntervention(EstimatedParameters());
 model_nointervention = EbolaModel(1, EstimatedParameters(), timesets_intervention0, preinterventiontime+interventionduration, initial_conditions, 1, MaxIt);
+model_nointervention{1}{1} = model_nointervention{1}{1}+model_nointervention{1}{3}; % Adding Non-HCW and HCW cases
 nointervention_cases = repmat({model_nointervention{1}{1}}, 1, numberofstrategies);
 preintervention_cases = cellfun( @(a)a(1:(maxtime+1),:), nointervention_cases, 'UniformOutput', false);
 postintervention_cases = cellfun( @(a)a((maxtime+1):(maxtime+interventionduration+1),:), nointervention_cases, 'UniformOutput', false);
@@ -46,7 +47,7 @@ for intervention_type = 1:numberofstrategies
             %controlparams(3) = 0.8;   %phiW
             controlparams(3) = 1.0;    %phiW
             %startingpoint = 0.7;  %phiG
-            %variables = [0.5 0.65 0.8 0.95];
+%             variables = [0.5 0.65 0.8 0.95];
             variables = [0.95 0.97 0.99 1];
             controlparams(2) = variables(intervention_level); %min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %phiG
         % pH and phG
@@ -103,8 +104,8 @@ plotAllInterventions(preintervention_cases, model_total, timeset);
 end
 
 function eps = EstimatedParameters()
-
     load('paramest');
+%     load('paramest_MonsterradoCounty');
     eps = x;
 
 end

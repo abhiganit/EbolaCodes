@@ -2,7 +2,7 @@ function [data, weights] = ReadData
     
     % read in data and headers   
     filename = 'EbolaData';
-    %filename = 'EbolaData_MontserradoCounty';
+%     filename = 'EbolaData_MontserradoCounty';
     %filename = 'EbolaData_LofaCounty_asreported';
     dataformat = '%f %f %f %f %f %f %f %f';
     headerformat = '%s %s %s %s %s %s %s %s';
@@ -38,7 +38,7 @@ function [data, weights] = ReadData
     
     % read in data and headers   
     filename = 'weights';
-    %filename = 'weights_MontserradoCounty';
+%     filename = 'weights_MontserradoCounty';
     %filename = 'weights_LofaCounty_asreported';
     dataformat = '%f %f %f %f';
     fid = fopen(filename);

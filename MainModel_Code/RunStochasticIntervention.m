@@ -65,21 +65,24 @@ for intervention_type = 4:numberofstrategies
             controlparams(3) = 0.9;    %phiW
             controlparams(2) = 0; %0.7;    %phiG
             %startingpoint = 0.2;  %pH
-            variables = [0.7 0.8 0.9 0.95]; %[0.5 0.65 0.80 0.95];
+%             variables = [0.7 0.8 0.9 0.95]; %[0.5 0.65 0.80 0.95];
+               variables = [0.8 0.85 0.9 0.95];
             controlparams(6) = variables(intervention_level); %  min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %pH
         elseif intervention_type == 8 %9
             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
             controlparams(6) = 0.8;    %pH
             %controlparams(5) = 0.5;    %pG
             %startingpoint = 0.0;        %iH
-            variables = [0.3, 0.5, 0.7, 0.95];
+%             variables = [0.3, 0.5, 0.7, 0.95];
+            variables = [0.5, 0.65, 0.8, 0.95];
             controlparams(5) = variables(intervention_level); %min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %pG
         elseif intervention_type == 9 %7
             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);
             controlparams(1) = 0.8;  %iH
             %controlparams(4) = 0.5;  %phiC
             %startingpoint = 0.5;    %pH
-            variables = [0.5 0.65 0.8 0.95];
+%             variables = [0.5 0.65 0.8 0.95];
+            variables = [0.8 0.85 0.9 0.95];
             controlparams(4) = variables(intervention_level);%   min(0.95, startingpoint  + (intervention_level-1)*(1-startingpoint)/(frequency-1));  %phiC    
         else
             controlparams = getControlLevel(intervention_level,frequency) * getControlParams(intervention_type);

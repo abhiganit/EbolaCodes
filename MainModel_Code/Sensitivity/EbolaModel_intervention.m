@@ -20,7 +20,7 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
     omega = y(10);        % overall funeral risk relative to general population
     delta = 0.6 ;          % case-fatality
     % population parameters
-    KikwitGeneralPrev = 6.4e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
+    KikwitGeneralPrev = 0.81*6.4e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     KikwitNonhospPrev = 5.6e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
     N0 = 4.09e6;          % Initial population size
     M =  y(8);            % average family size
@@ -46,7 +46,7 @@ function modelout = EbolaModel_intervention(model, x, timepoints, MaxTime, initi
 %     phiC = ControlParams(4);
 %     pG = ControlParams(5);
 %     pH = ControlParams(6);
-    C = 11;  %not varying
+    C = 6;  %not varying
     
     
     

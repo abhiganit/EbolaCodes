@@ -5,8 +5,9 @@ function[x] =  EbolaModelFit(y);
     
     % get data and clean it
     [timesets, datasets, maxtime, weights] = CleanData();
+    datasets{1} = datasets{1}-datasets{3};
     % fit model
-    startingconditions = [0.07849 0.29095 0.53542 22.42888];
+    startingconditions = [0.06010 0.21627 0.53350 21.67930] ;
     HospitalVisitors = 1;
     MaxIt = 4;
     [x, fval] = fminsearch( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights, Initial(x,y), HospitalVisitors,y) , startingconditions); % , [0, 0, 0, 1], [10, 10, 1.00, 20]); 

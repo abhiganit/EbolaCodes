@@ -62,19 +62,19 @@ Rate(6) = epsilon*alpha*Eh;                                      Change(6,6) = -
 Rate(7) = epsilon*alpha*Ew;                                      Change(7,7) = -1; Change(7,28) = +1;
 
 % General: inf -> funeral
-Rate(8) = deltaG*(1-theta)*gammaD*Ig;                    Change(8,8) = -1; Change(8,11) = +1;  
+Rate(8) = (1-theta)*gammaD*Ig;                    Change(8,8) = -1; Change(8,11) = +1;  
 
 % Hosp: inf -> funeral
-Rate(9) = deltaH*gammaDH*Ih;                            Change(9,9) = -1; Change(9,12) = +1;  
+Rate(9) = gammaDH*Ih;                            Change(9,9) = -1; Change(9,12) = +1;  
 % Worker: inf -> funeral
-Rate(10) = deltaH*gammaDH*Iw;                            Change(10,10) = -1; Change(10,13) = +1;  
+Rate(10) = gammaDH*Iw;                            Change(10,10) = -1; Change(10,13) = +1;  
 
 % General: inf -> recovered
-Rate(11) = (1-deltaG)*gammaI*(1-theta)*Ig;               Change(11,8) = -1; Change(11,14) = +1;  
+Rate(11) = gammaI*(1-theta)*Ig;               Change(11,8) = -1; Change(11,14) = +1;  
 % Hosp: inf -> recovered
-Rate(12) = (1-deltaH)*gammaIH*Ih;                        Change(12,9) = -1; Change(12,15) = +1;  
+Rate(12) = gammaIH*Ih;                        Change(12,9) = -1; Change(12,15) = +1;  
 % Worker: inf -> recovered
-Rate(13) = (1-deltaH)*gammaIH*Iw;                        Change(13,10) = -1; Change(13,16) = +1;  
+Rate(13) = gammaIH*Iw;                        Change(13,10) = -1; Change(13,16) = +1;  
 
 % General: funeral -> dead
 Rate(14) = gammaF*Fg;                                    Change(14,11) = -1; Change(14,17) = +1;
@@ -86,7 +86,7 @@ Rate(16) = gammaF*Fw;                                    Change(16,13) = -1; Cha
 
 % General:susc -> Funeral:susc
 %Rate(17) = MF*(Nd/E +  (1-theta)*gammaD*Ig+gammaDH*(Ih+Iw))*Sg/(Ng-Sf);           Change(17,1) = -1; Change(17,2) = +1;  
-Rate(17) = MF*(Nd/E +  deltaG*(1-theta)*gammaD*Ig  +  deltaH*gammaDH*(Ih+Iw))*Sg/(Ng-Sf);           Change(17,1) = -1; Change(17,2) = +1;  
+Rate(17) = MF*(Nd/E +  (1-theta)*gammaD*Ig  +  gammaDH*(Ih+Iw))*Sg/(Ng-Sf);           Change(17,1) = -1; Change(17,2) = +1;  
 % Funeral:susc -> General:susc
 Rate(18) = fFG*Sf;                                       Change(18,2) = -1; Change(18,1) = +1;
 % General:susc -> Hosp:susc
@@ -113,11 +113,11 @@ Rate(27) = reportingrateHospital*(epsilon*alpha*Ew);      					Change(27,22) = +
 
 %% Cumulative Deaths (no reductions, only additions) -- reporting rate applies to all deaths equally
 % General: inf -> funeral
-Rate(28) = deltaG*reportingrateGeneral*((1-theta)*gammaD*Ig);                   Change(28,23) = +1; 
+Rate(28) = reportingrateGeneral*((1-theta)*gammaD*Ig);                   Change(28,23) = +1; 
 % Hosp: inf -> funeral
-Rate(29) = deltaH*reportingrateHospital*(gammaDH*Ih);                            Change(29,24) = +1; 
+Rate(29) = reportingrateHospital*(gammaDH*Ih);                            Change(29,24) = +1; 
 % Worker: inf -> funeral
-Rate(30) = deltaH*reportingrateHospital*(gammaDH*Iw);                            Change(30,25) = +1; 
+Rate(30) = reportingrateHospital*(gammaDH*Iw);                            Change(30,25) = +1; 
 
 
 %% Cumulative Hospitalizations (including HCW)

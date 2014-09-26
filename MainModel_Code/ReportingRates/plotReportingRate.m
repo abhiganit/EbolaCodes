@@ -82,7 +82,7 @@ for i=1:numstrategy
         %subplot(4, numstrategy, i)
         plot(matplotA, 'LineWidth', 1.2);
         title(strtitle{i}, 'FontSize', 20, 'FontName', 'Palatino');
-        ylim([0 50])
+       ylim([0 150])
         xlim([0 366])
         box off;
         set(gca, 'FontName', 'Palatino', 'FontSize', 16,...
@@ -100,7 +100,7 @@ for i=1:numstrategy
         axes(ax(i+3))
         %subplot(4, numstrategy, i+3)
         bar(monthsA, 'LineStyle', 'none');
-        ylim([0 6300])
+      ylim([0 15000])
         box off;
         set(gca, 'FontName', 'Palatino', 'FontSize', 16)
         set(gca,'XTickLabel',xlabstr, 'FontSize', 16)
@@ -124,7 +124,7 @@ for i=1:numstrategy
         %subplot(4, numstrategy, i+6)
         plot(matplotB, 'LineWidth', 1.2);
         title(strtitle2{i}, 'FontSize', 20, 'FontName', 'Palatino');
-        ylim([0 50])
+        ylim([0 150])
         xlim([0 366])
         box off;
         set(gca, 'FontName', 'Palatino', 'FontSize', 16,...
@@ -140,7 +140,7 @@ for i=1:numstrategy
         axes(ax(i+9))
         %subplot(4, numstrategy, i+9)
         bar(monthsB, 'LineStyle', 'none');
-        ylim([0 6300])
+        ylim([0 30000])
         box off;
         set(gca, 'FontName', 'Palatino', 'FontSize', 16)
         set(gca,'XTickLabel',xlabstr, 'FontSize', 16)

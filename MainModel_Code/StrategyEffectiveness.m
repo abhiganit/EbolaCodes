@@ -144,7 +144,7 @@ for i = strategies
     end
     xlabel('Months After Intervention', 'FontSize', labelsize, 'FontName', 'Palatino')
     set(gca, 'FontSize',ticksize, 'FontName', 'Palatino')
-    ylim([0 280])
+%     ylim([0 280])
 %    ylim([0 150]) % For Monstarrodo county
     xlim([0 366])
     leg = legend(legendtext{i-3}, 'FontName', 'Palatino', 'FontSize', legendsize);
@@ -195,11 +195,11 @@ for i = strategies
       x = (1:numgroups) - groupwidth/2 + (2*j-1) * groupwidth / (2*numbars);  % Aligning error bar with individual bar
       errorbar(x, Boutputsumsdet{i}(:,j+1), lowerdifference{index}(:,j), upperdifference{index}(:,j), 'k', 'linestyle', 'none');
     end
-    ylim([0.1 8.0e3])
+     ylim([0.1 25.0e3])
 %     ylim([0.1,5.0e3]) % Monstaroddo county
     set(gca,'XTickLabel',{'','',''}, 'FontSize', labelsize, 'FontName', 'Palatino');
 %     set(gca, 'YTick', [0, 1000, 2000,3000, 4000, 5000,6000,7000,8000])
-    set(gca, 'YTick', [0, 1000, 2000,3000, 4000, 5000]) % Monsterrado county
+%    set(gca, 'YTick', [0, 1000, 2000,3000, 4000, 5000]) % Monsterrado county
     set(gca, 'FontSize', ticksize, 'TickLength', [0 0])
     box off;
     

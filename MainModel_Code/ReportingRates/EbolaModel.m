@@ -7,18 +7,18 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     betaI = x(1);      % Transmission coefficient in community
     betaW = x(2);      % Transmission coefficient between patients-HCWs
     theta = x(3);      % Percentage of infectious cases are hospitaized
-    gammaH = 1/3;    % 1/Time between hospitalization and death
+    gammaH = 1/4.9;    % 1/Time between hospitalization and death
      
     %disease progression parameters
-    delta = 0.6;    %case fatality
-    alpha = 1/8;        % 1/alpha: mean duration of the incubation period 
+    delta = 0.7;    %case fatality
+    alpha = 1/9.5;        % 1/alpha: mean duration of the incubation period 
     gammaI = 1/9; %10;      % 1/gammaI: mean duration of the infectious period for survivors
-    gammaD = 1/7.5;       % 1/gammaD: mean duration from onset to death
+    gammaD = 1/7.9;       % 1/gammaD: mean duration from onset to death
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
     epsilon = 100/100;       % percentage Symptomatic illness 
     omega = 1.2;        % overall funeral risk relative to general population
-    reportingrateGeneral = 1.0;  %reporting rate of cases and deaths in community
-    reportingrateHospital = 1.0; %reporting rate of cases and deaths in hospital
+    reportingrateGeneral = repG;  %reporting rate of cases and deaths in community
+    reportingrateHospital = repH; %reporting rate of cases and deaths in hospital
     
     % population parameters
     KikwitGeneralPrev = 0.81*6.4e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI
@@ -86,7 +86,8 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
 
         end
             %% SAVE OUTPUT
-            CumulativeCases = output(20,(timepoints{1}+1),:) + output(21,(timepoints{1}+1),:) + output(22,(timepoints{1}+1),:);
+            CumulativeCases = output(20,(timepoints{1}+1),:) + output(21,(timepoints{1}+1),:) ;
+            %+ output(22,(timepoints{1}+1),:);
             CumulativeDeaths = output(23,(timepoints{1}+1),:) + output(24,(timepoints{1}+1),:) + output(25,(timepoints{1}+1),:);
             CumulativeHealthworkerIncidence = output(22,timepoints{3}+1,:);
             CumulativeHospitalAdmissions = output(26,timepoints{4}+1,:);
@@ -115,7 +116,8 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
            %% OUTPUT
            
             %% SAVE OUTPUT
-            CumulativeCases = output(20,(timepoints{1}+1)) + output(21,(timepoints{1}+1)) + output(22,(timepoints{1}+1));
+            CumulativeCases = output(20,(timepoints{1}+1)) + output(21,(timepoints{1}+1));
+            %+ output(22,(timepoints{1}+1));
             CumulativeDeaths = output(23,(timepoints{1}+1)) + output(24,(timepoints{1}+1)) + output(25,(timepoints{1}+1));
             CumulativeHealthworkerIncidence = output(22,timepoints{3}+1);
             CumulativeHospitalAdmissions = output(26,timepoints{4}+1);

@@ -19,9 +19,9 @@ x0 = EbolaModelFit(y); % Check if getting same fitted value.
 
 
 % Control Strategies
-Strat1 = [0, 0, 0.9, 0, 0, 0.7];
-Strat2 = [0, 0, 0, 0, 0.3, 0.8];
-Strat3 = [0.8, 0, 0, 0.5, 0, 0];
+Strat1 = [0, 0, 0.95, 0, 0, 0.85];
+Strat2 = [0, 0, 0, 0, 0.5, 0.9];
+Strat3 = [0.9, 0, 0, 0.8, 0, 0];
 strategies = [Strat1;Strat2;Strat3]; % Passing control strategies for
 
 
@@ -60,9 +60,9 @@ end
 names = {'$S_{W}(0)$';'$1/\alpha$';'$1/{\gamma_{DG}}$';'$1/{\gamma_{RG}}$';...
         '$1/{\gamma_H}$';'$h$';'$1/f_{HG}$';'$M_F$';'$M_H$';'$\omega$';...
         '$1-\epsilon$';'$\theta$'};
-titlenames = {'a) HCW Transmission Reduction (90%) and Hygienic Burial of Hospital Deaths (70%)';
-               'b) Hygienic Burial of Hospital Deaths (80%) and Community Deaths (30%)';
-               'c) Hospital Cases Isolation (80%) and Hospital Contacts Follow-up/Isolation (50%)'}
+% titlenames = {'a) HCW Transmission Reduction (95%) and Hygienic Burial of Hospital Deaths (85%)';
+%                'b) Hygienic Burial of Hospital Deaths (80%) and Community Deaths (30%)';
+%                'c) Hospital Cases Isolation (80%) and Hospital Contacts Follow-up/Isolation (50%)'}
                
 %Textnames = {'Sensitivities';'Elasticities'};
 S = sensitivity;
@@ -98,8 +98,8 @@ for i = 1:3
     box('off')
     xmin = min(Sd(:,i));
     xmax = max(Sd(:,i));
-    xlim([-17000,2200]);
-    set(gca,'XTick',[-16000,-12000,-8000,-4000,0,1000]);
+    xlim([-14000,1800]);
+    set(gca,'XTick',[-12000,-9000,-6000,-3000,0,1000]);
     ylim([0,13]);
    [hx,hy] = format_ticks(gca,[],NS(:,i),[],[],[],[],[],'FontSize',14,'FontName','Palatino');
    if i == 1; 
@@ -132,17 +132,17 @@ for i = 1:3
 % Titles
 annotation(fig,'textbox',...
     [0.13 0.93 0.22 0.05],...
-    'String',{'a) HCW Transmission Reduction (90%) and Hygienic Burial of Hospital Deaths (70%)'},...
+    'String',{'a) HCW Transmission Reduction (95%) and Hygienic Burial of Hospital Deaths (85%)'},...
     'FontSize',16,'LineStyle','none','HorizontalAlignment','center');
 
 annotation(fig,'textbox',...
     [0.41 0.93 0.22 0.05],...
-    'String',{'b) Hygienic Burial of Hospital Deaths (80%) and Community Deaths (30%)'},...
+    'String',{'b) Hygienic Burial of Hospital Deaths (90%) and Community Deaths (50%)'},...
     'FontSize',16,'LineStyle','none','HorizontalAlignment','center');
 
 annotation(fig,'textbox',...
     [0.69 0.93 0.22 0.05],...
-    'String',{'c) Hospital Cases Isolation (80%) and Hospital Contacts Follow-up/Isolation (50%)'},...
+    'String',{'c) Hospital Cases Isolation (90%) and Hospital Contacts Follow-up/Isolation (80%)'},...
     'FontSize',16,'LineStyle','none','HorizontalAlignment','center');
 
 

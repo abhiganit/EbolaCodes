@@ -54,15 +54,18 @@ iH = x; phiG = 0; phiW = 0; phiC = x; pG =0.5;  pH = x;
 BD = [iH, phiG, phiW, phiC, pG, pH];
 
 
+controlparams = zeros(1,6);
+CumCases0 = EbolaModelRunIntervention(x0,y,controlparams);
 
 Strat = [A;B;C;D;AC;AD;BC;BD];
 
 for i = 1: length(Strat)
     controlparams = Strat(i,:);
     CumCases{i} = EbolaModelRunIntervention(x0,y,controlparams);
+    CasesAverted{i} = CumCases0 - CumCases{i};
 end
 
-[A,B,C,D,AB,AC,AD,BC,BD,ABC,ABD] = CumCases{:};
+[A,B,C,D,AC,AD,BC,BD] = CumCases{:};
 
 SynMatrix = [A,0,C,0,AC;...
              A,0,0,D,AD;...
@@ -96,6 +99,7 @@ end
 hold off
 
 
+% Calculating Sensitivities:
 
 
 

@@ -7,13 +7,13 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalV
     betaI = x(1);      % Transmission coefficient in community
     betaW = x(2);      % Transmission coefficient between patients-HCWs
     theta = x(3);      % Percentage of infectious cases are hospitaized
-    gammaH = 1/3;    % 1/Time between hospitalization and death
+    gammaH = 1/4.9; %1/3;    % 1/Time between hospitalization and death  -- updated based on NEJM paper
      
     %disease progression parameters
-    delta = 0.6;    %case fatality
-    alpha = 1/8;        % 1/alpha: mean duration of the incubation period 
-    gammaI = 1/9; %10;      % 1/gammaI: mean duration of the infectious period for survivors
-    gammaD = 1/7.5;       % 1/gammaD: mean duration from onset to death
+    delta = 0.72; %0.6;    %case fatality -- updated based on NEJM paper
+    alpha = 1/9.5; %1/8;        % 1/alpha: mean duration of the incubation period  -- -- updated based on NEJM paper
+    gammaI = 1/9; %10;      % 1/gammaI: mean duration of the infectious period for survivors -- didn't update because 1) #'s don't add up, and 2) bad fit
+    gammaD = 1/7.9; %1/7.5;       % 1/gammaD: mean duration from onset to death -- updated based on NEJM paper
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
     epsilon = 100/100;       % percentage Symptomatic illness 
     omega = 1.2;        % overall funeral risk relative to general population

@@ -48,7 +48,8 @@ legendsize = 15;
 
 
 
-filename = sprintf('VaccTreatmentDetResults');
+%filename = sprintf('VaccTreatmentDetResults');
+filename = sprintf('VaccTreatmentDetResultsTogether');
 load(filename);
 
 for index = 1:size(delays,2)

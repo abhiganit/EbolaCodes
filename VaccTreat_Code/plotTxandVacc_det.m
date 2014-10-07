@@ -1,7 +1,8 @@
 function plotTxandVacc_det()
-
+close all
 xaxis = 0.1:0.1:1.0;
-delays = [30, 91, 183];
+%delays = [30, 91, 183];
+delays = 182;
 colors = {'b','r','g','m','c'};
 
 %close all
@@ -27,30 +28,30 @@ legendsize = 15;
 %top row
 ax(1) = axes('Position',  [leftmargin,                           bottommargin+3*plotheight+3*rowspace, plotwidth, plotheight]);
 ax(2) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+3*plotheight+3*rowspace, plotwidth, plotheight]);
-ax(3) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+3*plotheight+3*rowspace, plotwidth, plotheight]); 
+%ax(3) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+3*plotheight+3*rowspace, plotwidth, plotheight]); 
 
 %middle row
-ax(4) = axes('Position',  [leftmargin,                           bottommargin+2*plotheight+2*rowspace, plotwidth, plotheight]);
-ax(5) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+2*plotheight+2*rowspace, plotwidth, plotheight]);
-ax(6) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+2*plotheight+2*rowspace, plotwidth, plotheight]); 
+ax(3) = axes('Position',  [leftmargin,                           bottommargin+2*plotheight+2*rowspace, plotwidth, plotheight]);
+ax(4) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+2*plotheight+2*rowspace, plotwidth, plotheight]);
+%ax(6) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+2*plotheight+2*rowspace, plotwidth, plotheight]); 
 
 %middle row
-ax(7) = axes('Position',  [leftmargin,                           bottommargin+1*plotheight+1*rowspace, plotwidth, plotheight]);
-ax(8) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+1*plotheight+1*rowspace, plotwidth, plotheight]);
-ax(9) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+1*plotheight+1*rowspace, plotwidth, plotheight]); 
+ax(5) = axes('Position',  [leftmargin,                           bottommargin+1*plotheight+1*rowspace, plotwidth, plotheight]);
+ax(6) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+1*plotheight+1*rowspace, plotwidth, plotheight]);
+%ax(9) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+1*plotheight+1*rowspace, plotwidth, plotheight]); 
 
 %bottom row
-ax(10) = axes('Position',  [leftmargin,                           bottommargin+0*plotheight+0*rowspace, plotwidth, plotheight]);
-ax(11) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+0*plotheight+0*rowspace, plotwidth, plotheight]);
-ax(12) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+0*plotheight+0*rowspace, plotwidth, plotheight]);
+ax(7) = axes('Position',  [leftmargin,                           bottommargin+0*plotheight+0*rowspace, plotwidth, plotheight]);
+ax(8) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+0*plotheight+0*rowspace, plotwidth, plotheight]);
+%ax(12) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+0*plotheight+0*rowspace, plotwidth, plotheight]);
 
 
 
-vacc = [1,6,11];
-filename = sprintf('VaccTreatmentDetResultsTogether');
+%vacc = [1,6,11];
+filename = sprintf('VaccTreatmentDetResultsTogether_delay182');
 load(filename);
-for ind = 1:3
-    index = vacc(ind);
+for ind = 1:2
+    index = ind; %vacc(ind);
 %     clear nointerventioncases nointerventiondeaths nointerventionmaxhcwratio ...
 %            interventioncases interventiondeaths interventiontxdoses interventionmaxhcwratio;
     %filename = sprintf('VaccTreatmentStochResults_delay%g', delays(index));
@@ -62,10 +63,10 @@ for ind = 1:3
     nointerventiondeaths =  cumulativedeathsTXVACC_ni(end); %at the end of year
     nointerventionmaxhcwratio = max((currentebolahospitalizationsTXVACC_ni./currenthcwTXVACC_ni)')'; 
 
-    interventioncases = cell2mat( cellfun( @(a) a(end), cumulativecasesTXVACC{3}{index}, 'UniformOutput', false));
-    interventiondeaths =  cell2mat(cellfun( @(a) a(end), cumulativedeathsTXVACC{3}{index}, 'UniformOutput', false));
-    interventiontxdoses =  cell2mat(cellfun( @(a) a(end), totaltreatmentdosesTXVACC{3}{index}, 'UniformOutput', false));
-    interventionmaxhcwratio =  cell2mat(cellfun( @(a,b) max((a./b)')', currentebolahospitalizationsTXVACC{3}{index}, currenthcwTXVACC{3}{index}, 'UniformOutput', false));
+    interventioncases = cell2mat( cellfun( @(a) a(end), cumulativecasesTXVACC{index}, 'UniformOutput', false));
+    interventiondeaths =  cell2mat(cellfun( @(a) a(end), cumulativedeathsTXVACC{index}, 'UniformOutput', false));
+    interventiontxdoses =  cell2mat(cellfun( @(a) a(end), totaltreatmentdosesTXVACC{index}, 'UniformOutput', false));
+    interventionmaxhcwratio =  cell2mat(cellfun( @(a,b) max((a./b)')', currentebolahospitalizationsTXVACC{index}, currenthcwTXVACC{index}, 'UniformOutput', false));
     relativeIncidence =  interventioncases./ repmat(nointerventioncases, size(interventioncases,1), size(interventioncases,2));
     relativeDeaths =  interventiondeaths./ repmat(nointerventiondeaths, size(interventiondeaths,1), size(interventiondeaths,2));
     livesSaved =  repmat(nointerventiondeaths, size(interventiondeaths,1), size(interventiondeaths,2)) - interventiondeaths;
@@ -133,7 +134,7 @@ for ind = 1:3
     
     
     %% 2nd ROW
-    axes(ax(1*size(delays,2) + ind));
+    axes(ax(2*size(delays,2) + ind));
     xlabel('Treatment efficacy, \epsilon_T', 'FontSize', labelsize, 'FontName', 'Palatino')
     %h2 = subplot(4,3,1*size(delays,2) + index);
    % plot(h2, xaxis, relativeDeaths_mean);
@@ -162,7 +163,7 @@ for ind = 1:3
     end
     
     %% 3rd ROW
-    axes(ax(2*size(delays,2) + ind));
+    axes(ax(4*size(delays,2) + ind));
     xlabel('Treatment efficacy, \epsilon_T', 'FontSize', labelsize, 'FontName', 'Palatino')
     %h3 = subplot(4,3,2*size(delays,2) + index);
     set(gca, 'XLim', xlimits, 'Box', 'off')
@@ -189,14 +190,14 @@ for ind = 1:3
     end
     
     %% 4th ROW
-    axes(ax(3*size(delays,2) + ind));
+    axes(ax(6*size(delays,2) + ind));
     xlabel('Treatment efficacy, \epsilon_T', 'FontSize', labelsize, 'FontName', 'Palatino')
     %h4 = subplot(4,3,3*size(delays,2) + index);
    % plot(h4, xaxis, interventionmaxhcwratio_mean);
     set(gca, 'XLim', xlimits, 'Box', 'off')
     set(gca, 'FontSize', 14, 'FontName', 'Palatino')
      hold on;
-     ylim([0 150])
+    % ylim([0 150])
     %for i=1:5
         plot(xaxis, interventionmaxhcwratio);
 %         ha = errorbar(xaxis, interventionmaxhcwratio_mean(:,i), ...

@@ -1,16 +1,19 @@
 function plotTx()
 close all
 xaxis = 0.1:0.1:1.0;
-delays = [30, 91, 183];
+delays = {'Dec', 'Feb'};
 colors = {'b','r','g','m','c'};
 
 
 fig = figure;
 set(fig, 'Position', [100 100 1600 900]);
 xlimits = [0.07,1.03];
+% set(gcf,'position',...
+%          get(0,'screensize'));
+ss = get(0,'screensize');
 set(gcf,'position',...
-         get(0,'screensize'));
-plotwidth = 0.26;
+         [100, 100, ss(3)/1.5, ss(4)]);
+plotwidth = 0.41;
 plotheight = 0.19;
 leftmargin = 0.1;
 %rightmargin = 0.05;
@@ -27,22 +30,22 @@ legendsize = 15;
 %top row
 ax(1) = axes('Position',  [leftmargin,                           bottommargin+3*plotheight+3*rowspace, plotwidth, plotheight]);
 ax(2) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+3*plotheight+3*rowspace, plotwidth, plotheight]);
-ax(3) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+3*plotheight+3*rowspace, plotwidth, plotheight]); 
+%ax(3) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+3*plotheight+3*rowspace, plotwidth, plotheight]); 
 
 %middle row
-ax(4) = axes('Position',  [leftmargin,                           bottommargin+2*plotheight+2*rowspace, plotwidth, plotheight]);
-ax(5) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+2*plotheight+2*rowspace, plotwidth, plotheight]);
-ax(6) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+2*plotheight+2*rowspace, plotwidth, plotheight]); 
+ax(3) = axes('Position',  [leftmargin,                           bottommargin+2*plotheight+2*rowspace, plotwidth, plotheight]);
+ax(4) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+2*plotheight+2*rowspace, plotwidth, plotheight]);
+%ax(6) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+2*plotheight+2*rowspace, plotwidth, plotheight]); 
 
 %middle row
-ax(7) = axes('Position',  [leftmargin,                           bottommargin+1*plotheight+1*rowspace, plotwidth, plotheight]);
-ax(8) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+1*plotheight+1*rowspace, plotwidth, plotheight]);
-ax(9) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+1*plotheight+1*rowspace, plotwidth, plotheight]); 
+ax(5) = axes('Position',  [leftmargin,                           bottommargin+1*plotheight+1*rowspace, plotwidth, plotheight]);
+ax(6) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+1*plotheight+1*rowspace, plotwidth, plotheight]);
+%ax(9) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+1*plotheight+1*rowspace, plotwidth, plotheight]); 
 
 %bottom row
-ax(10) = axes('Position',  [leftmargin,                           bottommargin+0*plotheight+0*rowspace, plotwidth, plotheight]);
-ax(11) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+0*plotheight+0*rowspace, plotwidth, plotheight]);
-ax(12) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+0*plotheight+0*rowspace, plotwidth, plotheight]);
+ax(7) = axes('Position',  [leftmargin,                           bottommargin+0*plotheight+0*rowspace, plotwidth, plotheight]);
+ax(8) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+0*plotheight+0*rowspace, plotwidth, plotheight]);
+%ax(12) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+0*plotheight+0*rowspace, plotwidth, plotheight]);
 
 
 
@@ -51,7 +54,7 @@ ax(12) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+0
 for index = 1:size(delays,2)
 %     clear nointerventioncases nointerventiondeaths nointerventionmaxhcwratio ...
 %            interventioncases interventiondeaths interventiontxdoses interventionmaxhcwratio;
-    filename = sprintf('VaccTreatmentStochResults_delay%g', delays(index));
+    filename = sprintf('VaccTreatmentStochResults_delay%s', delays{index});
     load(filename);
     
     % means of no interventions
@@ -90,7 +93,7 @@ for index = 1:size(delays,2)
     
        
     %% 1st ROW
-    axes(ax(0*size(delays,2) + index));
+    axes(ax(0*2 + index));
     %h1 = subplot(4,3,0*size(delays,2) + index);
     set(gca, 'XLim', xlimits, 'YLim', [0 1.01], 'Box', 'off')
     set(gca, 'FontSize', 14, 'FontName', 'Palatino')
@@ -117,16 +120,16 @@ for index = 1:size(delays,2)
     
     switch index
         case 1
-            title('One month delay', 'FontSize', titlesize, 'FontName', 'Palatino')
+            title('Treatment begins December 1', 'FontSize', titlesize, 'FontName', 'Palatino')
         case 2
-            title('Three month delay', 'FontSize', titlesize, 'FontName', 'Palatino')
+            title('Treatment begins February 1', 'FontSize', titlesize, 'FontName', 'Palatino')
         case 3
             title('Six month delay', 'FontSize', titlesize, 'FontName', 'Palatino')
     end
     
     
     %% 2nd ROW
-    axes(ax(1*size(delays,2) + index));
+    axes(ax(1*2 + index));
     %xlabel('Treatment efficacy', 'FontSize', labelsize, 'FontName', 'Palatino')
     %h2 = subplot(4,3,1*size(delays,2) + index);
    % plot(h2, xaxis, relativeDeaths_mean);
@@ -153,10 +156,10 @@ for index = 1:size(delays,2)
     end
     
     %% 3rd ROW
-    axes(ax(2*size(delays,2) + index));
+    axes(ax(2*2 + index));
     %xlabel('Treatment efficacy', 'FontSize', labelsize, 'FontName', 'Palatino')
     %h3 = subplot(4,3,2*size(delays,2) + index);
-    set(gca, 'XLim', xlimits, 'Ylim', [0 8.3e4], 'Box', 'off')
+    set(gca, 'XLim', xlimits, 'Ylim', [0 5.5e5], 'Box', 'off')
     set(gca, 'FontSize', 14, 'FontName', 'Palatino')
     hold on;
     for i=1:5
@@ -173,17 +176,17 @@ for index = 1:size(delays,2)
         set(hb(2),'Xdata',Xdata)
     end
     if index==1 
-        text(-0.05,4e4, {'Treatment', 'doses'}, ...
+        text(-0.05,5.5e5/2, {'Treatment', 'doses'}, ...
             'Rotation', 90, 'FontName', 'Palatino', 'FontSize', titlesize,...
             'HorizontalAlignment', 'Center'); 
     end
     
     %% 4th ROW
-    axes(ax(3*size(delays,2) + index));
+    axes(ax(3*2 + index));
     xlabel('Treatment efficacy', 'FontSize', labelsize, 'FontName', 'Palatino')
     %h4 = subplot(4,3,3*size(delays,2) + index);
    % plot(h4, xaxis, interventionmaxhcwratio_mean);
-    set(gca, 'XLim', xlimits, 'Ylim', [0 250], 'Box', 'off')
+    set(gca, 'XLim', xlimits, 'Ylim', [0 800], 'Box', 'off')
     set(gca, 'FontSize', 14, 'FontName', 'Palatino')
      hold on;
     for i=1:5
@@ -200,7 +203,7 @@ for index = 1:size(delays,2)
         set(hb(2),'Xdata',Xdata)
     end
     if index==1 
-        text(-0.05,250/2, {'Maximum Ebola', 'patients per HCW'}, ...
+        text(-0.05,800/2, {'Maximum Ebola', 'patients per HCW'}, ...
             'Rotation', 90, 'FontName', 'Palatino', 'FontSize', titlesize,...
             'HorizontalAlignment', 'Center'); 
         leg = legend('20%', '40%', '60%', '80%', '100%');

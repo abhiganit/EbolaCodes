@@ -24,17 +24,18 @@ function  EbolaModelFit
 
     % fit model    
     startingconditions = [0.06873 0.16598 0.22978 17.98054] ;
-
     
+    [x, fval,~,~,~,H] = fminunc( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights, Initial(x), HospitalVisitors) , startingconditions); % , [0, 0, 0, 1], [10, 10, 1.00, 20]); 
 
     [x, fval] = fminsearch( @(x)ErrorFunction(x, timesets, datasets, maxtime, weights, Initial(x), HospitalVisitors) , startingconditions); % , [0, 0, 0, 1], [10, 10, 1.00, 20]); 
     
     % plot model fit
-    plotModelFit(x, timesets, datasets, maxtime, Initial(x), HospitalVisitors, MaxIt);
+   plotModelFit(x, timesets, datasets, maxtime, Initial(x), HospitalVisitors, MaxIt);
     h = toc;
     
+ 
     % save('paramest_MonsterradoCounty','x');
-    save('paramest','x');
+  %  save('paramest','x');
     sprintf('%.5f ', x)
     sprintf('Fval: %.3f', fval)
     sprintf('Run time: %f mins', h/60)

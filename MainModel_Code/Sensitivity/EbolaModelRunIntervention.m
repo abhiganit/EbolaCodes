@@ -1,4 +1,4 @@
-function[sixmonthcumsum] = EbolaModelRunIntervention(x,y,controlparams);
+function[sixmonthcumsum,dailycases] = EbolaModelRunIntervention(x,y,controlparams);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%% NO INTERVENTION %%%%%%%%%%%
@@ -37,6 +37,7 @@ InitialSetUpForEveryIntervention = InitializeIntervention(allruns(:,maxtime+1));
 model_intervention = EbolaModel_intervention(1, x, timesets_intervention, interventionduration, InitialSetUpForEveryIntervention', controlparams, 0,10,y);
 model_total = cumsum(diff(model_intervention{1}{1}));
 sixmonthcumsum = model_total(183);
+dailycases = diff(model_total);
 end
 
 function ic = InitializeNoIntervention(x,y)

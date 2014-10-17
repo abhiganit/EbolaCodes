@@ -43,7 +43,7 @@ function runReportingRate
     end
 
     %plotting
-    plotReportingRate(output);
+    plotReportingRate1(output);
     h = toc;
     sprintf('Run time: %f mins', h/60)
 end

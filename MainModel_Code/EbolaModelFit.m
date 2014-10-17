@@ -47,7 +47,7 @@ function ic = Initial(x)
     
 % Initial conditions
     N0 = 4.09e6;           % Initial population size    
-%     N0 = 1.14e6;          % Montserrado Co.
+    % N0 = 1.14e6;          % Montserrado Co.
     %N0 = 0.27e6;          % Lofa Co.
     Eg0 = 0;    Eh0 = 0; Ew0 = 0;         % exposed
     Ig0 = x(4); Ih0 = 0; Iw0 = 0;         % infected

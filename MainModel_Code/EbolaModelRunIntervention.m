@@ -111,8 +111,8 @@ plotAllInterventions(preintervention_cases, model_total, timeset);
 end
 
 function eps = EstimatedParameters()
-    load('paramest');
-%     load('paramest_MonsterradoCounty');
+  load('paramest');
+ % load('paramest_MonsterradoCounty');
     eps = x;
 
 end
@@ -120,7 +120,7 @@ end
 function ic = InitializeNoIntervention(x)
     
 % Initial conditions
-    N0 = 4.09e6;          % Initial population size    Ig0 = x(5);  
+   N0 = 4.09e6;          % Initial population size    Ig0 = x(5);  
     %N0 = 1.14e6;           % Montserrado Co.
     %N0 = 0.27e6;          % Lofa Co.
     Eg0 = 0;    Eh0 = 0; Ew0 = 0;         % exposed

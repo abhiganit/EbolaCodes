@@ -13,5 +13,5 @@ function plotAllInterventions(model_pre, model_post, times)
 %plotCumulativeIncidence(model_pre, model_post, subplotorder)
 
 % new cases
-StrategyEffectiveness(model_post);
+StrategyEffectiveness_new(model_post);
 end

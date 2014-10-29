@@ -1,49 +1,50 @@
 function[B] = StrategyEffectiveness(input)
 % input has to be a cell of size s and size of each matrix of cell must be
 % m x n.
+close all
 fig = figure;
 set(gcf,'position',...
          get(0,'screensize'));
 plotwidth = 0.25;
-plotheight = 0.1;
+plotheight = 0.18;
 leftmargin = 0.1;
 rightmargin = 0.05;
-bottommargin = 0.15;
+bottommargin = 0.1;
 columnspace = 0.05;
 rowspace = 0.01;
-midspace = 0.09;
+midspace = 0.05;
 
-labelsize = 18;
+labelsize = 16;
 ticksize = 18;
-titlesize = 20;
-legendsize = 15;
+titlesize = 16;
+legendsize = 12;
 
 %top row
-ax(1) = axes('Position',  [leftmargin,                           bottommargin+5*plotheight+11*rowspace+midspace, plotwidth, plotheight]);
-ax(2) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+5*plotheight+11*rowspace+midspace, plotwidth, plotheight]);
-ax(3) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+5*plotheight+11*rowspace+midspace, plotwidth, plotheight]); 
+%ax(1) = axes('Position',  [leftmargin,                           bottommargin+5*plotheight+11*rowspace+midspace, plotwidth, plotheight]);
+%ax(2) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+5*plotheight+11*rowspace+midspace, plotwidth, plotheight]);
+%ax(3) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+5*plotheight+11*rowspace+midspace, plotwidth, plotheight]); 
 
 %middle row
-ax(4) = axes('Position',  [leftmargin,                           bottommargin+4*plotheight+7*rowspace+midspace, plotwidth, plotheight]);
-ax(5) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+4*plotheight+7*rowspace+midspace, plotwidth, plotheight]);
-ax(6) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+4*plotheight+7*rowspace+midspace, plotwidth, plotheight]); 
+ax(1) = axes('Position',  [leftmargin,                           bottommargin+3*plotheight+6*rowspace+midspace, plotwidth, plotheight]);
+ax(2) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+3*plotheight+6*rowspace+midspace, plotwidth, plotheight]);
+ax(3) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+3*plotheight+6*rowspace+midspace, plotwidth, plotheight]); 
 
 %bottom row
-ax(7) = axes('Position',  [leftmargin,                           bottommargin+3*plotheight+6*rowspace+midspace, plotwidth, plotheight]);
-ax(8) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+3*plotheight+6*rowspace+midspace, plotwidth, plotheight]);
-ax(9) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+3*plotheight+6*rowspace+midspace, plotwidth, plotheight]);
+ax(4) = axes('Position',  [leftmargin,                           bottommargin+2*plotheight+5*rowspace+midspace, plotwidth, plotheight]);
+ax(5) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+2*plotheight+5*rowspace+midspace, plotwidth, plotheight]);
+ax(6) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+2*plotheight+5*rowspace+midspace, plotwidth, plotheight]);
 
-ax(10) = axes('Position',  [leftmargin,                           bottommargin+2*plotheight+5*rowspace,         plotwidth, plotheight]);
-ax(11) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+2*plotheight+5*rowspace,         plotwidth, plotheight]);
-ax(12) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+2*plotheight+5*rowspace,         plotwidth, plotheight]); 
+%ax(10) = axes('Position',  [leftmargin,                           bottommargin+2*plotheight+5*rowspace,         plotwidth, plotheight]);
+%ax(11) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+2*plotheight+5*rowspace,         plotwidth, plotheight]);
+%ax(12) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+2*plotheight+5*rowspace,         plotwidth, plotheight]); 
 
-ax(13) = axes('Position',  [leftmargin,                           bottommargin+1*plotheight+1*rowspace,         plotwidth, plotheight]);
-ax(14) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+1*plotheight+1*rowspace,         plotwidth, plotheight]);
-ax(15) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+1*plotheight+1*rowspace,         plotwidth, plotheight]); 
+ax(7) = axes('Position',  [leftmargin,                           bottommargin+1*plotheight+1*rowspace,         plotwidth, plotheight]);
+ax(8) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+1*plotheight+1*rowspace,         plotwidth, plotheight]);
+ax(9) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+1*plotheight+1*rowspace,         plotwidth, plotheight]); 
 
-ax(16) = axes('Position',  [leftmargin,                           bottommargin+0*plotheight+0*rowspace,         plotwidth, plotheight]);
-ax(17) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+0*plotheight+0*rowspace,         plotwidth, plotheight]);
-ax(18) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+0*plotheight+0*rowspace,         plotwidth, plotheight]);
+ax(10) = axes('Position',  [leftmargin,                           bottommargin+0*plotheight+0*rowspace,         plotwidth, plotheight]);
+ax(11) = axes('Position',  [leftmargin+plotwidth+columnspace,     bottommargin+0*plotheight+0*rowspace,         plotwidth, plotheight]);
+ax(12) = axes('Position',  [leftmargin+2*plotwidth+2*columnspace, bottommargin+0*plotheight+0*rowspace,         plotwidth, plotheight]);
 
 
 
@@ -146,35 +147,35 @@ subplotorder = [1,2,3,10,11,12];
 a = 365/12;
 b = 0:12;
 tickmarks = a*b;
-ticklabels = {'0','1','2','3','4','5','6','7','8','9','10','11','12'};
+%ticklabels = {'0','1','2','3','4','5','6','7','8','9','10','11','12'};
 
-for i = strategies   
-    %subplot(6,3,subplotorder(i-3))    
-    axes(ax(subplotorder(i-3)))
-    for j=2:n
-        hold on;
-        plot(t,Bdet{i}(:,j), 'Color', cmap1(j-1,:), 'LineWidth', 1.2);
-    end
-    xlabel('Months After Intervention', 'FontSize', labelsize, 'FontName', 'Palatino')
-    set(gca, 'FontSize',ticksize, 'FontName', 'Palatino')
-%     ylim([0 280])
-%    ylim([0 150]) % For Monstarrodo county
-    xlim([0 366])
-    leg = legend(legendtext{i-3}, 'FontName', 'Palatino', 'FontSize', legendsize);
-    v = get(leg,'title');
-    set(v,'string',legendtitle{i-3}, 'FontName', 'Palatino', 'FontSize', legendsize);
-    set(gca, 'XTick', tickmarks, 'XTickLabel', ticklabels);
-    set(leg, 'EdgeColor', 'white')
-    box off;
-    
-    if i==4 || i==7
-        text(-61,15, {'Daily', 'Ebola Cases'}, ...
-            'Rotation', 90, 'FontName', 'Palatino', 'FontSize', labelsize,...
-            'HorizontalAlignment', 'Center'); 
-    end
-        title(strtitle{i-3}, 'FontSize', titlesize,'FontName', 'Palatino')
-  
-end
+% % % for i = strategies   
+% % %     %subplot(6,3,subplotorder(i-3))    
+% % %     axes(ax(subplotorder(i-3)))
+% % %     for j=2:n
+% % %         hold on;
+% % %         plot(t,Bdet{i}(:,j), 'Color', cmap1(j-1,:), 'LineWidth', 1.2);
+% % %     end
+% % %     xlabel('Months After Intervention', 'FontSize', labelsize, 'FontName', 'Palatino')
+% % %     set(gca, 'FontSize',ticksize, 'FontName', 'Palatino')
+% % % %     ylim([0 280])
+% % % %    ylim([0 150]) % For Monstarrodo county
+% % %     xlim([0 366])
+% % %     leg = legend(legendtext{i-3}, 'FontName', 'Palatino', 'FontSize', legendsize);
+% % %     v = get(leg,'title');
+% % %     set(v,'string',legendtitle{i-3}, 'FontName', 'Palatino', 'FontSize', legendsize);
+% % %     set(gca, 'XTick', tickmarks, 'XTickLabel', ticklabels);
+% % %     set(leg, 'EdgeColor', 'white')
+% % %     box off;
+% % %     
+% % %     if i==4 || i==7
+% % %         text(-61,15, {'Daily', 'Ebola Cases'}, ...
+% % %             'Rotation', 90, 'FontName', 'Palatino', 'FontSize', labelsize,...
+% % %             'HorizontalAlignment', 'Center'); 
+% % %     end
+% % %         title(strtitle{i-3}, 'FontSize', titlesize,'FontName', 'Palatino')
+% % %   
+% % % end
 
 
 
@@ -190,8 +191,8 @@ Boutputsumsdet = cellfun(@(a,times)a(times,:), Bsumsdet, repmat({outputtimes},1,
 %differences
 upperdifference = cellfun( @(u,m) u-m(:,2:end), cihighmat, Boutputsumsdet(4:9), 'UniformOutput', false);
 lowerdifference = cellfun( @(l,m) m(:,2:end)-l, cilowmat, Boutputsumsdet(4:9), 'UniformOutput', false);
-subplotorder = [4,5,6,13,14,15];
-
+%subplotorder = [4,5,6,13,14,15];
+subplotorder = [1,2,3,7,8,9];
 %colormap(cmap1)
 for i = strategies
     index = i-3;
@@ -208,19 +209,30 @@ for i = strategies
       x = (1:numgroups) - groupwidth/2 + (2*j-1) * groupwidth / (2*numbars);  % Aligning error bar with individual bar
       errorbar(x, Boutputsumsdet{i}(:,j+1), lowerdifference{index}(:,j), upperdifference{index}(:,j), 'k', 'linestyle', 'none');
     end
-     ylim([0.1 25.0e3])
+     ylim([0.1 2.5e4])
 %     ylim([0.1,5.0e3]) % Monstaroddo county
-    set(gca,'XTickLabel',{'','',''}, 'FontSize', labelsize, 'FontName', 'Palatino');
+    set(gca,'XTickLabel',{'','','',''}, 'FontSize', labelsize, 'FontName', 'Palatino');
 %     set(gca, 'YTick', [0, 1000, 2000,3000, 4000, 5000,6000,7000,8000])
 %    set(gca, 'YTick', [0, 1000, 2000,3000, 4000, 5000]) % Monsterrado county
     set(gca, 'FontSize', ticksize, 'TickLength', [0 0])
     box off;
     
     if i==4 || i==7
-        text(0,2500, {'Cumulative', 'Ebola Cases'}, ...
+        text(-0.8,2.5e4/2, {'Cumulative', 'Ebola cases'}, ...
             'Rotation', 90, 'FontName', 'Palatino', 'FontSize', labelsize,...
             'HorizontalAlignment', 'Center'); 
-    end  
+    end
+    set(gca, 'YTick', 5000:10000:25000)
+    set(gca, 'XTickLabel','')  
+    
+    leg = legend(legendtext{i-3}, 'FontName', 'Palatino', 'FontSize', legendsize, 'Location', 'NorthWest');
+    v = get(leg,'title');
+    set(v,'string',legendtitle{i-3}, 'FontName', 'Palatino', 'FontSize', legendsize);
+%    set(gca, 'XTick', tickmarks, 'XTickLabel', ticklabels);
+    set(leg, 'EdgeColor', 'white')
+    box off;
+    
+    title(strtitle{i-3}, 'FontSize', titlesize,'FontName', 'Palatino')
 end
 
 
@@ -230,8 +242,8 @@ end
 %%%%%%%%%%%%%% plotting PROBS OF EXTINCTION  %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %colormap(cmap2);
-subplotorder = [7,8,9,16,17,18];
-
+%subplotorder = [7,8,9,16,17,18];
+subplotorder = [4,5,6,10,11,12];
 for i = 1:6
     %subplot(6,3,subplotorder(i))
     axes(ax(subplotorder(i)))
@@ -241,11 +253,20 @@ for i = 1:6
     ylim([0,1.0])
     %set(gca, 'YTick', 0:0.2:0.6);
     if i==1 || i==4
-        text(0.005,0.3, {'Probability', '< 1 Case Daily'}, ...
+        text(-0.8,0.5, {'Probability', '< 1 case daily'}, ...
             'Rotation', 90, 'FontName', 'Palatino', 'FontSize', labelsize,...
             'HorizontalAlignment', 'Center');  
     end
+    set(gca, 'YTick', 0:0.25:1)
+%     if i==4 || i==7
+%         text(-0.8,2.5e4/2, {'Cumulative', 'Ebola cases'}, ...
+%             'Rotation', 90, 'FontName', 'Palatino', 'FontSize', labelsize,...
+%             'HorizontalAlignment', 'Center'); 
+%     end
     box off;
+    if i>3
+       xlabel('Months after intervention', 'FontSize', labelsize, 'FontName', 'Palatino') 
+    end
 end
 
 

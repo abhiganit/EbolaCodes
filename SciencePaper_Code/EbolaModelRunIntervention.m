@@ -5,14 +5,14 @@ function EbolaModelRunIntervention
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % get data
 [timesets_nointervention, datasets, maxtime, weights] = CleanData();
-maxtime = 104+44;
+maxtime = 104;
 % set up parameters
 MaxIt = 10;
 numberofstrategies = 9;
 interventionduration = 365;
 frequency = 4;
 % preinterventiontime = max(timesets_nointervention{1});
- preinterventiontime = 104+44;
+ preinterventiontime = 104;
 timeset = 0:(preinterventiontime+interventionduration);
 timesets_intervention0 = repmat({timeset},1,4);
 timesets_intervention = repmat({0:interventionduration},1,4);
@@ -111,8 +111,8 @@ plotAllInterventions(preintervention_cases, model_total, timeset);
 end
 
 function eps = EstimatedParameters()
-    load('paramest');
-%     load('paramest_MonsterradoCounty');
+  load('paramest');
+ % load('paramest_MonsterradoCounty');
     eps = x;
 
 end
@@ -120,7 +120,7 @@ end
 function ic = InitializeNoIntervention(x)
     
 % Initial conditions
-    N0 = 4.09e6;          % Initial population size    Ig0 = x(5);  
+   N0 = 4.09e6;          % Initial population size    Ig0 = x(5);  
     %N0 = 1.14e6;           % Montserrado Co.
     %N0 = 0.27e6;          % Lofa Co.
     Eg0 = 0;    Eh0 = 0; Ew0 = 0;         % exposed

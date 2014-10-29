@@ -1,4 +1,4 @@
-function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, ReportingRate, HospitalVisitors, MaxIt)
+function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, HospitalVisitors, MaxIt)
 % model = 0 runs stochastic model where as model = 1 runs the difference
 % equation.
     
@@ -17,8 +17,8 @@ function modelout = EbolaModel(model, x, timepoints, MaxTime, initial, Reporting
     gammaF  = 1/2;      % 1/gammaF: mean duration from death to burial
     epsilon = 100/100;       % percentage Symptomatic illness 
     omega = 1.2;        % overall funeral risk relative to general population
-    reportingrateGeneral = ReportingRate;  %reporting rate of cases and deaths in community
-    reportingrateHospital = ReportingRate; %reporting rate of cases and deaths in hospital
+    reportingrateGeneral = 1; %ReportingRate;  %reporting rate of cases and deaths in community
+    reportingrateHospital = 1; %ReportingRate; %reporting rate of cases and deaths in hospital
     
     % population parameters
     KikwitGeneralPrev = 0.81*6.4e-5; %7.81e-6;  %prevalence in previous epidemic to use in weighting of betaF relative to betaI

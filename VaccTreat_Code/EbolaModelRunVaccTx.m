@@ -4,7 +4,7 @@ function EbolaModelRunVaccTx
     %%%%%%%%%%%%%%%%%% NO INTERVENTION %%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % get data
-    [~, ~, ~, ~] = CleanData();
+    %[~, ~, ~, ~] = CleanData();
 
     % set up parameters
     MaxIt = 1; %2^10;

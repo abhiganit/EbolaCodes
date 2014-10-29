@@ -36,6 +36,7 @@ function  EbolaModelFit
  
     % save('paramest_MonsterradoCounty','x');
     save('paramest','x');
+    save('../paramest','x');
     sprintf('%.5f ', x)
     sprintf('Fval: %.3f', fval)
     sprintf('Run time: %f mins', h/60)

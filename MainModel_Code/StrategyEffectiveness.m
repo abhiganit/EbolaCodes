@@ -17,7 +17,7 @@ midspace = 0.05;
 labelsize = 16;
 ticksize = 18;
 titlesize = 16;
-legendsize = 15;
+legendsize = 12;
 
 %top row
 %ax(1) = axes('Position',  [leftmargin,                           bottommargin+5*plotheight+11*rowspace+midspace, plotwidth, plotheight]);
@@ -225,7 +225,7 @@ for i = strategies
     set(gca, 'YTick', 5000:10000:25000)
     set(gca, 'XTickLabel','')  
     
-    leg = legend(legendtext{i-3}, 'FontName', 'Palatino', 'FontSize', legendsize);
+    leg = legend(legendtext{i-3}, 'FontName', 'Palatino', 'FontSize', legendsize, 'Location', 'NorthWest');
     v = get(leg,'title');
     set(v,'string',legendtitle{i-3}, 'FontName', 'Palatino', 'FontSize', legendsize);
 %    set(gca, 'XTick', tickmarks, 'XTickLabel', ticklabels);

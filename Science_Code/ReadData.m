@@ -37,8 +37,8 @@ function [data, weights] = ReadData
     end
     
     % read in data and headers   
-  %  filename = 'weights';
-     filename = 'weights_MontserradoCounty';
+    filename = 'weights';
+    % filename = 'weights_MontserradoCounty';
     %filename = 'weights_LofaCounty_asreported';
     dataformat = '%f %f %f %f';
     fid = fopen(filename);
